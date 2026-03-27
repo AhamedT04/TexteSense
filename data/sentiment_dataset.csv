@@ -1,0 +1,101 @@
+text,label
+"J'aime beaucoup cette application simple et efficace",positive
+"Le service est rapide et vraiment utile",positive
+"Ce projet est tres interessant et bien pense",positive
+"Je suis satisfait du resultat final",positive
+"L'interface est intuitive et agreable",positive
+"Cette solution fonctionne tres bien",positive
+"Le rendu est propre et professionnel",positive
+"Je recommande fortement cet outil",positive
+"L'experience utilisateur est excellente",positive
+"Tout marche parfaitement aujourd'hui",positive
+"La demonstration etait claire et convaincante",positive
+"Le support technique a ete tres reactif",positive
+"Cette fonctionnalite est vraiment pratique",positive
+"Le site est fluide et rassurant",positive
+"J'adore la vitesse de reponse",positive
+"Le tableau de bord est tres lisible",positive
+"Le contenu est pertinent et inspire confiance",positive
+"Le code est bien structure et facile a suivre",positive
+"Je trouve cette idee brillante",positive
+"Cette mise a jour apporte une vraie valeur",positive
+"Le cours etait captivant et motivant",positive
+"Je suis heureux du comportement de l'application",positive
+"Les resultats sont coherents et utiles",positive
+"L'outil est stable et agreable a utiliser",positive
+"Cette interface facilite vraiment le travail",positive
+"Le message est encourageant et optimiste",positive
+"Le service client est aimable et efficace",positive
+"Cette nouvelle version est excellente",positive
+"Je suis impressionne par la qualite du projet",positive
+"La navigation est rapide et confortable",positive
+"Ce rapport est complet et tres bien redige",positive
+"Le produit repond parfaitement a mon besoin",positive
+"Cette analyse est claire et precise",positive
+"Le resultat me satisfait pleinement",positive
+"L'application donne une bonne impression generale",positive
+"Le systeme parait robuste et fiable",positive
+"La presentation est tres reussie",positive
+"Le message donne confiance pour la suite",positive
+"Cette idee est simple mais tres efficace",positive
+"Je suis content de la progression observee",positive
+"Je deteste cette interface confuse",negative
+"Le service est lent et frustrant",negative
+"Ce projet est mal organise et decevant",negative
+"Je suis tres insatisfait du resultat",negative
+"L'application plante trop souvent",negative
+"Cette solution est inutile et penible",negative
+"Le rendu est brouillon et peu professionnel",negative
+"Je ne recommande pas cet outil",negative
+"L'experience utilisateur est horrible",negative
+"Rien ne marche correctement aujourd'hui",negative
+"La demonstration etait longue et ennuyeuse",negative
+"Le support technique est absent",negative
+"Cette fonctionnalite est buggee",negative
+"Le site est instable et fatigant",negative
+"Je hais la lenteur de reponse",negative
+"Le tableau de bord est incomprehensible",negative
+"Le contenu est faible et peu credible",negative
+"Le code semble fragile et brouille",negative
+"Je trouve cette idee mediocre",negative
+"Cette mise a jour casse trop de choses",negative
+"Le cours etait monotone et penible",negative
+"Je suis fache du comportement de l'application",negative
+"Les resultats sont incoherents et trompeurs",negative
+"L'outil est penible a utiliser",negative
+"Cette interface complique tout",negative
+"Le message est agressif et negatif",negative
+"Le service client est impoli",negative
+"Cette nouvelle version est desastreuse",negative
+"Je suis decu par la qualite du projet",negative
+"La navigation est lente et confuse",negative
+"Ce rapport est incomplet et mal redige",negative
+"Le produit ne repond pas a mon besoin",negative
+"Cette analyse est floue et inutile",negative
+"Le resultat me frustre completement",negative
+"L'application donne une mauvaise impression",negative
+"Le systeme parait peu fiable",negative
+"La presentation est ratee",negative
+"Le message me fait perdre confiance",negative
+"Cette idee manque vraiment d'interet",negative
+"Je suis decourage par la progression",negative
+"Je viens de terminer mon cours",neutral
+"Le programme fonctionne normalement",neutral
+"Cette reunion commence a neuf heures",neutral
+"Le document contient trois sections",neutral
+"Le message a ete envoye ce matin",neutral
+"La page affiche les informations attendues",neutral
+"Le texte comporte plusieurs phrases",neutral
+"Le projet utilise Python et SQLite",neutral
+"Nous avons ajoute une nouvelle route API",neutral
+"Le formulaire contient un champ texte",neutral
+"Le serveur repond sur le port local",neutral
+"La base de donnees enregistre chaque analyse",neutral
+"Le modele retourne une prediction",neutral
+"Le rapport sera relu demain",neutral
+"L'utilisateur consulte l'historique",neutral
+"Le bouton declenche une requete HTTP",neutral
+"Le code est stocke dans le depot",neutral
+"La session de travail continue cet apres-midi",neutral
+"La demonstration dure quelques minutes",neutral
+"Le fichier CSV sert a l'entrainement",neutral

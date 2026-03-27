@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextSense</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <p class="eyebrow">Python + FastAPI + scikit-learn</p>
+            <h1>{{ app_name }}</h1>
+            <p class="hero-copy">
+                Analyse instantanee de sentiment, extraction de mots-cles et historique persistant dans une interface simple.
+            </p>
+            <a class="hero-link" href="/docs" target="_blank" rel="noreferrer">Ouvrir la documentation API</a>
+        </header>
+
+        <main class="dashboard">
+            <section class="panel form-panel">
+                <div class="panel-head">
+                    <h2>Analyser un texte</h2>
+                    <p>Collez un message entre 5 et 1000 caracteres.</p>
+                </div>
+                <form id="analysis-form">
+                    <label for="text-input" class="sr-only">Texte a analyser</label>
+                    <textarea id="text-input" name="text" rows="8" placeholder="Exemple: Ce projet est tres utile et le resultat est vraiment convaincant." maxlength="1000"></textarea>
+                    <div class="form-actions">
+                        <span id="char-count">0 / 1000</span>
+                        <button type="submit" id="analyze-btn">Analyser</button>
+                    </div>
+                </form>
+                <p id="form-message" class="form-message"></p>
+            </section>
+
+            <section class="panel result-panel">
+                <div class="panel-head">
+                    <h2>Resultat</h2>
+                    <p>Sentiment, score de confiance et mots-cles.</p>
+                </div>
+                <div id="result-card" class="result-card empty">
+                    <p>Soumettez un texte pour voir l'analyse.</p>
+                </div>
+            </section>
+
+            <section class="panel stats-panel">
+                <div class="panel-head">
+                    <h2>Statistiques</h2>
+                    <p>Vue rapide sur les analyses stockees.</p>
+                </div>
+                <div id="stats-grid" class="stats-grid">
+                    <article><span>Total</span><strong id="stat-total">0</strong></article>
+                    <article><span>Positifs</span><strong id="stat-positive">0</strong></article>
+                    <article><span>Negatifs</span><strong id="stat-negative">0</strong></article>
+                    <article><span>Neutres</span><strong id="stat-neutral">0</strong></article>
+                </div>
+            </section>
+
+            <section class="panel history-panel">
+                <div class="panel-head">
+                    <h2>Historique</h2>
+                    <p>Analyses recentes enregistrees en base SQLite.</p>
+                </div>
+                <div id="history-list" class="history-list">
+                    <p class="empty-history">Aucune analyse pour le moment.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

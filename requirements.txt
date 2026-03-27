@@ -1,0 +1,15 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+sqlalchemy==2.0.43
+jinja2==3.1.6
+python-multipart==0.0.20
+scikit-learn==1.7.1
+pandas==2.3.2
+joblib==1.5.2
+transformers==4.53.3
+torch==2.8.0
+sentencepiece==0.2.1
+safetensors==0.6.2
+protobuf==6.32.1
+pytest==8.4.1
+httpx==0.28.1

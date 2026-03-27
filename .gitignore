@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest_tmp/
+pytest-cache-files-*/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+textsense.db
+saved_models/*.pkl
+.cache/
+huggingface/
+hf_models/
