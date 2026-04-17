@@ -11,7 +11,7 @@ class TextInput(BaseModel):
     def validate_text(cls, value: str) -> str:
         cleaned = value.strip()
         if len(cleaned) < 5:
-            raise ValueError("Le texte doit contenir au moins 5 caracteres utiles.")
+            raise ValueError("Le texte doit contenir au moins 5 caractères utiles.")
         return cleaned
 
 
@@ -22,6 +22,7 @@ class AnalysisResponse(BaseModel):
     text: str
     sentiment: str
     confidence: float
+    low_confidence: bool
     keywords: list[str]
     created_at: datetime
 

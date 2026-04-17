@@ -1,3 +1,4 @@
+import logging
 from functools import lru_cache
 from pathlib import Path
 
@@ -8,10 +9,10 @@ from transformers import (
     pipeline,
 )
 
-MODEL_DIR = Path("saved_models")
-MODEL_PATH = MODEL_DIR / "sentiment_model.pkl"
-VECTORIZER_PATH = MODEL_DIR / "vectorizer.pkl"
-HF_MODEL_ID = "cmarkea/distilcamembert-base-sentiment"
+from app.config import get_settings
+
+logger = logging.getLogger(__name__)
+
 HF_LABEL_MAP = {
     "1 star": "negative",
     "2 stars": "negative",
@@ -19,38 +20,64 @@ HF_LABEL_MAP = {
     "4 stars": "positive",
     "5 stars": "positive",
 }
-HF_CONFIDENCE_THRESHOLD = 0.55
+
+
+def _model_paths() -> tuple[Path, Path]:
+    settings = get_settings()
+    return (
+        settings.model_dir / "sentiment_model.pkl",
+        settings.model_dir / "vectorizer.pkl",
+    )
+
+
+# Expose l'ID du modèle HF pour main.py
+@property
+def HF_MODEL_ID() -> str:  # noqa: N802
+    return get_settings().hf_model_id
+
+
+# Compatibilité import direct
+HF_MODEL_ID = get_settings().hf_model_id
 
 
 @lru_cache(maxsize=1)
 def load_huggingface_pipeline():
-    tokenizer = AutoTokenizer.from_pretrained(HF_MODEL_ID, local_files_only=True)
+    settings = get_settings()
+    logger.info("Chargement du modèle Hugging Face : %s", settings.hf_model_id)
+    tokenizer = AutoTokenizer.from_pretrained(
+        settings.hf_model_id, local_files_only=True
+    )
     model = AutoModelForSequenceClassification.from_pretrained(
-        HF_MODEL_ID,
+        settings.hf_model_id,
         local_files_only=True,
     )
-    return pipeline(
+    clf = pipeline(
         "sentiment-analysis",
         model=model,
         tokenizer=tokenizer,
     )
+    logger.info("Modèle Hugging Face chargé avec succès.")
+    return clf
 
 
 @lru_cache(maxsize=1)
 def load_artifacts():
-    if not MODEL_PATH.exists() or not VECTORIZER_PATH.exists():
+    model_path, vectorizer_path = _model_paths()
+    if not model_path.exists() or not vectorizer_path.exists():
         raise FileNotFoundError(
-            "Les fichiers du modele sont absents. Executez app/ml/train_model.py."
+            "Fichiers modèle absents. Exécutez app/ml/train_model.py."
         )
-    model = joblib.load(MODEL_PATH)
-    vectorizer = joblib.load(VECTORIZER_PATH)
+    logger.info("Chargement du modèle fallback scikit-learn.")
+    model = joblib.load(model_path)
+    vectorizer = joblib.load(vectorizer_path)
+    logger.info("Modèle fallback chargé avec succès.")
     return model, vectorizer
 
 
 def is_model_ready() -> bool:
-    if MODEL_PATH.exists() and VECTORIZER_PATH.exists():
+    model_path, vectorizer_path = _model_paths()
+    if model_path.exists() and vectorizer_path.exists():
         return True
-
     try:
         load_huggingface_pipeline()
         return True
@@ -58,27 +85,74 @@ def is_model_ready() -> bool:
         return False
 
 
-def predict_sentiment(text: str) -> dict[str, float | str]:
+def predict_sentiment(text: str) -> dict[str, float | str | bool]:
+    settings = get_settings()
+
+    # --- Tentative avec le modèle Hugging Face ---
     try:
         classifier = load_huggingface_pipeline()
-        results = classifier(text, truncation=True, max_length=128, top_k=None)
-        grouped_scores = {"negative": 0.0, "neutral": 0.0, "positive": 0.0}
+        results = classifier(
+            text,
+            truncation=True,
+            max_length=settings.hf_max_tokens,
+            top_k=None,
+        )
+        grouped_scores: dict[str, float] = {"negative": 0.0, "neutral": 0.0, "positive": 0.0}
 
         for item in results:
-            sentiment = HF_LABEL_MAP.get(item["label"])
-            if sentiment is not None:
-                grouped_scores[sentiment] += float(item["score"])
+            mapped = HF_LABEL_MAP.get(item["label"])
+            if mapped is not None:
+                grouped_scores[mapped] += float(item["score"])
 
-        sentiment = max(grouped_scores, key=grouped_scores.get)
-        confidence = grouped_scores[sentiment]
-        if confidence >= HF_CONFIDENCE_THRESHOLD:
-            return {"sentiment": sentiment, "confidence": round(confidence, 4)}
-    except Exception:
-        pass
+        best_sentiment = max(grouped_scores, key=grouped_scores.get)
+        confidence = grouped_scores[best_sentiment]
 
+        if confidence >= settings.hf_confidence_threshold:
+            logger.debug(
+                "HF → sentiment=%s confidence=%.4f", best_sentiment, confidence
+            )
+            return {
+                "sentiment": best_sentiment,
+                "confidence": round(confidence, 4),
+                "low_confidence": False,
+            }
+
+        # Confiance insuffisante : on renvoie quand même le résultat HF
+        # avec le flag low_confidence plutôt que de se rabattre sur sklearn
+        logger.info(
+            "HF confidence faible (%.4f < %.2f) pour : %.60r — résultat retourné avec flag low_confidence.",
+            confidence,
+            settings.hf_confidence_threshold,
+            text,
+        )
+        return {
+            "sentiment": best_sentiment,
+            "confidence": round(confidence, 4),
+            "low_confidence": True,
+        }
+
+    except FileNotFoundError:
+        logger.warning(
+            "Modèle HF introuvable (fichiers non téléchargés). Bascule sur sklearn."
+        )
+    except Exception as exc:
+        logger.error(
+            "Erreur inattendue avec le modèle HF : %s — bascule sur sklearn.", exc,
+            exc_info=True,
+        )
+
+    # --- Fallback scikit-learn ---
+    logger.info("Utilisation du modèle fallback scikit-learn.")
     model, vectorizer = load_artifacts()
     features = vectorizer.transform([text])
     prediction = model.predict(features)[0]
     probabilities = model.predict_proba(features)[0]
     confidence = float(max(probabilities))
-    return {"sentiment": str(prediction), "confidence": round(confidence, 4)}
+    logger.debug(
+        "sklearn → sentiment=%s confidence=%.4f", prediction, confidence
+    )
+    return {
+        "sentiment": str(prediction),
+        "confidence": round(confidence, 4),
+        "low_confidence": confidence < settings.hf_confidence_threshold,
+    }

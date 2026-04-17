@@ -5,6 +5,10 @@ const charCount = document.getElementById("char-count");
 const formMessage = document.getElementById("form-message");
 const resultCard = document.getElementById("result-card");
 const historyList = document.getElementById("history-list");
+const historyPagination = document.getElementById("history-pagination");
+const historyPrev = document.getElementById("history-prev");
+const historyNext = document.getElementById("history-next");
+const historyPageInfo = document.getElementById("history-page-info");
 
 const statsFields = {
     total: document.getElementById("stat-total"),
@@ -13,27 +17,42 @@ const statsFields = {
     neutral: document.getElementById("stat-neutral"),
 };
 
-const sentimentLabel = {
-    positive: "positif",
-    negative: "negatif",
-    neutral: "neutre",
+const SENTIMENT_LABEL = {
+    positive: "Positif",
+    negative: "Négatif",
+    neutral: "Neutre",
 };
 
+const PAGE_SIZE = 10;
+let currentPage = 0;
+let totalKnown = 0; // total issu de /stats
+
+// ---------------------------------------------------------------------------
+// Compteur de caractères
+// ---------------------------------------------------------------------------
+
 textInput.addEventListener("input", () => {
-    charCount.textContent = `${textInput.value.length} / 1000`;
+    const len = textInput.value.length;
+    charCount.textContent = `${len.toLocaleString("fr-FR")} / 1 000`;
+    charCount.classList.toggle("near-limit", len > 900);
 });
+
+// ---------------------------------------------------------------------------
+// Soumission du formulaire
+// ---------------------------------------------------------------------------
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const text = textInput.value.trim();
 
     if (text.length < 5 || text.length > 1000) {
-        setMessage("Le texte doit contenir entre 5 et 1000 caracteres.", true);
+        setMessage("Le texte doit contenir entre 5 et 1 000 caractères.", true);
         return;
     }
 
     analyzeBtn.disabled = true;
-    setMessage("Analyse en cours...", false);
+    analyzeBtn.textContent = "Analyse…";
+    setMessage("", false);
 
     try {
         const response = await fetch("/analyze", {
@@ -48,47 +67,60 @@ form.addEventListener("submit", async (event) => {
         }
 
         renderResult(data);
-        setMessage("Analyse enregistree.", false);
+        setMessage("Analyse enregistrée.", false);
         textInput.value = "";
-        charCount.textContent = "0 / 1000";
+        charCount.textContent = "0 / 1 000";
+        currentPage = 0;
         await Promise.all([loadHistory(), loadStats()]);
     } catch (error) {
         setMessage(error.message, true);
     } finally {
         analyzeBtn.disabled = false;
+        analyzeBtn.textContent = "Analyser";
     }
 });
 
+// ---------------------------------------------------------------------------
+// Historique paginé
+// ---------------------------------------------------------------------------
+
 async function loadHistory() {
-    const response = await fetch("/history");
-    const data = await response.json();
+    const skip = currentPage * PAGE_SIZE;
+    const response = await fetch(`/history?skip=${skip}&limit=${PAGE_SIZE}`);
     if (!response.ok) {
         throw new Error("Impossible de charger l'historique.");
     }
+    const data = await response.json();
+    renderHistory(data);
+    updatePagination(data.length);
+}
 
-    if (data.length === 0) {
+function renderHistory(items) {
+    if (items.length === 0 && currentPage === 0) {
         historyList.innerHTML = '<p class="empty-history">Aucune analyse pour le moment.</p>';
+        historyPagination.hidden = true;
         return;
     }
 
-    historyList.innerHTML = data
+    historyList.innerHTML = items
         .map(
             (item) => `
-                <article class="history-item">
-                    <div class="history-top">
-                        <span class="badge ${item.sentiment}">${sentimentLabel[item.sentiment] || item.sentiment}</span>
-                        <span class="history-meta">${formatDate(item.created_at)}</span>
-                    </div>
-                    <p class="history-text">${escapeHtml(item.text)}</p>
-                    <div class="keyword-list">
-                        ${item.keywords.map((keyword) => `<span class="keyword-chip">${escapeHtml(keyword)}</span>`).join("")}
-                    </div>
-                    <div class="history-bottom">
-                        <span class="history-meta">Confiance: ${(item.confidence * 100).toFixed(1)}%</span>
-                        <button class="history-delete" data-id="${item.id}">Supprimer</button>
-                    </div>
-                </article>
-            `
+            <article class="history-item">
+                <div class="history-top">
+                    <span class="badge ${item.sentiment}">${SENTIMENT_LABEL[item.sentiment] ?? item.sentiment}</span>
+                    ${item.low_confidence ? '<span class="badge low-confidence" title="Confiance faible — résultat indicatif">Confiance faible</span>' : ""}
+                    <span class="history-meta">${formatDate(item.created_at)}</span>
+                </div>
+                <p class="history-text">${escapeHtml(item.text)}</p>
+                <div class="keyword-list">
+                    ${item.keywords.map((k) => `<span class="keyword-chip">${escapeHtml(k)}</span>`).join("")}
+                </div>
+                <div class="history-bottom">
+                    <span class="history-meta">Confiance : ${(item.confidence * 100).toFixed(1)} %</span>
+                    <button class="history-delete" data-id="${item.id}" aria-label="Supprimer l'analyse">Supprimer</button>
+                </div>
+            </article>
+        `
         )
         .join("");
 
@@ -103,17 +135,47 @@ async function loadHistory() {
     });
 }
 
+function updatePagination(fetchedCount) {
+    const hasPrev = currentPage > 0;
+    const hasNext = fetchedCount === PAGE_SIZE;
+
+    historyPagination.hidden = !hasPrev && !hasNext;
+    historyPrev.disabled = !hasPrev;
+    historyNext.disabled = !hasNext;
+    historyPageInfo.textContent = `Page ${currentPage + 1}`;
+}
+
+historyPrev.addEventListener("click", async () => {
+    if (currentPage > 0) {
+        currentPage--;
+        await loadHistory();
+    }
+});
+
+historyNext.addEventListener("click", async () => {
+    currentPage++;
+    await loadHistory();
+});
+
+// ---------------------------------------------------------------------------
+// Statistiques
+// ---------------------------------------------------------------------------
+
 async function loadStats() {
     const response = await fetch("/stats");
-    const data = await response.json();
     if (!response.ok) {
         throw new Error("Impossible de charger les statistiques.");
     }
-
+    const data = await response.json();
+    totalKnown = data.total;
     Object.entries(statsFields).forEach(([key, element]) => {
-        element.textContent = data[key];
+        element.textContent = data[key].toLocaleString("fr-FR");
     });
 }
+
+// ---------------------------------------------------------------------------
+// Suppression
+// ---------------------------------------------------------------------------
 
 async function deleteAnalysis(id) {
     const response = await fetch(`/history/${id}`, { method: "DELETE" });
@@ -122,33 +184,49 @@ async function deleteAnalysis(id) {
         throw new Error(data.detail || "Suppression impossible.");
     }
     setMessage(data.message, false);
+    if (currentPage > 0) currentPage = 0;
     await Promise.all([loadHistory(), loadStats()]);
 }
 
+// ---------------------------------------------------------------------------
+// Rendu du résultat
+// ---------------------------------------------------------------------------
+
 function renderResult(item) {
     const keywordsMarkup = item.keywords.length
-        ? item.keywords.map((keyword) => `<span class="keyword-chip">${escapeHtml(keyword)}</span>`).join("")
-        : "<span class=\"history-meta\">Aucun mot-cle pertinent detecte.</span>";
+        ? item.keywords
+              .map((k) => `<span class="keyword-chip">${escapeHtml(k)}</span>`)
+              .join("")
+        : '<span class="history-meta">Aucun mot-clé pertinent détecté.</span>';
+
+    const lowConfidenceBadge = item.low_confidence
+        ? '<span class="badge low-confidence" title="Confiance faible — résultat indicatif">Confiance faible</span>'
+        : "";
 
     resultCard.classList.remove("empty");
     resultCard.innerHTML = `
         <div>
-            <span class="badge ${item.sentiment}">${sentimentLabel[item.sentiment] || item.sentiment}</span>
+            <span class="badge ${item.sentiment}">${SENTIMENT_LABEL[item.sentiment] ?? item.sentiment}</span>
+            ${lowConfidenceBadge}
         </div>
         <div>
             <h3>Confiance</h3>
-            <p>${(item.confidence * 100).toFixed(1)}%</p>
+            <p>${(item.confidence * 100).toFixed(1)} %</p>
         </div>
         <div>
-            <h3>Mots-cles</h3>
+            <h3>Mots-clés</h3>
             <div class="keyword-list">${keywordsMarkup}</div>
         </div>
         <div>
-            <h3>Texte analyse</h3>
+            <h3>Texte analysé</h3>
             <p class="history-text">${escapeHtml(item.text)}</p>
         </div>
     `;
 }
+
+// ---------------------------------------------------------------------------
+// Utilitaires
+// ---------------------------------------------------------------------------
 
 function setMessage(message, isError) {
     formMessage.textContent = message;
@@ -156,7 +234,7 @@ function setMessage(message, isError) {
 }
 
 function formatDate(value) {
-    return new Intl.DateTimeFormat("fr-CA", {
+    return new Intl.DateTimeFormat("fr-FR", {
         dateStyle: "medium",
         timeStyle: "short",
     }).format(new Date(value));
@@ -170,6 +248,10 @@ function escapeHtml(value) {
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
 }
+
+// ---------------------------------------------------------------------------
+// Initialisation
+// ---------------------------------------------------------------------------
 
 Promise.all([loadHistory(), loadStats()]).catch((error) => {
     setMessage(error.message, true);

@@ -1,195 +1,194 @@
 # TextSense
 
-TextSense est une application web et une API REST d'analyse de texte construite avec Python, FastAPI, SQLite et JavaScript. Le projet permet de soumettre un texte, d'estimer son sentiment, d'extraire quelques mots-cles, d'enregistrer le resultat en base de donnees et de consulter l'historique depuis une interface web simple.
+TextSense est une application web et une API REST d'analyse de sentiment en français, construite avec Python, FastAPI, SQLite et JavaScript. Elle permet de soumettre un texte, d'estimer son sentiment, d'extraire des mots-clés, d'enregistrer le résultat en base de données et de consulter l'historique depuis une interface web.
 
-## Etat du projet
+## Fonctionnalités
 
-Le projet est fonctionnel mais encore en cours d'amelioration.
-
-- L'application utilise actuellement un modele preentraine pour l'analyse de sentiment.
-- Un modele maison plus simple, base sur `scikit-learn`, reste present comme solution de secours.
-- Les resultats sont utiles pour une demonstration technique, mais ils ne sont pas encore optimaux sur toutes les phrases courtes, ambigues ou tres contextuelles.
-- L'objectif a terme est de construire progressivement un modele davantage adapte au projet et aux exemples utilises.
-
-## Fonctionnalites
-
-- Analyse de sentiment: `positive`, `negative`, `neutral`
-- Score de confiance associe a la prediction
-- Extraction simple de mots-cles
-- Historique des analyses en base SQLite
-- Suppression d'une analyse enregistree
-- Statistiques simples sur les analyses effectuees
-- Interface web connectee a l'API
+- Analyse de sentiment : `positive`, `negative`, `neutral`
+- Score de confiance associé à la prédiction
+- Flag `low_confidence` quand le modèle est incertain
+- Extraction de mots-clés (stopwords français filtrés)
+- Historique paginé des analyses en base SQLite
+- Suppression d'une analyse enregistrée
+- Statistiques globales sur les analyses effectuées
+- Interface web connectée à l'API
+- Logging structuré avec horodatage
 - Documentation Swagger disponible via `/docs`
 
 ## Technologies
 
-- Python 3
-- FastAPI
-- Uvicorn
-- SQLAlchemy
-- SQLite
-- Hugging Face Transformers
-- scikit-learn
-- HTML / CSS / JavaScript
+- Python 3.12
+- FastAPI + Uvicorn
+- SQLAlchemy + SQLite
+- Pydantic Settings (configuration via `.env`)
+- Hugging Face Transformers (`cmarkea/distilcamembert-base-sentiment`)
+- scikit-learn (modèle fallback TF-IDF + Régression logistique)
+- HTML / CSS / JavaScript (vanilla)
 
-## Modele de sentiment
+## Modèle de sentiment
 
-Le projet utilise en priorite le modele preentraine `cmarkea/distilcamembert-base-sentiment` via Hugging Face Transformers.
+Le projet utilise en priorité le modèle pré-entraîné `cmarkea/distilcamembert-base-sentiment` via Hugging Face Transformers. Ce modèle est spécialisé pour le français et offre une précision solide sur des textes courants.
 
-Ce choix permet d'obtenir une base plus solide qu'un petit jeu de donnees manuel. Le modele est telecharge localement lors de la premiere utilisation, puis reutilise depuis le cache local de la machine.
+Le modèle doit être téléchargé **une seule fois** avant le premier lancement (voir section [Premier lancement](#premier-lancement)). Les lancements suivants utilisent le cache local.
 
-Le projet conserve aussi un modele de secours entraine localement avec `TF-IDF + LogisticRegression`. Ce modele n'est pas le moteur principal de l'application, mais il reste utile comme baseline technique et comme solution de repli.
+Si le modèle HF est indisponible, l'application bascule automatiquement sur un modèle de secours `TF-IDF + LogisticRegression` entraîné localement.
 
-## Limites actuelles
+## Limites connues
 
-- Certaines phrases tres courtes comme `je sors` ou `je viens` ne portent pas de sentiment clair.
-- Le modele preentraine reste generaliste et n'est pas specifique a ce projet.
-- L'extraction de mots-cles est volontairement simple et basee sur des regles.
-
-Ces limites sont connues et font partie des prochaines evolutions du projet.
+- Certaines phrases très courtes (`je sors`, `je viens`) portent peu de contexte de sentiment.
+- Le modèle pré-entraîné reste généraliste et n'est pas spécialisé sur un domaine métier.
+- L'extraction de mots-clés est basée sur des règles (fréquence + stopwords), sans analyse sémantique.
 
 ## Structure du projet
 
 ```text
 TextSense/
-|-- app/
-|   |-- main.py
-|   |-- routes.py
-|   |-- models.py
-|   |-- database.py
-|   |-- schemas.py
-|   |-- ml/
-|   |   |-- train_model.py
-|   |   |-- predictor.py
-|   |   `-- keyword_extractor.py
-|   |-- static/
-|   |   |-- style.css
-|   |   `-- script.js
-|   `-- templates/
-|       `-- index.html
-|-- data/
-|   `-- sentiment_dataset.csv
-|-- saved_models/
-|-- screenshots/
-|   |-- home.png
-|   `-- result.png
-|-- tests/
-|   |-- conftest.py
-|   `-- test_api.py
-|-- requirements.txt
-|-- pytest.ini
-`-- README.md
+├── app/
+│   ├── main.py               # Initialisation FastAPI, logging, lifespan
+│   ├── routes.py             # Endpoints API
+│   ├── models.py             # Modèle SQLAlchemy
+│   ├── database.py           # Configuration DB + migrations automatiques
+│   ├── schemas.py            # Schémas Pydantic
+│   ├── config.py             # Configuration centralisée (variables d'environnement)
+│   ├── ml/
+│   │   ├── predictor.py      # Prédiction HF + fallback sklearn
+│   │   ├── keyword_extractor.py
+│   │   └── train_model.py    # Entraînement du modèle fallback
+│   ├── static/
+│   │   ├── style.css
+│   │   └── script.js
+│   └── templates/
+│       └── index.html
+├── data/
+│   └── sentiment_dataset.csv
+├── saved_models/             # Modèle sklearn sérialisé
+├── tests/
+│   ├── conftest.py
+│   └── test_api.py
+├── .env.example              # Exemple de configuration
+├── requirements.txt
+├── pytest.ini
+└── README.md
 ```
 
 ## Installation
 
-Clonez le depot puis creez un environnement virtuel.
+### Prérequis (Ubuntu / WSL)
 
 ```bash
-python -m venv venv
+sudo apt install python3-full
 ```
 
-Windows:
+### Créer l'environnement virtuel
 
 ```bash
-venv\Scripts\activate
+# Créer le venv (dans le home Linux pour de meilleures performances sous WSL)
+python3 -m venv ~/textsense_venv
+source ~/textsense_venv/bin/activate
 ```
 
-Linux / macOS:
-
-```bash
-source venv/bin/activate
-```
-
-Installez ensuite les dependances:
+### Installer les dépendances
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Lancer le projet en local
-
-Depuis la racine du projet:
+### Configuration (optionnel)
 
 ```bash
-uvicorn app.main:app --reload
+cp .env.example .env
+# Éditez .env selon vos besoins
 ```
-
-Puis ouvrez:
-
-- Interface web: `http://127.0.0.1:8000/`
-- Documentation API: `http://127.0.0.1:8000/docs`
 
 ## Premier lancement
 
-Lors du premier lancement, si le modele preentraine n'est pas encore present localement:
+Le modèle Hugging Face doit être téléchargé **une seule fois** (~250 Mo) :
 
-- il sera telecharge automatiquement
-- cela peut prendre un peu de temps selon la connexion
-- les lancements suivants seront plus rapides
+```bash
+python -c "
+from transformers import pipeline
+pipeline('sentiment-analysis', model='cmarkea/distilcamembert-base-sentiment')
+print('Modèle téléchargé avec succès.')
+"
+```
 
-Si le modele preentraine n'est pas disponible, l'application peut utiliser le modele de secours `scikit-learn` deja prevu dans le projet.
-
-## Entrainement du modele de secours
-
-Le projet contient aussi un script d'entrainement pour le modele local de baseline:
+Si vous ne souhaitez pas télécharger le modèle HF, entraînez le modèle fallback sklearn :
 
 ```bash
 python app/ml/train_model.py
 ```
 
-Ce script genere:
+## Lancer le projet
 
-- `saved_models/sentiment_model.pkl`
-- `saved_models/vectorizer.pkl`
+```bash
+source ~/textsense_venv/bin/activate
+cd /chemin/vers/Projet_IA
+uvicorn app.main:app --reload
+```
+
+Puis ouvrez :
+
+- Interface web : `http://127.0.0.1:8000/`
+- Documentation API : `http://127.0.0.1:8000/docs`
+- Health check : `http://127.0.0.1:8000/health`
 
 ## Endpoints principaux
 
-- `POST /analyze`
-- `GET /history`
-- `GET /analysis/{id}`
-- `DELETE /history/{id}`
-- `GET /stats`
+| Méthode | Route | Description |
+|---------|-------|-------------|
+| `POST` | `/analyze` | Analyser un texte |
+| `GET` | `/history` | Historique paginé (`?skip=0&limit=50`) |
+| `GET` | `/analysis/{id}` | Détail d'une analyse |
+| `DELETE` | `/history/{id}` | Supprimer une analyse |
+| `GET` | `/stats` | Statistiques globales |
 
-Exemple de requete:
+### Exemple de requête
 
 ```bash
-curl -X POST http://127.0.0.1:8000/analyze ^
-  -H "Content-Type: application/json" ^
-  -d "{\"text\":\"Je suis tres content aujourd'hui\"}"
+curl -X POST http://127.0.0.1:8000/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Je suis très content de ce résultat, il est vraiment convaincant."}'
 ```
 
-Exemple de reponse:
+### Exemple de réponse
 
 ```json
 {
   "id": 1,
-  "text": "Je suis tres content aujourd'hui",
+  "text": "Je suis très content de ce résultat, il est vraiment convaincant.",
   "sentiment": "positive",
-  "confidence": 0.97,
-  "keywords": ["content", "aujourd'hui"],
-  "created_at": "2026-03-27T10:15:00.000000"
+  "confidence": 0.9741,
+  "low_confidence": false,
+  "keywords": ["content", "résultat", "convaincant"],
+  "created_at": "2026-04-17T01:05:22.000000+00:00"
 }
 ```
 
+Le champ `low_confidence` est `true` quand le score de confiance est inférieur au seuil configuré (défaut : 0.55). L'interface affiche alors un badge orange pour indiquer un résultat indicatif.
+
 ## Tests
 
-Pour executer les tests:
-
 ```bash
-pytest -q tests
+pytest
 ```
 
-## Captures d'ecran
+Les tests nécessitant un modèle disponible sont automatiquement ignorés si aucun modèle (HF ou sklearn) n'est prêt.
 
-### Accueil
+```bash
+pytest -v        # Détail des tests
+pytest -q        # Mode silencieux
+```
 
-![Accueil de TextSense](screenshots/home.png)
+## Variables d'environnement
 
-### Resultat d'analyse
+Voir [.env.example](.env.example) pour la liste complète. Principales variables :
 
-![Resultat d'analyse](screenshots/result.png)
+| Variable | Défaut | Description |
+|----------|--------|-------------|
+| `DATABASE_URL` | `sqlite:///./textsense.db` | URL de la base de données |
+| `HF_MODEL_ID` | `cmarkea/distilcamembert-base-sentiment` | Modèle Hugging Face |
+| `HF_CONFIDENCE_THRESHOLD` | `0.55` | Seuil de confiance minimum |
+| `DEBUG` | `false` | Active les logs DEBUG |
 
 ## Auteur
 

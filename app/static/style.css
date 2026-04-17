@@ -227,6 +227,13 @@ button:disabled {
     background: rgba(107, 114, 128, 0.15);
 }
 
+.badge.low-confidence {
+    color: #92520a;
+    background: rgba(234, 140, 30, 0.14);
+    font-size: 0.8rem;
+    padding: 5px 10px;
+}
+
 .keyword-list {
     display: flex;
     flex-wrap: wrap;
@@ -293,6 +300,32 @@ button:disabled {
 .history-delete {
     background: rgba(191, 29, 63, 0.1);
     color: var(--negative);
+}
+
+#char-count.near-limit {
+    color: var(--negative);
+    font-weight: 700;
+}
+
+.history-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.history-pagination button {
+    background: rgba(17, 70, 166, 0.08);
+    color: var(--primary);
+    padding: 9px 16px;
+    font-size: 0.9rem;
+}
+
+.history-pagination button:disabled {
+    opacity: 0.35;
+    cursor: default;
+    transform: none;
 }
 
 .sr-only {
