@@ -15,12 +15,15 @@ RUN pip install --no-cache-dir torch==2.8.0 --index-url https://download.pytorch
 COPY app ./app
 COPY data ./data
 
-# Modèle fallback (rapide) + modèle Hugging Face (~250 Mo, désactivable :
-# docker build --build-arg DOWNLOAD_HF_MODEL=0 .)
+# Modèle fallback (rapide) + modèle principal téléchargé depuis le Hub (~270 Mo).
+#   docker build --build-arg HF_MODEL_ID=<compte>/<modèle> .   # modèle fine-tuné publié
+#   docker build --build-arg DOWNLOAD_HF_MODEL=0 .               # fallback uniquement
 ARG DOWNLOAD_HF_MODEL=1
+ARG HF_MODEL_ID=cmarkea/distilcamembert-base-sentiment
+ENV HF_MODEL_ID=${HF_MODEL_ID}
 RUN python -m app.ml.train_model \
  && if [ "$DOWNLOAD_HF_MODEL" = "1" ]; then \
-      python -c "from transformers import pipeline; pipeline('sentiment-analysis', model='cmarkea/distilcamembert-base-sentiment')"; \
+      python -c "import os; from transformers import pipeline; pipeline('text-classification', model=os.environ['HF_MODEL_ID'])"; \
     fi
 
 RUN useradd --create-home appuser && mkdir -p /app/db && chown appuser /app/db
