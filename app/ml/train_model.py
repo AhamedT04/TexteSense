@@ -1,16 +1,24 @@
+"""Entraîne le modèle fallback TF-IDF + régression logistique.
+
+Usage (depuis la racine du projet) :
+    python -m app.ml.train_model
+"""
+
+import sys
 from pathlib import Path
+
+if __package__ in (None, ""):
+    # Permet aussi `python app/ml/train_model.py` : rend le paquet `app` importable.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import joblib
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import classification_report, f1_score
 from sklearn.model_selection import train_test_split
 
-DATASET_PATH = Path("data/sentiment_dataset.csv")
-MODEL_DIR = Path("saved_models")
-MODEL_PATH = MODEL_DIR / "sentiment_model.pkl"
-VECTORIZER_PATH = MODEL_DIR / "vectorizer.pkl"
+from app.config import get_settings
 
 
 def build_synthetic_samples() -> pd.DataFrame:
@@ -152,17 +160,7 @@ def build_synthetic_samples() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def train() -> float:
-    df = pd.read_csv(DATASET_PATH).dropna()
-    df = pd.concat([df, build_synthetic_samples()], ignore_index=True)
-    X_train, X_test, y_train, y_test = train_test_split(
-        df["text"],
-        df["label"],
-        test_size=0.2,
-        random_state=42,
-        stratify=df["label"],
-    )
-
+def _build_pipeline() -> tuple[TfidfVectorizer, LogisticRegression]:
     vectorizer = TfidfVectorizer(
         lowercase=True,
         ngram_range=(1, 2),
@@ -170,24 +168,55 @@ def train() -> float:
         max_df=0.95,
         strip_accents="unicode",
     )
-    X_train_vectors = vectorizer.fit_transform(X_train)
-    X_test_vectors = vectorizer.transform(X_test)
-
     model = LogisticRegression(max_iter=1500, class_weight="balanced")
-    model.fit(X_train_vectors, y_train)
+    return vectorizer, model
 
-    predictions = model.predict(X_test_vectors)
-    accuracy = accuracy_score(y_test, predictions)
 
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    joblib.dump(model, MODEL_PATH)
-    joblib.dump(vectorizer, VECTORIZER_PATH)
+def train() -> float:
+    """Entraîne, évalue sur des phrases réelles jamais vues, puis sauvegarde.
 
-    print(f"Accuracy: {accuracy:.4f}")
-    print(classification_report(y_test, predictions, zero_division=0))
-    print(f"Saved model to {MODEL_PATH}")
-    print(f"Saved vectorizer to {VECTORIZER_PATH}")
-    return accuracy
+    Les phrases synthétiques sont générées à partir de gabarits : si elles se
+    retrouvaient dans le jeu de test, des quasi-doublons du jeu d'entraînement
+    gonfleraient artificiellement le score. Le test se fait donc uniquement sur
+    une partie du CSV réel, et les phrases synthétiques servent seulement à
+    l'entraînement.
+    """
+    settings = get_settings()
+    model_path = settings.model_dir / "sentiment_model.pkl"
+    vectorizer_path = settings.model_dir / "vectorizer.pkl"
+
+    real = pd.read_csv(settings.dataset_path).dropna()
+    synthetic = build_synthetic_samples()
+
+    real_train, real_test = train_test_split(
+        real,
+        test_size=0.2,
+        random_state=42,
+        stratify=real["label"],
+    )
+    train_df = pd.concat([real_train, synthetic], ignore_index=True)
+
+    vectorizer, model = _build_pipeline()
+    model.fit(vectorizer.fit_transform(train_df["text"]), train_df["label"])
+    predictions = model.predict(vectorizer.transform(real_test["text"]))
+    macro_f1 = f1_score(real_test["label"], predictions, average="macro")
+
+    print(f"Évaluation sur {len(real_test)} phrases réelles non vues à l'entraînement")
+    print(f"(petit échantillon : score indicatif, à confirmer sur un vrai jeu d'évaluation)")
+    print(f"Macro-F1 : {macro_f1:.4f}")
+    print(classification_report(real_test["label"], predictions, zero_division=0))
+
+    # Modèle final : réentraîné sur toutes les données disponibles.
+    vectorizer, model = _build_pipeline()
+    all_df = pd.concat([real, synthetic], ignore_index=True)
+    model.fit(vectorizer.fit_transform(all_df["text"]), all_df["label"])
+
+    settings.model_dir.mkdir(parents=True, exist_ok=True)
+    joblib.dump(model, model_path)
+    joblib.dump(vectorizer, vectorizer_path)
+    print(f"Modèle sauvegardé : {model_path}")
+    print(f"Vectoriseur sauvegardé : {vectorizer_path}")
+    return macro_f1
 
 
 if __name__ == "__main__":

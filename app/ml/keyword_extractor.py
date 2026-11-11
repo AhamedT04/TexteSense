@@ -1,60 +1,65 @@
 import re
 from collections import Counter
 
-# Stopwords français complets (articles, pronoms, prépositions, conjonctions,
-# auxiliaires, adverbes courants et formes conjuguées fréquentes)
+# Stopwords français (articles, pronoms, prépositions, conjonctions,
+# auxiliaires conjugués, adverbes courants). Les mots de moins de 3 lettres
+# sont déjà écartés par la tokenisation, ils ne sont donc pas listés ici.
 STOPWORDS: frozenset[str] = frozenset({
-    # Articles
-    "le", "la", "les", "l", "un", "une", "des", "du", "de", "d",
-    # Pronoms personnels
-    "je", "j", "tu", "il", "elle", "nous", "vous", "ils", "elles",
-    "me", "m", "te", "t", "se", "s", "lui", "leur", "y", "en",
-    "moi", "toi", "soi",
-    # Pronoms démonstratifs / indéfinis
-    "ce", "cet", "cette", "ces", "ceci", "cela", "ca", "ça",
-    "on", "quelque", "chaque", "tout", "tous", "toute", "toutes",
-    "autre", "autres", "même", "meme",
+    # Articles, déterminants
+    "les", "une", "des", "aux", "ces", "cet", "cette", "mon", "ton", "son",
+    "nos", "vos", "mes", "tes", "ses", "leur", "leurs", "quel", "quelle",
+    "quels", "quelles", "chaque", "quelque", "quelques", "plusieurs",
+    "aucun", "aucune",
+    # Pronoms
+    "nous", "vous", "ils", "elle", "elles", "lui", "moi", "toi", "soi",
+    "eux", "ceci", "cela", "celui", "celle", "ceux", "celles", "quoi",
+    "dont", "lequel", "laquelle", "lesquels", "lesquelles", "rien",
+    "personne", "tout", "tous", "toute", "toutes", "autre", "autres",
+    "même", "meme", "mêmes",
     # Prépositions
-    "a", "à", "au", "aux", "de", "du", "des", "en", "par", "pour",
-    "sur", "sous", "dans", "avec", "sans", "entre", "vers", "chez",
-    "depuis", "pendant", "avant", "après", "apres", "contre",
-    "parmi", "selon",
+    "par", "pour", "sur", "sous", "dans", "avec", "sans", "entre", "vers",
+    "chez", "depuis", "pendant", "avant", "après", "apres", "contre",
+    "parmi", "selon", "jusqu", "jusque", "durant", "via",
     # Conjonctions
-    "et", "ou", "mais", "donc", "or", "ni", "car", "que", "qui",
-    "quoi", "dont", "où", "ou", "si", "lorsque", "quand", "comme",
-    "parce", "puisque", "bien", "alors", "ainsi",
-    # Auxiliaires et formes verbales courantes
-    "est", "sont", "être", "etre", "avoir", "ai", "as", "avons",
-    "avez", "ont", "été", "ete", "avoir", "sera", "seront", "était",
-    "etait", "etaient", "était", "avait", "avaient", "fait", "faire",
-    "dit", "dire", "va", "vais", "allons", "allez", "vont",
-    # Déterminants possessifs
-    "mon", "ton", "son", "ma", "ta", "sa", "nos", "vos", "mes",
-    "tes", "ses", "leur", "leurs",
+    "mais", "donc", "car", "que", "qui", "lorsque", "quand", "comme",
+    "parce", "puisque", "alors", "ainsi", "sinon", "voire", "tandis",
+    # Être
+    "être", "etre", "suis", "est", "sommes", "êtes", "etes", "sont",
+    "étais", "etais", "était", "etait", "étions", "etions", "étiez",
+    "etiez", "étaient", "etaient", "été", "ete", "serai", "seras", "sera",
+    "serons", "serez", "seront", "serais", "serait", "serions", "seriez",
+    "seraient", "sois", "soit", "soyons", "soyez", "soient", "fus", "fut",
+    "étant", "etant",
+    # Avoir
+    "avoir", "avons", "avez", "ont", "avais", "avait", "avions", "aviez",
+    "avaient", "eue", "eus", "aurai", "auras", "aura", "aurons", "aurez",
+    "auront", "aurais", "aurait", "aurions", "auriez", "auraient", "aie",
+    "aies", "ait", "ayons", "ayez", "aient", "ayant",
+    # Aller, faire, dire, pouvoir, devoir (formes fréquentes)
+    "aller", "vais", "vas", "allons", "allez", "vont", "allait", "faire",
+    "fait", "fais", "faisons", "faites", "font", "faisait", "dire", "dit",
+    "dis", "peux", "peut", "pouvons", "pouvez", "peuvent", "pouvait",
+    "dois", "doit", "devons", "devez", "doivent", "devait", "faut",
     # Adverbes courants
-    "ne", "pas", "plus", "très", "tres", "bien", "mal", "aussi",
-    "beaucoup", "peu", "trop", "assez", "très", "si", "non", "oui",
-    "jamais", "toujours", "souvent", "parfois", "encore", "déjà",
-    "deja", "maintenant", "ici", "là", "la", "voici", "voilà",
-    "voila", "alors", "donc", "ensuite", "enfin", "puis",
+    "pas", "plus", "très", "tres", "bien", "mal", "aussi", "beaucoup",
+    "peu", "trop", "assez", "non", "oui", "jamais", "toujours", "souvent",
+    "parfois", "encore", "déjà", "deja", "maintenant", "ici", "voici",
+    "voilà", "voila", "ensuite", "enfin", "puis", "vraiment", "tellement",
+    "complètement", "completement", "totalement", "absolument", "juste",
+    "plutôt", "plutot", "presque", "surtout", "seulement", "aujourd", "hui",
     # Divers
-    "dont", "dès", "des", "lors", "cependant", "pourtant",
-    "malgré", "malgre", "quant", "sinon", "voire",
+    "dès", "lors", "cependant", "pourtant", "malgré", "malgre", "quant",
+    "chose", "choses",
 })
+
+# Suites d'au moins 3 lettres Unicode (gère é, è, ç, œ, æ… ; exclut chiffres et « _ »).
+_TOKEN_RE = re.compile(r"[^\W\d_]{3,}")
 
 
 def extract_keywords(text: str, limit: int = 5) -> list[str]:
-    # Tokenisation : lettres + accents, longueur minimale 3
-    tokens = re.findall(r"[a-zA-ZÀ-ÿ]{3,}", text.lower())
-
-    filtered = [
-        token
-        for token in tokens
-        if token not in STOPWORDS and not token.isdigit()
-    ]
-
+    tokens = _TOKEN_RE.findall(text.lower())
+    filtered = [token for token in tokens if token not in STOPWORDS]
     if not filtered:
         return []
-
     ranked = Counter(filtered).most_common(limit)
     return [word for word, _ in ranked]
