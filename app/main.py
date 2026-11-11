@@ -1,6 +1,7 @@
 import logging
 import logging.config
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -9,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.config import BASE_DIR, get_settings
 from app.database import init_db
-from app.ml.predictor import is_hf_model_ready, is_model_ready
+from app.ml.predictor import is_model_ready, is_primary_model_ready
 from app.routes import router
 
 # ---------------------------------------------------------------------------
@@ -52,14 +53,14 @@ async def lifespan(app: FastAPI):
 
     # Pré-chargement des modèles ML au démarrage (évite la latence à la 1ère requête)
     logger.info("Pré-chargement des modèles ML…")
-    if is_hf_model_ready():
-        logger.info("Modèle Hugging Face prêt.")
+    if is_primary_model_ready():
+        logger.info("Modèle principal prêt.")
     elif is_model_ready():
         logger.info("Modèle fallback scikit-learn prêt.")
     else:
         logger.warning(
             "Aucun modèle disponible au démarrage. "
-            "Téléchargez le modèle HF ou entraînez le fallback sklearn."
+            "Téléchargez le modèle principal ou entraînez le fallback sklearn."
         )
 
     logger.info("TextSense démarré — http://localhost:8000")
@@ -77,10 +78,10 @@ app = FastAPI(
     title="TextSense API",
     description=(
         "API d'analyse de sentiment et d'extraction de mots-clés pour textes en français. "
-        "Modèle principal : DistilCamemBERT (Hugging Face). "
+        "Modèle principal : DistilCamemBERT (Transformers ou ONNX). "
         "Fallback : TF-IDF + Régression logistique."
     ),
-    version="1.1.0",
+    version="1.2.0",
     lifespan=lifespan,
 )
 
@@ -99,14 +100,23 @@ def home(request: Request):
     )
 
 
+def _public_model_name() -> str:
+    """Nom du modèle principal sans chemin du serveur (inutile et indiscret côté client)."""
+    if settings.model_backend == "onnx":
+        return f"{settings.onnx_model_dir.name}/{settings.onnx_model_file}" if settings.onnx_model_dir else "onnx"
+    local_dir = Path(settings.hf_model_id)
+    return local_dir.name if local_dir.is_dir() else settings.hf_model_id
+
+
 @app.get("/health", include_in_schema=False)
 def health():
     ready = is_model_ready()
     return {
         "status": "ok" if ready else "degraded",
         "model_ready": ready,
-        "primary_model": settings.hf_model_id,
-        "primary_model_loaded": is_hf_model_ready(),
+        "model_backend": settings.model_backend,
+        "primary_model": _public_model_name(),
+        "primary_model_loaded": is_primary_model_ready(),
         "fallback_model": "tfidf-logistic-regression",
         "version": app.version,
     }

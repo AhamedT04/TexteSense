@@ -416,7 +416,7 @@ class TestMigrations:
         run_migrations(legacy_engine)  # idempotent
 
         columns = {c["name"] for c in inspect(legacy_engine).get_columns("analyses")}
-        assert "low_confidence" in columns
+        assert {"low_confidence", "model_name", "user_label", "user_label_at"} <= columns
         with legacy_engine.connect() as conn:
             assert conn.execute(text("SELECT low_confidence FROM analyses")).scalar() in (0, False)
         legacy_engine.dispose()
@@ -431,7 +431,7 @@ class TestTestIsolation:
         assert not engine.url.database.startswith(str(BASE_DIR))
 
 
-class TestHuggingFaceFailureIsCached:
+class TestPrimaryModelFailureIsCached:
     def test_failed_load_is_not_retried(self, monkeypatch):
         import transformers
 
@@ -446,10 +446,10 @@ class TestHuggingFaceFailureIsCached:
         predictor.reset_model_cache()
         monkeypatch.setattr(transformers.AutoTokenizer, "from_pretrained", failing_from_pretrained)
         try:
-            assert predictor.is_hf_model_ready() is False
-            assert predictor.is_hf_model_ready() is False
+            assert predictor.is_primary_model_ready() is False
+            assert predictor.is_primary_model_ready() is False
             with pytest.raises(predictor.ModelUnavailableError):
-                predictor.load_huggingface_pipeline()
+                predictor.load_primary_classifier()
             assert calls["count"] == 1
         finally:
             monkeypatch.undo()
