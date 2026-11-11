@@ -1,0 +1,200 @@
+{
+  "run": "distilcamembert-3c-randinit-s42",
+  "dataset": "textsense_eval_v1",
+  "model": "hf:models/distilcamembert-3c-randinit-s42",
+  "metrics": {
+    "n": 360,
+    "accuracy": 0.8777777777777778,
+    "macro_f1": 0.8768865738012743,
+    "per_class": {
+      "negative": {
+        "precision": 0.9074074074074074,
+        "recall": 0.8166666666666667,
+        "f1": 0.8596491228070176,
+        "support": 120
+      },
+      "neutral": {
+        "precision": 0.9099099099099099,
+        "recall": 0.8416666666666667,
+        "f1": 0.8744588744588745,
+        "support": 120
+      },
+      "positive": {
+        "precision": 0.8297872340425532,
+        "recall": 0.975,
+        "f1": 0.896551724137931,
+        "support": 120
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          98,
+          8,
+          14
+        ],
+        [
+          9,
+          101,
+          10
+        ],
+        [
+          1,
+          2,
+          117
+        ]
+      ]
+    },
+    "ece": 0.026004508386055596,
+    "mean_confidence": 0.8586636185646057,
+    "ci95": {
+      "accuracy": [
+        0.8444444444444444,
+        0.9111111111111111
+      ],
+      "macro_f1": [
+        0.8438847224201331,
+        0.9106098138777078
+      ]
+    },
+    "by_group": {
+      "phenomenon": {
+        "comparative": {
+          "n": 10,
+          "accuracy": 1.0
+        },
+        "contrast": {
+          "n": 30,
+          "accuracy": 1.0
+        },
+        "emotional_lexicon": {
+          "n": 15,
+          "accuracy": 0.26666666666666666
+        },
+        "explicit": {
+          "n": 80,
+          "accuracy": 1.0
+        },
+        "factual": {
+          "n": 45,
+          "accuracy": 0.9777777777777777
+        },
+        "implicit": {
+          "n": 30,
+          "accuracy": 0.7666666666666667
+        },
+        "informal": {
+          "n": 20,
+          "accuracy": 0.8
+        },
+        "instruction": {
+          "n": 20,
+          "accuracy": 0.95
+        },
+        "irony": {
+          "n": 15,
+          "accuracy": 0.06666666666666667
+        },
+        "long": {
+          "n": 25,
+          "accuracy": 0.88
+        },
+        "negation": {
+          "n": 40,
+          "accuracy": 1.0
+        },
+        "question": {
+          "n": 20,
+          "accuracy": 0.85
+        },
+        "short": {
+          "n": 10,
+          "accuracy": 1.0
+        }
+      },
+      "domain": {
+        "actualites": {
+          "n": 14,
+          "accuracy": 0.8571428571428571
+        },
+        "cinema": {
+          "n": 21,
+          "accuracy": 0.9047619047619048
+        },
+        "culture": {
+          "n": 9,
+          "accuracy": 0.6666666666666666
+        },
+        "education": {
+          "n": 28,
+          "accuracy": 1.0
+        },
+        "loisirs": {
+          "n": 22,
+          "accuracy": 0.7727272727272727
+        },
+        "produit": {
+          "n": 49,
+          "accuracy": 0.8775510204081632
+        },
+        "quotidien": {
+          "n": 32,
+          "accuracy": 0.84375
+        },
+        "restauration": {
+          "n": 30,
+          "accuracy": 0.8333333333333334
+        },
+        "sante": {
+          "n": 18,
+          "accuracy": 0.9444444444444444
+        },
+        "service_client": {
+          "n": 27,
+          "accuracy": 0.8148148148148148
+        },
+        "sport": {
+          "n": 11,
+          "accuracy": 0.9090909090909091
+        },
+        "tech": {
+          "n": 34,
+          "accuracy": 0.9411764705882353
+        },
+        "travail": {
+          "n": 37,
+          "accuracy": 0.8648648648648649
+        },
+        "voyage": {
+          "n": 28,
+          "accuracy": 0.9285714285714286
+        }
+      }
+    },
+    "throughput": {
+      "seconds_total": 3.981,
+      "ms_per_text": 11.06,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T21:02:30+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "run": "tfidf-fallback",
+  "dataset": "tweets_fr_validation",
+  "model": "sklearn:saved_models",
+  "metrics": {
+    "n": 324,
+    "accuracy": 0.3487654320987654,
+    "macro_f1": 0.2741585652978058,
+    "per_class": {
+      "negative": {
+        "precision": 0.36,
+        "recall": 0.16666666666666666,
+        "f1": 0.22784810126582278,
+        "support": 108
+      },
+      "neutral": {
+        "precision": 0.34375,
+        "recall": 0.8148148148148148,
+        "f1": 0.4835164835164835,
+        "support": 108
+      },
+      "positive": {
+        "precision": 0.3888888888888889,
+        "recall": 0.06481481481481481,
+        "f1": 0.1111111111111111,
+        "support": 108
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          18,
+          82,
+          8
+        ],
+        [
+          17,
+          88,
+          3
+        ],
+        [
+          15,
+          86,
+          7
+        ]
+      ]
+    },
+    "ece": 0.16070027169273132,
+    "mean_confidence": 0.5055326627460123,
+    "ci95": {
+      "accuracy": [
+        0.2962962962962963,
+        0.404320987654321
+      ],
+      "macro_f1": [
+        0.22757899552310976,
+        0.3237778255237394
+      ]
+    },
+    "by_group": {},
+    "throughput": {
+      "seconds_total": 0.011,
+      "ms_per_text": 0.03,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:27:37+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

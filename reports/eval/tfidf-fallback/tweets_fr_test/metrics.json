@@ -1,0 +1,87 @@
+{
+  "run": "tfidf-fallback",
+  "dataset": "tweets_fr_test",
+  "model": "sklearn:saved_models",
+  "metrics": {
+    "n": 870,
+    "accuracy": 0.3413793103448276,
+    "macro_f1": 0.2638488571365177,
+    "per_class": {
+      "negative": {
+        "precision": 0.38235294117647056,
+        "recall": 0.1793103448275862,
+        "f1": 0.24413145539906103,
+        "support": 290
+      },
+      "neutral": {
+        "precision": 0.32814710042432815,
+        "recall": 0.8,
+        "f1": 0.4653961885656971,
+        "support": 290
+      },
+      "positive": {
+        "precision": 0.48148148148148145,
+        "recall": 0.04482758620689655,
+        "f1": 0.08201892744479496,
+        "support": 290
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          52,
+          230,
+          8
+        ],
+        [
+          52,
+          232,
+          6
+        ],
+        [
+          32,
+          245,
+          13
+        ]
+      ]
+    },
+    "ece": 0.17529953283448915,
+    "mean_confidence": 0.5095151464229237,
+    "ci95": {
+      "accuracy": [
+        0.3114942528735632,
+        0.37359195402298845
+      ],
+      "macro_f1": [
+        0.2384749784848037,
+        0.291584290710429
+      ]
+    },
+    "by_group": {},
+    "throughput": {
+      "seconds_total": 0.029,
+      "ms_per_text": 0.03,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:27:41+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

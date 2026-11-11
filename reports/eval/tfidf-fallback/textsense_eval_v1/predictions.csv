@@ -1,0 +1,361 @@
+id,text,label,phenomenon,domain,pred,confidence,p_negative,p_neutral,p_positive
+te-0001,"Ce restaurant est excellent, le service était parfait du début à la fin.",positive,explicit,restauration,positive,0.4248,0.2931,0.2821,0.4248
+te-0002,"J'adore cette application, elle me fait gagner un temps fou chaque jour.",positive,explicit,tech,positive,0.4249,0.3666,0.2086,0.4249
+te-0003,"Le film était magnifique, j'en ai encore des frissons.",positive,explicit,cinema,neutral,0.5609,0.25,0.5609,0.1891
+te-0004,"Livraison rapide et produit conforme, je suis ravi de mon achat.",positive,explicit,produit,positive,0.7461,0.1671,0.0868,0.7461
+te-0005,"Merci pour votre aide, le conseiller a été d'une grande gentillesse.",positive,explicit,service_client,neutral,0.6634,0.1451,0.6634,0.1915
+te-0006,"Quelle belle surprise, l'hôtel était encore mieux que sur les photos.",positive,explicit,voyage,neutral,0.6018,0.2039,0.6018,0.1943
+te-0007,Le cours était passionnant et le professeur explique vraiment bien.,positive,explicit,education,positive,0.4241,0.1977,0.3781,0.4241
+te-0008,Mon équipe a fait un travail remarquable sur ce projet.,positive,explicit,travail,neutral,0.3493,0.3192,0.3493,0.3315
+te-0009,"Le concert était incroyable, une ambiance de folie du début à la fin.",positive,explicit,loisirs,neutral,0.708,0.1422,0.708,0.1499
+te-0010,Je suis très satisfait de la qualité de ce casque audio.,positive,explicit,produit,positive,0.628,0.2427,0.1293,0.628
+te-0011,Les infirmières ont été attentionnées et rassurantes pendant tout mon séjour.,positive,explicit,sante,positive,0.3429,0.3169,0.3402,0.3429
+te-0012,"Cette mise à jour est une vraie réussite, tout est plus fluide.",positive,explicit,tech,positive,0.4705,0.3297,0.1998,0.4705
+te-0013,"Le gâteau était délicieux, toute la famille s'est régalée.",positive,explicit,restauration,neutral,0.5507,0.2178,0.5507,0.2315
+te-0014,"Superbe expérience, je recommande cette agence les yeux fermés.",positive,explicit,voyage,positive,0.3491,0.3244,0.3266,0.3491
+te-0015,Je suis fier du chemin parcouru par mes étudiants cette année.,positive,explicit,education,negative,0.5014,0.5014,0.1262,0.3724
+te-0016,Un roman bouleversant et superbement écrit.,positive,explicit,culture,negative,0.3873,0.3873,0.256,0.3567
+te-0017,Le nouveau parc du quartier est une merveille pour les enfants.,positive,explicit,quotidien,neutral,0.6006,0.1859,0.6006,0.2136
+te-0018,L'installation a été simple et le technicien très professionnel.,positive,explicit,service_client,positive,0.4132,0.2788,0.308,0.4132
+te-0019,Quel plaisir de retrouver mes amis après tout ce temps !,positive,explicit,quotidien,positive,0.4836,0.2827,0.2337,0.4836
+te-0020,"La batterie tient deux jours, c'est impressionnant.",positive,explicit,produit,neutral,0.3699,0.3041,0.3699,0.326
+te-0021,"Excellente nouvelle, ma candidature a été acceptée !",positive,explicit,travail,positive,0.4154,0.2806,0.304,0.4154
+te-0022,Le personnel de l'hôtel était chaleureux et aux petits soins.,positive,explicit,voyage,neutral,0.4616,0.2722,0.4616,0.2662
+te-0023,"Cette série est captivante, j'ai tout regardé en un week-end.",positive,explicit,cinema,negative,0.3595,0.3595,0.3536,0.2869
+te-0024,"Le médecin a pris le temps de tout m'expliquer, je me sens rassuré.",positive,explicit,sante,neutral,0.37,0.3037,0.37,0.3263
+te-0025,"Un service client réactif et efficace, bravo.",positive,explicit,service_client,positive,0.4719,0.333,0.195,0.4719
+te-0026,Les résultats de l'étude sont très encourageants pour la suite.,positive,explicit,actualites,neutral,0.4242,0.2394,0.4242,0.3365
+te-0027,Je me sens enfin reposé après ces vacances parfaites.,positive,explicit,voyage,positive,0.4704,0.4386,0.091,0.4704
+te-0028,"Interface claire, rapide et agréable à utiliser.",positive,explicit,tech,positive,0.8297,0.095,0.0752,0.8297
+te-0029,Les frites étaient croustillantes et la sauce maison délicieuse.,positive,explicit,restauration,neutral,0.613,0.1881,0.613,0.1989
+te-0030,"Je suis heureuse d'avoir choisi cette formation, elle m'a beaucoup appris.",positive,explicit,education,negative,0.4366,0.4366,0.1484,0.4151
+te-0031,Ce téléphone est un excellent rapport qualité-prix.,positive,explicit,produit,positive,0.4468,0.3391,0.2141,0.4468
+te-0032,"Le spectacle des enfants était adorable, on a passé un très bon moment.",positive,explicit,loisirs,neutral,0.4034,0.2911,0.4034,0.3055
+te-0033,"La réunion s'est très bien passée, le client a validé toutes nos propositions.",positive,explicit,travail,neutral,0.4785,0.165,0.4785,0.3565
+te-0034,"Une collaboration fluide et agréable, j'espère retravailler avec vous.",positive,explicit,travail,positive,0.6941,0.1081,0.1978,0.6941
+te-0035,Les paysages étaient à couper le souffle.,positive,explicit,voyage,neutral,0.8949,0.053,0.8949,0.0521
+te-0036,"Ce logiciel a transformé notre façon de travailler, pour le meilleur.",positive,explicit,tech,neutral,0.5318,0.2218,0.5318,0.2463
+te-0037,Le documentaire est passionnant et très bien documenté.,positive,explicit,cinema,positive,0.5589,0.2739,0.1671,0.5589
+te-0038,"Ma commande est arrivée avec un petit mot gentil, j'ai trouvé ça touchant.",positive,explicit,produit,negative,0.4478,0.4478,0.1783,0.3739
+te-0039,"Le nouveau maire a tenu ses promesses, la ville est plus propre que jamais.",positive,explicit,actualites,neutral,0.6888,0.108,0.6888,0.2032
+te-0040,Bravo à toute l'équipe pour cette victoire méritée !,positive,explicit,sport,positive,0.3665,0.329,0.3045,0.3665
+te-0041,"Pas mal du tout, je m'attendais à pire.",positive,negation,produit,negative,0.516,0.516,0.1912,0.2928
+te-0042,Je n'ai jamais été déçu par cette marque.,positive,negation,produit,negative,0.5288,0.5288,0.2321,0.2391
+te-0043,"Ce n'est pas du tout aussi compliqué qu'on le dit, c'est même assez agréable.",positive,negation,tech,positive,0.4444,0.3642,0.1913,0.4444
+te-0044,"Aucun problème à signaler, tout a fonctionné parfaitement.",positive,negation,tech,positive,0.4265,0.3047,0.2688,0.4265
+te-0045,"Le film n'est pas long un seul instant, on ne s'ennuie jamais.",positive,negation,cinema,negative,0.416,0.416,0.3602,0.2238
+te-0046,Je ne regrette absolument pas mon achat.,positive,negation,produit,negative,0.5349,0.5349,0.2176,0.2476
+te-0047,"Rien à redire, le séjour était impeccable.",positive,negation,voyage,neutral,0.4544,0.303,0.4544,0.2426
+te-0048,"Le plat n'était pas trop salé, juste comme il faut et savoureux.",positive,negation,restauration,negative,0.431,0.431,0.3185,0.2505
+te-0049,"Je ne pensais pas aimer ce genre de musique, mais j'ai été conquis.",positive,negation,loisirs,negative,0.4703,0.4703,0.2353,0.2944
+te-0050,On ne peut pas rêver mieux comme premier appartement.,positive,negation,quotidien,negative,0.5365,0.5365,0.2296,0.2339
+te-0051,"Le prix n'est pas excessif vu la qualité, franchement c'est une bonne affaire.",positive,negation,produit,neutral,0.4124,0.2811,0.4124,0.3065
+te-0052,"Je n'ai eu aucune difficulté à prendre en main l'outil, il est très intuitif.",positive,negation,tech,positive,0.5009,0.404,0.0951,0.5009
+te-0053,"Pas une seule fausse note, un concert parfait.",positive,negation,loisirs,neutral,0.4575,0.3152,0.4575,0.2273
+te-0054,"Je ne m'attendais pas à un accueil aussi chaleureux, merci.",positive,negation,service_client,negative,0.518,0.518,0.236,0.2461
+te-0055,"Ce n'est pas le restaurant le moins cher, mais il vaut chaque centime.",positive,negation,restauration,neutral,0.5293,0.2534,0.5293,0.2173
+te-0056,"Personne n'a été déçu par la sortie scolaire, les enfants ont adoré.",positive,negation,education,negative,0.3897,0.3897,0.3762,0.2341
+te-0057,Il n'y a rien de mieux qu'un café en terrasse au soleil.,positive,negation,quotidien,negative,0.381,0.381,0.3676,0.2514
+te-0058,"Je ne changerais rien à cette soirée, c'était parfait.",positive,negation,loisirs,negative,0.5209,0.5209,0.2044,0.2747
+te-0059,"Le livreur n'a pas tardé, colis reçu en parfait état.",positive,negation,produit,neutral,0.5774,0.2779,0.5774,0.1447
+te-0060,"Je n'ai plus aucune douleur depuis la fin du traitement, quel soulagement.",positive,negation,sante,neutral,0.4324,0.2943,0.4324,0.2734
+te-0061,"Le début est un peu lent, mais la fin est absolument géniale.",positive,contrast,cinema,negative,0.4015,0.4015,0.3617,0.2368
+te-0062,"L'attente était longue, mais le repas valait vraiment le coup.",positive,contrast,restauration,neutral,0.4465,0.2337,0.4465,0.3198
+te-0063,"Quelques petits défauts de finition, mais dans l'ensemble je suis très satisfait.",positive,contrast,produit,positive,0.6366,0.2385,0.1249,0.6366
+te-0064,"La chambre était petite, pourtant on y a passé un séjour merveilleux.",positive,contrast,voyage,neutral,0.4136,0.2949,0.4136,0.2915
+te-0065,"Le chemin était difficile, mais la vue au sommet était extraordinaire.",positive,contrast,voyage,neutral,0.4117,0.3563,0.4117,0.232
+te-0066,"Malgré la pluie, le festival a été une réussite totale.",positive,contrast,loisirs,neutral,0.8503,0.0657,0.8503,0.084
+te-0067,"J'avais des doutes au départ, finalement c'est le meilleur achat de l'année.",positive,contrast,produit,neutral,0.6198,0.193,0.6198,0.1871
+te-0068,"Le logiciel demande un temps d'adaptation, mais ensuite c'est un vrai bonheur.",positive,contrast,tech,neutral,0.4151,0.2898,0.4151,0.295
+te-0069,"Même si le prix a augmenté, la qualité reste au rendez-vous et je reste fidèle.",positive,contrast,produit,neutral,0.476,0.2599,0.476,0.2641
+te-0070,"Le professeur est exigeant, mais on progresse énormément avec lui.",positive,contrast,education,neutral,0.4434,0.2586,0.4434,0.298
+te-0071,"Le trajet a été long, mais retrouver ma famille m'a rendu tellement heureux.",positive,contrast,quotidien,positive,0.4433,0.1697,0.387,0.4433
+te-0072,"Le match a mal commencé, mais quelle remontée spectaculaire !",positive,contrast,sport,neutral,0.5057,0.2696,0.5057,0.2247
+te-0073,"Le menu est court, mais chaque plat est une petite merveille.",positive,contrast,restauration,neutral,0.4673,0.2519,0.4673,0.2808
+te-0074,"C'était stressant de présenter devant tout le monde, mais je suis fier de moi.",positive,contrast,travail,negative,0.3572,0.3572,0.2972,0.3456
+te-0075,"Le service a mis du temps, mais ils se sont excusés et nous ont offert le dessert, très appréciable.",positive,contrast,restauration,neutral,0.4133,0.2949,0.4133,0.2919
+te-0076,Je reviendrai sans hésiter.,positive,implicit,restauration,negative,0.516,0.516,0.1313,0.3527
+te-0077,C'est exactement ce que je cherchais.,positive,implicit,produit,negative,0.4691,0.4691,0.146,0.3849
+te-0078,J'en ai déjà parlé à tous mes collègues tellement ça m'aide.,positive,implicit,tech,negative,0.4123,0.4123,0.3655,0.2222
+te-0079,Je vais racheter le même modèle pour ma sœur.,positive,implicit,produit,neutral,0.5784,0.2047,0.5784,0.2168
+te-0080,On a déjà réservé pour l'année prochaine.,positive,implicit,voyage,positive,0.3825,0.3367,0.2807,0.3825
+te-0081,Ça fait du bien de voir enfin des progrès.,positive,implicit,quotidien,positive,0.4723,0.3131,0.2146,0.4723
+te-0082,Les enfants en redemandent tous les soirs.,positive,implicit,loisirs,neutral,0.6096,0.2206,0.6096,0.1698
+te-0083,"Depuis que j'utilise cette méthode, je dors beaucoup mieux.",positive,implicit,sante,neutral,0.459,0.2705,0.459,0.2706
+te-0084,"Cinq étoiles, sans discussion.",positive,implicit,produit,negative,0.3615,0.3615,0.3137,0.3248
+te-0085,J'ai enfin trouvé un coiffeur qui comprend ce que je veux.,positive,implicit,quotidien,negative,0.4124,0.4124,0.268,0.3197
+te-0086,Je me suis surpris à sourire tout au long du film.,positive,implicit,cinema,negative,0.473,0.473,0.0905,0.4365
+te-0087,Mes notes ont nettement augmenté depuis que je suis ce tutorat.,positive,implicit,education,negative,0.5054,0.5054,0.1161,0.3785
+te-0088,"Ce matin, tout s'est déroulé comme prévu, et même mieux.",positive,implicit,travail,negative,0.4492,0.4492,0.1323,0.4184
+te-0089,"Le colis est arrivé en avance, la journée commence bien.",positive,implicit,produit,neutral,0.5624,0.1904,0.5624,0.2471
+te-0090,Cette chanson me met de bonne humeur à chaque fois.,positive,implicit,loisirs,positive,0.3751,0.348,0.2769,0.3751
+te-0091,"Nous avons passé une semaine dans ce gîte au cœur de la montagne et tout était réuni pour un séjour réussi : un logement propre et bien équipé, des hôtes disponibles et pleins de bons conseils, et des randonnées magnifiques à deux pas. Nous y retournerons sans hésiter.",positive,long,voyage,positive,0.4319,0.2753,0.2928,0.4319
+te-0092,"Après plusieurs mois d'utilisation quotidienne, je peux dire que cet ordinateur répond parfaitement à mes besoins : il démarre en quelques secondes, l'écran est lumineux, le clavier est confortable et l'autonomie me permet de travailler toute la journée sans chercher une prise.",positive,long,tech,neutral,0.4249,0.2534,0.4249,0.3217
+te-0093,"J'étais anxieux à l'idée de cette opération, mais toute l'équipe médicale a été formidable : chacun a pris le temps de m'expliquer les étapes, de répondre à mes questions et de me rassurer. Je suis sorti plus tôt que prévu et je me sens déjà beaucoup mieux.",positive,long,sante,positive,0.4222,0.3638,0.2139,0.4222
+te-0094,"Cette formation en ligne a dépassé toutes mes attentes. Les vidéos sont courtes et claires, les exercices sont concrets et les formateurs répondent rapidement sur le forum. En trois mois, j'ai acquis des compétences que j'utilise déjà dans mon nouveau poste.",positive,long,education,neutral,0.7095,0.158,0.7095,0.1326
+te-0095,"Pour l'anniversaire de ma mère, le restaurant a tout organisé à la perfection : une table près de la fenêtre, un menu adapté à ses allergies et un gâteau surprise à la fin du repas. Elle était émue aux larmes et toute la famille a passé une soirée inoubliable.",positive,long,restauration,neutral,0.604,0.1874,0.604,0.2086
+te-0096,"Le service client a résolu mon problème de facturation en une seule journée. La conseillère a vérifié mon dossier, m'a rappelé comme promis et m'a même proposé un geste commercial que je n'avais pas demandé. C'est rare de nos jours et ça mérite d'être souligné.",positive,long,service_client,neutral,0.4337,0.3261,0.4337,0.2403
+te-0097,"J'ai lu ce roman d'une traite pendant un week-end pluvieux. Les personnages sont attachants, l'intrigue est bien construite et la fin m'a profondément ému. C'est sans doute le meilleur livre que j'ai lu cette année.",positive,long,culture,neutral,0.5041,0.201,0.5041,0.2949
+te-0098,"Notre équipe a livré le projet avec une semaine d'avance, sans dépasser le budget, et le client nous a déjà confié une deuxième mission. Je tiens à remercier chacun pour son implication et sa bonne humeur pendant ces trois mois intenses.",positive,long,travail,neutral,0.8,0.0923,0.8,0.1077
+te-0099,"Le nouveau réseau de bus a vraiment changé mon quotidien : les passages sont plus fréquents, les véhicules sont propres et climatisés, et je gagne près de vingt minutes chaque matin pour aller au travail.",positive,long,quotidien,neutral,0.4217,0.2424,0.4217,0.3358
+te-0100,"Nous avions peur que les enfants s'ennuient au musée, mais les ateliers interactifs les ont passionnés. Ils ont posé mille questions, ont adoré les maquettes et nous réclament déjà une nouvelle visite.",positive,long,loisirs,neutral,0.5921,0.1962,0.5921,0.2118
+te-0101,"Trop bien ce resto, je kiffe grave !",positive,informal,restauration,positive,0.4175,0.4071,0.1755,0.4175
+te-0102,"Franchement top, rien à dire 👍",positive,informal,produit,negative,0.4185,0.4185,0.2836,0.2979
+te-0103,"Ce jeu est une dinguerie, j'y joue tous les soirs mdr",positive,informal,loisirs,neutral,0.5104,0.2457,0.5104,0.2439
+te-0104,"Trop content de mon nouveau vélo, il roule nickel !",positive,informal,produit,positive,0.5124,0.2466,0.241,0.5124
+te-0105,"Ce prof est trop cool, ses cours passent hyper vite.",positive,informal,education,negative,0.5143,0.5143,0.1613,0.3245
+te-0106,"Le concert d'hier soir, c'était de la bombe 🔥",positive,informal,loisirs,neutral,0.6029,0.186,0.6029,0.2111
+te-0107,"Ouf, enfin en vacances, trop hâte de profiter !",positive,informal,voyage,negative,0.4446,0.4446,0.3299,0.2254
+te-0108,"Cette appli est vraiment au top, merci les devs ❤️",positive,informal,tech,positive,0.5103,0.2376,0.252,0.5103
+te-0109,"Grosse ambiance au match hier, on a gagné !!!",positive,informal,sport,negative,0.3615,0.3615,0.3137,0.3248
+te-0110,"Mon nouveau taf est génial, l'équipe est super sympa.",positive,informal,travail,negative,0.4419,0.4419,0.1342,0.424
+te-0111,"Bien meilleur que la version précédente, ils ont tout corrigé.",positive,comparative,tech,neutral,0.3915,0.2525,0.3915,0.3561
+te-0112,C'est de loin la meilleure pizza que j'ai mangée à Paris.,positive,comparative,restauration,neutral,0.5334,0.2317,0.5334,0.2348
+te-0113,"Ce modèle est plus léger et plus rapide que l'ancien, un vrai progrès.",positive,comparative,produit,positive,0.4317,0.3046,0.2638,0.4317
+te-0114,"Beaucoup plus agréable que l'ancienne gare, enfin un endroit lumineux et propre.",positive,comparative,quotidien,positive,0.5727,0.1842,0.2431,0.5727
+te-0115,Le deuxième film est encore meilleur que le premier.,positive,comparative,cinema,neutral,0.8971,0.0514,0.8971,0.0515
+te-0116,"Ce forfait est moins cher et offre plus de données que mon ancien, parfait.",positive,comparative,tech,negative,0.3676,0.3676,0.2893,0.3431
+te-0117,"Les nouvelles chaises sont bien plus confortables, on travaille mieux.",positive,comparative,travail,positive,0.3879,0.2616,0.3505,0.3879
+te-0118,Cette édition du salon était plus riche et mieux organisée que l'an dernier.,positive,comparative,loisirs,negative,0.391,0.391,0.2384,0.3706
+te-0119,Je cours plus vite et plus longtemps depuis que j'ai changé de chaussures.,positive,comparative,sport,negative,0.3607,0.3607,0.3312,0.3081
+te-0120,Cette crème est bien plus efficace que tout ce que j'ai essayé avant.,positive,comparative,sante,positive,0.4756,0.2726,0.2517,0.4756
+te-0121,"Ce restaurant est une catastrophe, le plat était froid et le serveur désagréable.",negative,explicit,restauration,neutral,0.725,0.1355,0.725,0.1395
+te-0122,"Je déteste cette nouvelle interface, on ne trouve plus rien.",negative,explicit,tech,negative,0.5517,0.5517,0.1824,0.2658
+te-0123,"Le film était ennuyeux à mourir, j'ai failli partir avant la fin.",negative,explicit,cinema,neutral,0.6981,0.1469,0.6981,0.1549
+te-0124,"Colis arrivé cassé, je suis extrêmement déçu.",negative,explicit,produit,negative,0.6777,0.6777,0.1077,0.2146
+te-0125,"Le service client est injoignable, c'est inadmissible.",negative,explicit,service_client,negative,0.4406,0.4406,0.2089,0.3505
+te-0126,"L'hôtel était sale et bruyant, une nuit horrible.",negative,explicit,voyage,negative,0.4627,0.4627,0.2801,0.2572
+te-0127,Ce cours est confus et le professeur ne répond jamais aux questions.,negative,explicit,education,negative,0.6045,0.6045,0.1893,0.2062
+te-0128,L'ambiance au bureau est devenue insupportable.,negative,explicit,travail,negative,0.4778,0.4778,0.0705,0.4517
+te-0129,"Le son du concert était mauvais, on n'entendait rien.",negative,explicit,loisirs,neutral,0.3883,0.3362,0.3883,0.2755
+te-0130,"Ce chargeur a cessé de fonctionner au bout d'une semaine, quelle arnaque.",negative,explicit,produit,neutral,0.5729,0.2186,0.5729,0.2084
+te-0131,"J'ai attendu quatre heures aux urgences sans la moindre information, c'est scandaleux.",negative,explicit,sante,neutral,0.4902,0.2558,0.4902,0.2539
+te-0132,"Cette mise à jour a tout cassé, l'application plante sans arrêt.",negative,explicit,tech,negative,0.4559,0.4559,0.2247,0.3194
+te-0133,La viande était trop cuite et la sauce sans goût.,negative,explicit,restauration,neutral,0.3844,0.3392,0.3844,0.2764
+te-0134,"Une agence incompétente, je ne leur ferai plus jamais confiance.",negative,explicit,voyage,negative,0.4277,0.4277,0.3016,0.2707
+te-0135,Je suis épuisé et découragé par cette session d'examens.,negative,explicit,education,negative,0.6031,0.6031,0.1385,0.2584
+te-0136,"Un livre creux et prétentieux, quelle perte de temps.",negative,explicit,culture,negative,0.366,0.366,0.2991,0.3349
+te-0137,Le quartier est de plus en plus sale et personne ne réagit.,negative,explicit,quotidien,negative,0.4302,0.4302,0.3519,0.2179
+te-0138,"Le technicien est venu sans les bonnes pièces, il faudra tout recommencer.",negative,explicit,service_client,neutral,0.5507,0.2289,0.5507,0.2204
+te-0139,Je suis triste de voir notre amitié se terminer ainsi.,negative,explicit,quotidien,negative,0.6408,0.6408,0.1818,0.1775
+te-0140,"La batterie se vide en trois heures, c'est lamentable.",negative,explicit,produit,neutral,0.5507,0.2444,0.5507,0.205
+te-0141,"Ma candidature a été refusée sans aucune explication, c'est frustrant.",negative,explicit,travail,negative,0.5267,0.5267,0.1999,0.2734
+te-0142,Le personnel était froid et méprisant avec les clients.,negative,explicit,voyage,neutral,0.5747,0.2129,0.5747,0.2124
+te-0143,"Cette série devient de pire en pire, les scénaristes ont perdu le fil.",negative,explicit,cinema,neutral,0.8174,0.1041,0.8174,0.0784
+te-0144,"Le médecin m'a à peine écouté, je suis reparti sans réponse.",negative,explicit,sante,negative,0.3853,0.3853,0.2875,0.3271
+te-0145,"Trois appels, trois conseillers différents et toujours aucune solution.",negative,explicit,service_client,neutral,0.3956,0.3064,0.3956,0.298
+te-0146,Les chiffres du chômage sont alarmants ce trimestre.,negative,explicit,actualites,negative,0.3634,0.3634,0.3033,0.3332
+te-0147,Je suis en colère contre cette décision injuste.,negative,explicit,actualites,negative,0.7765,0.7765,0.0896,0.1339
+te-0148,"Le site est lent, mal conçu et rempli de publicités.",negative,explicit,tech,negative,0.5154,0.5154,0.2409,0.2437
+te-0149,"Les frites étaient molles et grasses, vraiment immangeables.",negative,explicit,restauration,positive,0.5656,0.1959,0.2386,0.5656
+te-0150,"Cette formation était inutile, je n'ai rien appris de nouveau.",negative,explicit,education,negative,0.5223,0.5223,0.2221,0.2556
+te-0151,Ce téléphone chauffe énormément et l'écran s'est rayé tout seul.,negative,explicit,produit,negative,0.4748,0.4748,0.0881,0.4371
+te-0152,Une soirée gâchée par des voisins bruyants jusqu'à trois heures du matin.,negative,explicit,quotidien,neutral,0.4918,0.2704,0.4918,0.2377
+te-0153,"La réunion était une perte de temps totale, rien n'a été décidé.",negative,explicit,travail,neutral,0.6713,0.1641,0.6713,0.1646
+te-0154,"Ce projet est mal géré depuis le début, tout le monde est stressé.",negative,explicit,travail,negative,0.3806,0.3806,0.3516,0.2679
+te-0155,"Le paysage était caché par le brouillard, on a fait le trajet pour rien.",negative,explicit,voyage,neutral,0.605,0.2045,0.605,0.1905
+te-0156,"Ce logiciel est une usine à gaz, personne n'arrive à s'en servir.",negative,explicit,tech,negative,0.3818,0.3818,0.3445,0.2737
+te-0157,Le documentaire est partial et rempli d'erreurs.,negative,explicit,cinema,neutral,0.4019,0.2929,0.4019,0.3051
+te-0158,"Ma commande a été annulée sans prévenir, je suis furieux.",negative,explicit,produit,negative,0.5773,0.5773,0.1386,0.2841
+te-0159,La ville a encore augmenté les impôts sans améliorer les services.,negative,explicit,actualites,neutral,0.7136,0.1434,0.7136,0.143
+te-0160,"Défaite humiliante, l'équipe n'a montré aucune envie.",negative,explicit,sport,negative,0.3615,0.3615,0.3137,0.3248
+te-0161,"Pas terrible, je ne recommande pas.",negative,negation,produit,negative,0.5477,0.5477,0.2086,0.2438
+te-0162,Je ne suis pas du tout satisfait du résultat.,negative,negation,service_client,positive,0.436,0.4221,0.1419,0.436
+te-0163,Ce n'est vraiment pas ce que j'avais commandé.,negative,negation,produit,positive,0.4963,0.3463,0.1574,0.4963
+te-0164,"Le film n'a aucun intérêt, rien ne se passe.",negative,negation,cinema,neutral,0.4238,0.3843,0.4238,0.1919
+te-0165,Je ne reviendrai jamais dans cet hôtel.,negative,negation,voyage,negative,0.4752,0.4752,0.2558,0.269
+te-0166,L'application ne fonctionne plus depuis la dernière mise à jour.,negative,negation,tech,negative,0.3715,0.3715,0.3253,0.3032
+te-0167,Personne n'a été capable de m'expliquer pourquoi ma facture avait doublé.,negative,negation,service_client,neutral,0.3891,0.2888,0.3891,0.3221
+te-0168,Ce n'est pas un plat digne d'un restaurant à ce prix-là.,negative,negation,restauration,negative,0.394,0.394,0.2945,0.3114
+te-0169,Je n'ai jamais vu un service aussi lent.,negative,negation,restauration,negative,0.5206,0.5206,0.2193,0.26
+te-0170,Le produit ne correspond pas du tout à la description.,negative,negation,produit,negative,0.3956,0.3956,0.3586,0.2459
+te-0171,Ce n'est pas normal d'attendre trois semaines pour un simple remboursement.,negative,negation,service_client,positive,0.3721,0.3706,0.2573,0.3721
+te-0172,Je ne me sens pas du tout écouté par ma hiérarchie.,negative,negation,travail,negative,0.5648,0.5648,0.1145,0.3208
+te-0173,Rien ne fonctionne comme prévu dans cette maison neuve.,negative,negation,quotidien,negative,0.4251,0.4251,0.3066,0.2683
+te-0174,Le cours n'était pas clair et les exercices ne correspondaient pas au contenu.,negative,negation,education,negative,0.4232,0.4232,0.3161,0.2608
+te-0175,Je n'ai pas réussi à dormir à cause du bruit de la rue.,negative,negation,voyage,negative,0.3671,0.3671,0.3321,0.3008
+te-0176,"Ce n'est pas bon du tout, le pain était rassis.",negative,negation,restauration,negative,0.4312,0.4312,0.2393,0.3295
+te-0177,Il n'y a aucune cohérence dans cette décision.,negative,negation,actualites,neutral,0.3851,0.3235,0.3851,0.2914
+te-0178,Je ne comprends pas comment on peut vendre un produit aussi fragile.,negative,negation,produit,negative,0.5713,0.5713,0.205,0.2236
+te-0179,"Pas une seule personne pour nous accueillir à l'arrivée, très décevant.",negative,negation,voyage,negative,0.4239,0.4239,0.3098,0.2663
+te-0180,"Je ne suis pas convaincu par cette réforme, elle va pénaliser les plus fragiles.",negative,negation,actualites,negative,0.5216,0.5216,0.239,0.2394
+te-0181,"Génial, encore une panne de réseau en pleine réunion.",negative,irony,travail,neutral,0.7369,0.1479,0.7369,0.1153
+te-0182,"Bravo, troisième retard du train cette semaine, vraiment impressionnant.",negative,irony,quotidien,positive,0.5595,0.2583,0.1822,0.5595
+te-0183,"Super, mon colis « livré » est introuvable, merci beaucoup.",negative,irony,produit,positive,0.4074,0.3754,0.2172,0.4074
+te-0184,"Quelle chance, il pleut le seul jour de congé de la semaine.",negative,irony,quotidien,neutral,0.6108,0.1869,0.6108,0.2023
+te-0185,"Merveilleux, l'appli me demande de me reconnecter pour la dixième fois aujourd'hui.",negative,irony,tech,positive,0.3671,0.2926,0.3403,0.3671
+te-0186,Formidable service client : quarante minutes d'attente pour être raccroché au nez.,negative,irony,service_client,negative,0.3832,0.3832,0.2571,0.3597
+te-0187,J'adore payer plus cher pour des portions toujours plus petites.,negative,irony,restauration,positive,0.4127,0.3193,0.268,0.4127
+te-0188,"Encore une réunion qui aurait pu être un e-mail, quel bonheur.",negative,irony,travail,neutral,0.6645,0.171,0.6645,0.1645
+te-0189,"Magnifique, le seul jour où je suis pressé, le bus ne passe pas.",negative,irony,quotidien,neutral,0.4005,0.3925,0.4005,0.207
+te-0190,Merci pour la mise à jour qui supprime la seule fonctionnalité utile.,negative,irony,tech,positive,0.4465,0.2355,0.318,0.4465
+te-0191,"Top, la chambre avec « vue sur mer » donne sur le parking.",negative,irony,voyage,neutral,0.7923,0.0995,0.7923,0.1083
+te-0192,"Heureusement que j'avais tout mon temps, le livreur est arrivé avec six heures de retard.",negative,irony,produit,neutral,0.5038,0.254,0.5038,0.2422
+te-0193,Quel plaisir de corriger les erreurs des autres un vendredi soir.,negative,irony,travail,neutral,0.4513,0.2025,0.4513,0.3462
+te-0194,"Évidemment, la garantie expire la veille de la panne. Quel timing parfait.",negative,irony,produit,neutral,0.6156,0.1792,0.6156,0.2052
+te-0195,Ravi d'apprendre par la presse que mon poste est supprimé.,negative,irony,travail,positive,0.4134,0.2861,0.3005,0.4134
+te-0196,"Le décor est joli, mais la nourriture est franchement mauvaise.",negative,contrast,restauration,neutral,0.4001,0.3071,0.4001,0.2927
+te-0197,"Bonne idée au départ, mais l'exécution est catastrophique.",negative,contrast,tech,positive,0.4399,0.3682,0.1919,0.4399
+te-0198,"Les acteurs sont bons, malheureusement le scénario ne tient pas debout.",negative,contrast,cinema,neutral,0.4905,0.3289,0.4905,0.1806
+te-0199,"La livraison était rapide, mais le produit est arrivé défectueux.",negative,contrast,produit,positive,0.3921,0.2545,0.3534,0.3921
+te-0200,"L'hôtel est bien situé, par contre la chambre était sale et humide.",negative,contrast,voyage,positive,0.4766,0.3325,0.1909,0.4766
+te-0201,"Le prix est attractif, mais la qualité ne suit pas du tout.",negative,contrast,produit,negative,0.3872,0.3872,0.3214,0.2914
+te-0202,"Le conseiller était poli, mais il n'a strictement rien résolu.",negative,contrast,service_client,neutral,0.4164,0.3022,0.4164,0.2814
+te-0203,"J'avais de grandes attentes, et j'ai été profondément déçu.",negative,contrast,cinema,negative,0.5164,0.5164,0.2364,0.2472
+te-0204,"Le cours commence bien, puis devient vite incompréhensible.",negative,contrast,education,neutral,0.4338,0.2689,0.4338,0.2973
+te-0205,"Belle carrosserie, mais le moteur tombe en panne tous les mois.",negative,contrast,produit,neutral,0.699,0.1572,0.699,0.1438
+te-0206,"Ils promettent beaucoup, mais au final rien ne change.",negative,contrast,actualites,negative,0.423,0.423,0.2485,0.3286
+te-0207,"Les collègues sont sympas, mais la charge de travail est devenue intenable.",negative,contrast,travail,neutral,0.4871,0.2376,0.4871,0.2753
+te-0208,"Le concept du jeu est original, pourtant on s'ennuie au bout de dix minutes.",negative,contrast,loisirs,neutral,0.4589,0.2785,0.4589,0.2626
+te-0209,"Même avec de la bonne volonté, impossible de recommander ce garage.",negative,contrast,service_client,neutral,0.403,0.272,0.403,0.325
+te-0210,"Les premières semaines se sont bien passées, mais depuis le logiciel plante sans cesse.",negative,contrast,tech,neutral,0.5127,0.2169,0.5127,0.2705
+te-0211,J'ai attendu deux heures pour finalement repartir sans rien.,negative,implicit,service_client,negative,0.3608,0.3608,0.3133,0.3259
+te-0212,Je demande un remboursement immédiat.,negative,implicit,produit,negative,0.3831,0.3831,0.2943,0.3226
+te-0213,Plus jamais.,negative,implicit,restauration,negative,0.3615,0.3615,0.3137,0.3248
+te-0214,Troisième fois que je renvoie ce produit au service après-vente.,negative,implicit,produit,negative,0.4188,0.4188,0.2341,0.3471
+te-0215,J'ai dû appeler un autre plombier pour réparer ce qu'il avait fait.,negative,implicit,service_client,positive,0.406,0.3811,0.213,0.406
+te-0216,"À la moitié du film, la salle était déjà à moitié vide.",negative,implicit,cinema,neutral,0.4472,0.2707,0.4472,0.2821
+te-0217,Je cherche déjà un autre fournisseur.,negative,implicit,travail,negative,0.3831,0.3831,0.2943,0.3226
+te-0218,Il a fallu trois mois pour obtenir un simple rendez-vous.,negative,implicit,sante,neutral,0.3752,0.2759,0.3752,0.3489
+te-0219,"Après ce dîner, j'ai fini par manger un sandwich en rentrant.",negative,implicit,restauration,negative,0.4199,0.4199,0.291,0.2891
+te-0220,Mon fils pleure chaque matin avant d'aller à l'école.,negative,implicit,education,neutral,0.3684,0.3268,0.3684,0.3048
+te-0221,Le carton était ouvert et la moitié des pièces manquaient.,negative,implicit,produit,neutral,0.5898,0.1981,0.5898,0.2121
+te-0222,Le chauffage est en panne depuis deux semaines et le propriétaire ne répond pas.,negative,implicit,quotidien,neutral,0.4523,0.3654,0.4523,0.1823
+te-0223,On m'a fait payer deux fois la même prestation.,negative,implicit,service_client,neutral,0.4224,0.2763,0.4224,0.3012
+te-0224,J'ai passé la soirée à relancer le serveur au lieu de dormir.,negative,implicit,tech,neutral,0.8686,0.0654,0.8686,0.066
+te-0225,"Une heure de route pour trouver le magasin fermé, sans aucune annonce.",negative,implicit,quotidien,neutral,0.7626,0.1109,0.7626,0.1264
+te-0226,"Nous avions réservé cette location pour une semaine en famille, et rien ne s'est passé comme prévu : le logement ne ressemblait pas aux photos, la cuisine était sale, le wifi ne fonctionnait pas et le propriétaire est resté injoignable pendant tout le séjour. Nous sommes partis deux jours plus tôt.",negative,long,voyage,neutral,0.4613,0.3504,0.4613,0.1883
+te-0227,"Depuis l'arrivée de la nouvelle direction, l'ambiance s'est fortement dégradée : les décisions tombent sans concertation, les objectifs changent chaque semaine et plusieurs collègues expérimentés ont déjà démissionné. Je commence moi aussi à chercher ailleurs.",negative,long,travail,neutral,0.4533,0.258,0.4533,0.2887
+te-0228,"J'ai acheté cet aspirateur il y a deux mois et il a déjà fallu le renvoyer deux fois au service après-vente. À chaque fois, l'attente a duré plus de trois semaines et le problème est revenu quelques jours après. Je regrette vraiment cet achat.",negative,long,produit,neutral,0.4525,0.239,0.4525,0.3086
+te-0229,"Le traitement prescrit m'a provoqué de forts effets secondaires et, malgré plusieurs messages, je n'ai jamais pu joindre le cabinet pour adapter la dose. J'ai fini par consulter un autre médecin, qui s'est étonné qu'on ne m'ait pas mieux suivi.",negative,long,sante,neutral,0.5456,0.2662,0.5456,0.1882
+te-0230,"Cette formation coûte très cher pour un contenu dépassé : les vidéos datent de plusieurs années, les liens vers les ressources sont cassés et personne ne corrige les exercices rendus. J'ai l'impression d'avoir jeté mon argent par les fenêtres.",negative,long,education,neutral,0.4362,0.3028,0.4362,0.261
+te-0231,"Ce film est nul de chez nul, j'ai perdu deux heures.",negative,informal,cinema,negative,0.3973,0.3973,0.2443,0.3584
+te-0232,"Franchement la loose, rien ne marche 😤",negative,informal,tech,negative,0.4557,0.4557,0.2931,0.2512
+te-0233,"Ce resto c'est non, jamais de la vie.",negative,informal,restauration,positive,0.3621,0.3236,0.3142,0.3621
+te-0234,"J'en ai marre de ce taf, vivement que ça s'arrête.",negative,informal,travail,neutral,0.4589,0.3248,0.4589,0.2163
+te-0235,"Grosse déception, le jeu bug de partout 😡",negative,informal,loisirs,neutral,0.8452,0.0793,0.8452,0.0755
+te-0236,"Sérieux, 50 balles pour ça ? Une blague.",negative,informal,produit,neutral,0.4695,0.244,0.4695,0.2865
+te-0237,"Trop relou ce prof, il nous met des contrôles chaque semaine.",negative,informal,education,negative,0.4091,0.4091,0.3039,0.287
+te-0238,"La flemme totale, encore une journée pourrie.",negative,informal,quotidien,neutral,0.8123,0.0887,0.8123,0.099
+te-0239,"Livraison en carton, appli en carton, service en carton.",negative,informal,produit,negative,0.4436,0.4436,0.3195,0.2369
+te-0240,"Ça craint, on s'est fait arnaquer en beauté.",negative,informal,voyage,negative,0.4894,0.4894,0.1463,0.3643
+te-0241,La réunion aura lieu jeudi à 14 heures en salle B.,neutral,factual,travail,neutral,0.7194,0.1522,0.7194,0.1284
+te-0242,Le magasin ouvre à 9 heures du lundi au samedi.,neutral,factual,quotidien,neutral,0.5497,0.2322,0.5497,0.2181
+te-0243,Le train pour Lyon part du quai numéro 7.,neutral,factual,voyage,neutral,0.4669,0.2522,0.4669,0.2809
+te-0244,Le colis a été expédié ce matin depuis l'entrepôt de Lille.,neutral,factual,produit,neutral,0.5967,0.1921,0.5967,0.2112
+te-0245,L'application est disponible sur Android et iOS.,neutral,factual,tech,neutral,0.3806,0.3202,0.3806,0.2992
+te-0246,Le film dure deux heures et dix minutes.,neutral,factual,cinema,neutral,0.5472,0.2333,0.5472,0.2194
+te-0247,Le cours de statistiques commence la semaine prochaine.,neutral,factual,education,neutral,0.6679,0.166,0.6679,0.1661
+te-0248,Le restaurant propose un menu du jour à midi.,neutral,factual,restauration,neutral,0.5107,0.2523,0.5107,0.237
+te-0249,La mairie publiera les résultats du scrutin demain soir.,neutral,factual,actualites,neutral,0.6326,0.1844,0.6326,0.183
+te-0250,La consultation dure en moyenne vingt minutes.,neutral,factual,sante,neutral,0.544,0.2508,0.544,0.2053
+te-0251,"Ce modèle existe en trois coloris : noir, blanc et bleu.",neutral,factual,produit,neutral,0.4161,0.3373,0.4161,0.2465
+te-0252,Le rapport annuel comporte cinq chapitres.,neutral,factual,travail,neutral,0.7247,0.1429,0.7247,0.1324
+te-0253,Le musée est fermé le mardi.,neutral,factual,loisirs,neutral,0.8666,0.0659,0.8666,0.0675
+te-0254,Les inscriptions se terminent le 30 septembre.,neutral,factual,education,neutral,0.8226,0.0906,0.8226,0.0868
+te-0255,Le match commence à 21 heures et sera diffusé à la télévision.,neutral,factual,sport,neutral,0.6309,0.1855,0.6309,0.1837
+te-0256,La nouvelle version du logiciel a été publiée hier.,neutral,factual,tech,neutral,0.3421,0.3187,0.3421,0.3392
+te-0257,Le vol fait une escale à Montréal.,neutral,factual,voyage,neutral,0.7761,0.107,0.7761,0.1169
+te-0258,La bibliothèque prête jusqu'à dix livres par personne.,neutral,factual,culture,neutral,0.4409,0.3011,0.4409,0.258
+te-0259,Le service client est joignable par téléphone et par courriel.,neutral,factual,service_client,negative,0.4552,0.4552,0.2107,0.3341
+te-0260,Le roman a été traduit en douze langues.,neutral,factual,culture,neutral,0.6576,0.1789,0.6576,0.1636
+te-0261,Le projet a démarré en janvier et doit se terminer en juin.,neutral,factual,travail,neutral,0.6708,0.1887,0.6708,0.1405
+te-0262,Le marché a lieu tous les dimanches sur la place centrale.,neutral,factual,quotidien,neutral,0.8181,0.0885,0.8181,0.0934
+te-0263,La température atteindra 18 degrés cet après-midi.,neutral,factual,actualites,neutral,0.4719,0.2641,0.4719,0.264
+te-0264,Le siège social de l'entreprise se trouve à Bordeaux.,neutral,factual,travail,neutral,0.6567,0.1855,0.6567,0.1578
+te-0265,Le formulaire doit être rempli en ligne.,neutral,factual,quotidien,neutral,0.814,0.1061,0.814,0.0799
+te-0266,Le serveur redémarre automatiquement chaque nuit à 3 heures.,neutral,factual,tech,neutral,0.705,0.1526,0.705,0.1424
+te-0267,La pharmacie de garde est située rue Victor-Hugo.,neutral,factual,sante,neutral,0.4179,0.2873,0.4179,0.2948
+te-0268,Le parc compte environ deux cents espèces d'arbres.,neutral,factual,quotidien,neutral,0.9588,0.0204,0.9588,0.0207
+te-0269,L'examen se déroulera en deux parties.,neutral,factual,education,neutral,0.4543,0.3218,0.4543,0.2239
+te-0270,La commande comprend deux articles et une notice.,neutral,factual,produit,neutral,0.6793,0.1502,0.6793,0.1705
+te-0271,Le festival se tient chaque année au mois de juillet.,neutral,factual,loisirs,neutral,0.6789,0.1665,0.6789,0.1546
+te-0272,L'hôtel dispose de quarante chambres et d'un parking.,neutral,factual,voyage,negative,0.366,0.366,0.2991,0.3349
+te-0273,Le stade peut accueillir 40 000 spectateurs.,neutral,factual,sport,neutral,0.9588,0.0204,0.9588,0.0207
+te-0274,Cette recette nécessite trois œufs et 200 grammes de farine.,neutral,factual,restauration,neutral,0.4197,0.3014,0.4197,0.2788
+te-0275,Le contrat prend effet le premier du mois.,neutral,factual,travail,neutral,0.8078,0.0971,0.8078,0.0952
+te-0276,Le vaccin est administré en deux doses.,neutral,factual,sante,neutral,0.5953,0.2414,0.5953,0.1633
+te-0277,La conférence sera retransmise en direct sur le site.,neutral,factual,actualites,neutral,0.7112,0.1557,0.7112,0.1332
+te-0278,Le bureau de poste se trouve à côté de la gare.,neutral,factual,quotidien,neutral,0.6439,0.1765,0.6439,0.1796
+te-0279,L'entreprise emploie environ trois cents personnes.,neutral,factual,travail,neutral,0.5319,0.2446,0.5319,0.2235
+te-0280,Le documentaire a été tourné en Islande.,neutral,factual,cinema,neutral,0.6576,0.1789,0.6576,0.1636
+te-0281,Le bus 42 relie la gare à l'université.,neutral,factual,quotidien,neutral,0.9241,0.0359,0.9241,0.04
+te-0282,Le fichier fait 3 mégaoctets et doit être envoyé avant midi.,neutral,factual,travail,neutral,0.4681,0.2701,0.4681,0.2617
+te-0283,Le téléphone est livré avec un câble USB-C.,neutral,factual,produit,neutral,0.5034,0.2545,0.5034,0.2421
+te-0284,Le gouvernement présentera le budget en octobre.,neutral,factual,actualites,neutral,0.9253,0.0432,0.9253,0.0315
+te-0285,La formation se déroule entièrement à distance.,neutral,factual,education,neutral,0.6153,0.1926,0.6153,0.1921
+te-0286,À quelle heure ferme la piscine le dimanche ?,neutral,question,loisirs,neutral,0.9241,0.0359,0.9241,0.04
+te-0287,Est-ce que la livraison est possible le samedi ?,neutral,question,produit,neutral,0.5501,0.2202,0.5501,0.2296
+te-0288,Quel est le délai pour obtenir un rendez-vous ?,neutral,question,sante,neutral,0.4264,0.2736,0.4264,0.3
+te-0289,Où puis-je télécharger ma facture ?,neutral,question,service_client,negative,0.516,0.516,0.1313,0.3527
+te-0290,Combien de temps dure la formation ?,neutral,question,education,neutral,0.5653,0.2205,0.5653,0.2143
+te-0291,Le restaurant accepte-t-il les réservations en ligne ?,neutral,question,restauration,neutral,0.8525,0.0857,0.8525,0.0618
+te-0292,Quelle version de Python faut-il installer ?,neutral,question,tech,neutral,0.4322,0.2982,0.4322,0.2696
+te-0293,Y a-t-il un parking près de l'hôtel ?,neutral,question,voyage,neutral,0.3957,0.3183,0.3957,0.286
+te-0294,Qui présente le rapport lors de la réunion de demain ?,neutral,question,travail,neutral,0.8074,0.0939,0.8074,0.0987
+te-0295,Le film est-il disponible en version originale ?,neutral,question,cinema,neutral,0.5871,0.2292,0.5871,0.1837
+te-0296,Comment changer mon mot de passe ?,neutral,question,tech,neutral,0.3654,0.329,0.3654,0.3056
+te-0297,Quels documents faut-il fournir pour l'inscription ?,neutral,question,education,positive,0.3825,0.3367,0.2807,0.3825
+te-0298,Le magasin est-il ouvert pendant les jours fériés ?,neutral,question,quotidien,neutral,0.7413,0.1296,0.7413,0.1291
+te-0299,Combien coûte un abonnement mensuel ?,neutral,question,service_client,neutral,0.3566,0.3382,0.3566,0.3052
+te-0300,Est-ce que ce modèle est compatible avec mon ordinateur ?,neutral,question,produit,negative,0.406,0.406,0.2154,0.3785
+te-0301,À quelle date commence la saison de football ?,neutral,question,sport,neutral,0.5617,0.2221,0.5617,0.2162
+te-0302,Faut-il réserver pour visiter le musée ?,neutral,question,loisirs,neutral,0.5793,0.1942,0.5793,0.2265
+te-0303,Quel est le numéro du service client ?,neutral,question,service_client,negative,0.3901,0.3901,0.2755,0.3344
+te-0304,Dans quel ordre faut-il remplir les champs du formulaire ?,neutral,question,quotidien,neutral,0.5036,0.258,0.5036,0.2383
+te-0305,Le médecin consulte-t-il le mercredi après-midi ?,neutral,question,sante,neutral,0.8627,0.0693,0.8627,0.068
+te-0306,Merci de renvoyer le document signé avant vendredi.,neutral,instruction,travail,neutral,0.6046,0.2055,0.6046,0.1899
+te-0307,Veuillez présenter votre billet à l'entrée.,neutral,instruction,loisirs,negative,0.3615,0.3615,0.3137,0.3248
+te-0308,Cliquez sur « Valider » pour enregistrer vos modifications.,neutral,instruction,tech,neutral,0.4172,0.2765,0.4172,0.3064
+te-0309,Préchauffez le four à 180 degrés pendant dix minutes.,neutral,instruction,restauration,neutral,0.6811,0.1644,0.6811,0.1544
+te-0310,Pensez à apporter une pièce d'identité le jour de l'examen.,neutral,instruction,education,neutral,0.7379,0.1317,0.7379,0.1304
+te-0311,Les travaux de la rue principale débuteront lundi.,neutral,instruction,quotidien,neutral,0.6489,0.1671,0.6489,0.184
+te-0312,Le prochain numéro de la revue paraîtra en mars.,neutral,instruction,culture,neutral,0.7166,0.1456,0.7166,0.1378
+te-0313,Installez les dépendances avant de lancer le programme.,neutral,instruction,tech,neutral,0.7233,0.1432,0.7233,0.1334
+te-0314,Les participants sont priés de se présenter à l'accueil.,neutral,instruction,travail,neutral,0.5018,0.2594,0.5018,0.2388
+te-0315,Le vol AF123 est annoncé porte 12.,neutral,instruction,voyage,neutral,0.6549,0.1713,0.6549,0.1737
+te-0316,Prenez un comprimé matin et soir pendant cinq jours.,neutral,instruction,sante,negative,0.3731,0.3731,0.281,0.3458
+te-0317,Le colis sera remis en point relais sous 48 heures.,neutral,instruction,produit,neutral,0.6251,0.2097,0.6251,0.1652
+te-0318,Indiquez votre numéro de client dans l'objet du message.,neutral,instruction,service_client,negative,0.3514,0.3514,0.3374,0.3112
+te-0319,La séance de questions-réponses suivra la présentation.,neutral,instruction,travail,neutral,0.4923,0.2587,0.4923,0.249
+te-0320,Les inscriptions pour le tournoi se font à l'accueil du club.,neutral,instruction,sport,neutral,0.6117,0.1864,0.6117,0.2019
+te-0321,Rangez le matériel après chaque utilisation.,neutral,instruction,education,neutral,0.6324,0.1898,0.6324,0.1778
+te-0322,Le magasin sera exceptionnellement fermé lundi pour inventaire.,neutral,instruction,quotidien,neutral,0.5481,0.2161,0.5481,0.2358
+te-0323,Joignez une copie de votre facture à votre demande.,neutral,instruction,service_client,neutral,0.677,0.1633,0.677,0.1597
+te-0324,Le nouveau menu sera disponible à partir du mois prochain.,neutral,instruction,restauration,neutral,0.6598,0.1744,0.6598,0.1659
+te-0325,Mettez à jour l'application pour accéder aux nouvelles fonctionnalités.,neutral,instruction,tech,positive,0.374,0.3608,0.2652,0.374
+te-0326,Le film raconte l'histoire d'un homme triste qui retrouve le goût de vivre.,neutral,emotional_lexicon,cinema,neutral,0.7169,0.2001,0.7169,0.083
+te-0327,L'article analyse les causes de la colère des agriculteurs.,neutral,emotional_lexicon,actualites,neutral,0.6068,0.2311,0.6068,0.1621
+te-0328,Le chapitre trois décrit la joie des habitants après la libération.,neutral,emotional_lexicon,culture,neutral,0.8444,0.0752,0.8444,0.0804
+te-0329,Le psychologue explique comment gérer la peur de parler en public.,neutral,emotional_lexicon,sante,neutral,0.8529,0.0822,0.8529,0.065
+te-0330,Le sondage mesure le niveau de satisfaction des clients.,neutral,emotional_lexicon,service_client,neutral,0.9295,0.0356,0.9295,0.035
+te-0331,La chanson parle d'un amour perdu.,neutral,emotional_lexicon,loisirs,neutral,0.5206,0.2418,0.5206,0.2375
+te-0332,Le rapport recense les plaintes reçues au cours de l'année.,neutral,emotional_lexicon,travail,neutral,0.8326,0.0865,0.8326,0.0809
+te-0333,Le cours aborde les émotions positives et négatives chez l'enfant.,neutral,emotional_lexicon,education,neutral,0.5877,0.2073,0.5877,0.205
+te-0334,Le mot « catastrophe » vient du grec ancien.,neutral,emotional_lexicon,culture,neutral,0.5934,0.2082,0.5934,0.1983
+te-0335,La série met en scène une famille heureuse dans les années soixante.,neutral,emotional_lexicon,cinema,neutral,0.7544,0.1322,0.7544,0.1134
+te-0336,"Le questionnaire demande si vous êtes satisfait, neutre ou insatisfait.",neutral,emotional_lexicon,service_client,neutral,0.4363,0.227,0.4363,0.3368
+te-0337,Le roman se termine par la mort du personnage principal.,neutral,emotional_lexicon,culture,neutral,0.6173,0.2069,0.6173,0.1758
+te-0338,Cette étude porte sur le stress des étudiants pendant les examens.,neutral,emotional_lexicon,education,neutral,0.8907,0.0555,0.8907,0.0538
+te-0339,Le journaliste a interrogé des supporters déçus et des supporters ravis.,neutral,emotional_lexicon,sport,neutral,0.7798,0.1077,0.7798,0.1125
+te-0340,Le formulaire comprend une case « très mécontent » et une case « très content ».,neutral,emotional_lexicon,service_client,neutral,0.453,0.2399,0.453,0.3071
+te-0341,"La réunion de lancement du projet se tiendra le 12 mars à 10 heures dans la salle du troisième étage. L'ordre du jour comprend la présentation de l'équipe, le calendrier prévisionnel et la répartition des tâches. Un compte rendu sera envoyé à tous les participants.",neutral,long,travail,neutral,0.7119,0.1425,0.7119,0.1456
+te-0342,"Pour obtenir un remboursement, connectez-vous à votre espace client, sélectionnez la commande concernée, puis cliquez sur « Retourner un article ». Une étiquette de retour vous sera envoyée par courriel et le remboursement sera effectué après réception du produit.",neutral,long,service_client,neutral,0.523,0.2399,0.523,0.2371
+te-0343,Le musée présente une collection de peintures du dix-neuvième siècle répartie sur trois étages. Des visites guidées sont proposées le samedi matin et l'entrée est gratuite le premier dimanche du mois.,neutral,long,loisirs,neutral,0.7317,0.1336,0.7317,0.1347
+te-0344,"Le logiciel comprend trois modules : la gestion des clients, la facturation et les statistiques. Chaque module peut être activé séparément depuis le menu des paramètres, et une documentation détaillée est disponible en ligne.",neutral,long,tech,neutral,0.8809,0.0599,0.8809,0.0592
+te-0345,"Le séjour comprend le vol aller-retour, six nuits à l'hôtel avec petit-déjeuner et deux excursions. Les transferts entre l'aéroport et l'hôtel sont assurés par un minibus.",neutral,long,voyage,neutral,0.5823,0.2192,0.5823,0.1985
+te-0346,"Le programme de licence se déroule sur trois ans. La première année est consacrée aux fondamentaux, la deuxième aux spécialisations et la troisième comprend un stage de quatre mois en entreprise.",neutral,long,education,neutral,0.7562,0.1255,0.7562,0.1183
+te-0347,"Selon le dernier recensement, la commune compte environ douze mille habitants, dont un tiers a moins de vingt-cinq ans. La population a légèrement augmenté depuis la précédente enquête.",neutral,long,actualites,neutral,0.7767,0.1085,0.7767,0.1149
+te-0348,Le patient doit être à jeun depuis la veille au soir. L'examen dure environ trente minutes et les résultats sont transmis au médecin traitant sous une semaine.,neutral,long,sante,neutral,0.7289,0.1337,0.7289,0.1374
+te-0349,"La recette se prépare en quarante minutes. Il faut d'abord faire revenir les oignons, ajouter les légumes coupés en dés, puis laisser mijoter à feu doux pendant vingt minutes avant de servir.",neutral,long,restauration,neutral,0.6453,0.198,0.6453,0.1567
+te-0350,"Le championnat réunit vingt équipes qui s'affrontent en matchs aller et retour. Les trois premières se qualifient pour la compétition européenne, tandis que les deux dernières sont reléguées.",neutral,long,sport,neutral,0.7113,0.1394,0.7113,0.1493
+te-0351,Je prends le train de 8 heures demain.,neutral,short,quotidien,neutral,0.5887,0.218,0.5887,0.1933
+te-0352,J'ai envoyé le rapport à mon responsable.,neutral,short,travail,neutral,0.6712,0.1694,0.6712,0.1594
+te-0353,Nous avons commandé deux pizzas et une salade.,neutral,short,restauration,neutral,0.45,0.282,0.45,0.268
+te-0354,Je regarde un documentaire sur les volcans.,neutral,short,cinema,neutral,0.6931,0.1612,0.6931,0.1457
+te-0355,Il a changé de téléphone le mois dernier.,neutral,short,produit,neutral,0.8452,0.0793,0.8452,0.0755
+te-0356,Elle travaille depuis chez elle le vendredi.,neutral,short,travail,neutral,0.9588,0.0204,0.9588,0.0207
+te-0357,Je suis à la bibliothèque jusqu'à 17 heures.,neutral,short,education,negative,0.3784,0.3784,0.2899,0.3318
+te-0358,On se retrouve devant la gare.,neutral,short,quotidien,neutral,0.6153,0.1926,0.6153,0.1921
+te-0359,J'ai mis à jour mon ordinateur hier soir.,neutral,short,tech,negative,0.3674,0.3674,0.288,0.3446
+te-0360,Le chat dort sur le canapé.,neutral,short,quotidien,neutral,0.9412,0.0295,0.9412,0.0293

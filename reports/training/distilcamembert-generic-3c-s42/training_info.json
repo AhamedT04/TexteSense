@@ -1,0 +1,50 @@
+{
+  "config": {
+    "name": "distilcamembert-generic-3c-s42",
+    "base_model": "cmarkea/distilcamembert-base",
+    "base_model_revision": "82fb7671777bb680416031dcced25c7bfa6e859b",
+    "head_init": "random",
+    "train_dataset": "tweets_fr_train",
+    "validation_dataset": "tweets_fr_validation",
+    "max_length": 128,
+    "learning_rate": 5e-05,
+    "batch_size": 16,
+    "epochs": 4,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "early_stopping_patience": 2,
+    "seed": 42,
+    "models_dir": "models",
+    "reports_dir": "reports/training",
+    "notes": "Ablation du modèle de départ (lr plus élevé, usage courant pour une tête et un encodeur non spécialisés).",
+    "extra": {}
+  },
+  "best_checkpoint": "models/distilcamembert-generic-3c-s42/checkpoints/checkpoint-460",
+  "best_validation": {
+    "eval_loss": 0.6380999684333801,
+    "eval_macro_f1": 0.7652485698170978,
+    "eval_accuracy": 0.7685185185185185,
+    "eval_runtime": 5.8991,
+    "eval_samples_per_second": 54.924,
+    "eval_steps_per_second": 1.017,
+    "epoch": 4.0
+  },
+  "train_examples": 1839,
+  "validation_examples": 324,
+  "training_seconds": 498.1,
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:44:27+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}
