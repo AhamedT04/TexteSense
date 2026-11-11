@@ -1,3 +1,6 @@
+# Dépendances d'exécution.
+# Astuce : installez d'abord torch en version CPU (~200 Mo au lieu de ~2 Go avec CUDA) :
+#   pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
 sqlalchemy==2.0.43
@@ -12,5 +15,3 @@ torch==2.8.0
 sentencepiece==0.2.1
 safetensors==0.6.2
 protobuf==6.32.1
-pytest==8.4.1
-httpx==0.28.1

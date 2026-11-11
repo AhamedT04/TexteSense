@@ -348,3 +348,109 @@ class TestKeywordExtractor:
         from app.ml.keyword_extractor import extract_keywords
         keywords = extract_keywords("L'évaluation révèle des résultats intéressants.")
         assert any("é" in k or "è" in k or "ê" in k for k in keywords)
+
+    def test_handles_oe_ligature(self):
+        from app.ml.keyword_extractor import extract_keywords
+        keywords = extract_keywords("Ce film m'a touché en plein cœur.")
+        assert "cœur" in keywords
+
+    def test_filters_conjugated_auxiliaries(self):
+        from app.ml.keyword_extractor import extract_keywords
+        keywords = extract_keywords("Nous étions contents, ils auraient aimé, vous êtes ravis.")
+        assert not {"étions", "auraient", "êtes"} & set(keywords)
+
+
+# ---------------------------------------------------------------------------
+# Corrections de la revue qualité
+# ---------------------------------------------------------------------------
+
+
+class TestDatesAreUtc:
+    def test_naive_datetime_is_serialized_as_utc(self):
+        from datetime import datetime
+
+        from app.models import Analysis
+        from app.routes import serialize_analysis
+
+        record = Analysis(
+            id=1,
+            text="Texte de test",
+            sentiment="neutral",
+            confidence=0.9,
+            low_confidence=False,
+            keywords="[]",
+            created_at=datetime(2026, 4, 17, 1, 5, 22),  # naïf, comme relu depuis SQLite
+        )
+        dumped = serialize_analysis(record).model_dump_json()
+        assert '"created_at":"2026-04-17T01:05:22Z"' in dumped
+
+    @requires_model
+    def test_api_returns_timezone_aware_dates(self):
+        created = client.post(
+            "/analyze",
+            json={"text": "Vérification du fuseau horaire des dates renvoyées."},
+        ).json()
+        assert created["created_at"].endswith(("Z", "+00:00"))
+        fetched = client.get(f"/analysis/{created['id']}").json()
+        assert fetched["created_at"].endswith(("Z", "+00:00"))
+
+
+class TestMigrations:
+    def test_adds_missing_low_confidence_column(self, tmp_path):
+        from sqlalchemy import create_engine, inspect, text
+
+        from app.database import run_migrations
+
+        legacy_engine = create_engine(f"sqlite:///{tmp_path / 'legacy.db'}")
+        with legacy_engine.begin() as conn:
+            conn.execute(text(
+                "CREATE TABLE analyses (id INTEGER PRIMARY KEY, text TEXT, sentiment VARCHAR(20), "
+                "confidence FLOAT, keywords TEXT, created_at DATETIME)"
+            ))
+            conn.execute(text(
+                "INSERT INTO analyses (text, sentiment, confidence, keywords, created_at) "
+                "VALUES ('ancien', 'neutral', 0.5, '[]', '2026-01-01 00:00:00')"
+            ))
+
+        run_migrations(legacy_engine)
+        run_migrations(legacy_engine)  # idempotent
+
+        columns = {c["name"] for c in inspect(legacy_engine).get_columns("analyses")}
+        assert "low_confidence" in columns
+        with legacy_engine.connect() as conn:
+            assert conn.execute(text("SELECT low_confidence FROM analyses")).scalar() in (0, False)
+        legacy_engine.dispose()
+
+
+class TestTestIsolation:
+    def test_uses_a_temporary_database(self):
+        from app.config import BASE_DIR
+        from app.database import engine
+
+        assert engine.url.database is not None
+        assert not engine.url.database.startswith(str(BASE_DIR))
+
+
+class TestHuggingFaceFailureIsCached:
+    def test_failed_load_is_not_retried(self, monkeypatch):
+        import transformers
+
+        from app.ml import predictor
+
+        calls = {"count": 0}
+
+        def failing_from_pretrained(*args, **kwargs):
+            calls["count"] += 1
+            raise OSError("modèle absent du cache")
+
+        predictor.reset_model_cache()
+        monkeypatch.setattr(transformers.AutoTokenizer, "from_pretrained", failing_from_pretrained)
+        try:
+            assert predictor.is_hf_model_ready() is False
+            assert predictor.is_hf_model_ready() is False
+            with pytest.raises(predictor.ModelUnavailableError):
+                predictor.load_huggingface_pipeline()
+            assert calls["count"] == 1
+        finally:
+            monkeypatch.undo()
+            predictor.reset_model_cache()

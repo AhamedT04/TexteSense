@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+.pytest_cache
+.pytest_tmp
+saved_models
+textsense.db
+.env
+tests

@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func
@@ -16,6 +17,11 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _as_utc(value: datetime) -> datetime:
+    """SQLite ne conserve pas le fuseau : une date relue « naïve » est en UTC."""
+    return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value
+
+
 def serialize_analysis(record: Analysis) -> AnalysisResponse:
     return AnalysisResponse(
         id=record.id,
@@ -24,7 +30,7 @@ def serialize_analysis(record: Analysis) -> AnalysisResponse:
         confidence=record.confidence,
         low_confidence=record.low_confidence,
         keywords=json.loads(record.keywords),
-        created_at=record.created_at,
+        created_at=_as_utc(record.created_at),
     )
 
 

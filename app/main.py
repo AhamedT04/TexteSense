@@ -7,9 +7,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.config import get_settings
-from app.database import Base, engine, run_migrations
-from app.ml.predictor import HF_MODEL_ID, is_model_ready
+from app.config import BASE_DIR, get_settings
+from app.database import init_db
+from app.ml.predictor import is_hf_model_ready, is_model_ready
 from app.routes import router
 
 # ---------------------------------------------------------------------------
@@ -48,19 +48,14 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initialisation base de données
-    Base.metadata.create_all(bind=engine)
-    run_migrations()
+    init_db()
 
     # Pré-chargement des modèles ML au démarrage (évite la latence à la 1ère requête)
     logger.info("Pré-chargement des modèles ML…")
-    if is_model_ready():
-        try:
-            from app.ml.predictor import load_huggingface_pipeline
-            load_huggingface_pipeline()
-            logger.info("Modèle Hugging Face prêt.")
-        except Exception as exc:
-            logger.warning("Pré-chargement HF impossible : %s", exc)
+    if is_hf_model_ready():
+        logger.info("Modèle Hugging Face prêt.")
+    elif is_model_ready():
+        logger.info("Modèle fallback scikit-learn prêt.")
     else:
         logger.warning(
             "Aucun modèle disponible au démarrage. "
@@ -89,8 +84,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR / "app" / "templates")
 
 app.include_router(router)
 
@@ -110,7 +105,8 @@ def health():
     return {
         "status": "ok" if ready else "degraded",
         "model_ready": ready,
-        "primary_model": HF_MODEL_ID,
+        "primary_model": settings.hf_model_id,
+        "primary_model_loaded": is_hf_model_ready(),
         "fallback_model": "tfidf-logistic-regression",
         "version": app.version,
     }
