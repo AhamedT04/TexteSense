@@ -15,8 +15,11 @@ const statsFields = {
     positive: document.getElementById("stat-positive"),
     negative: document.getElementById("stat-negative"),
     neutral: document.getElementById("stat-neutral"),
+    with_feedback: document.getElementById("stat-feedback"),
+    corrected: document.getElementById("stat-corrected"),
 };
 
+const SENTIMENTS = ["positive", "neutral", "negative"];
 const SENTIMENT_LABEL = {
     positive: "Positif",
     negative: "Négatif",
@@ -25,7 +28,7 @@ const SENTIMENT_LABEL = {
 
 const PAGE_SIZE = 10;
 let currentPage = 0;
-let totalKnown = 0; // total issu de /stats
+let lastResult = null; // dernière analyse affichée dans la carte « Résultat »
 
 // ---------------------------------------------------------------------------
 // Compteur de caractères
@@ -55,17 +58,11 @@ form.addEventListener("submit", async (event) => {
     setMessage("", false);
 
     try {
-        const response = await fetch("/analyze", {
+        const data = await requestJson("/analyze", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text }),
         });
-
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.detail || "Erreur pendant l'analyse.");
-        }
-
         renderResult(data);
         setMessage("Analyse enregistrée.", false);
         textInput.value = "";
@@ -86,11 +83,7 @@ form.addEventListener("submit", async (event) => {
 
 async function loadHistory() {
     const skip = currentPage * PAGE_SIZE;
-    const response = await fetch(`/history?skip=${skip}&limit=${PAGE_SIZE}`);
-    if (!response.ok) {
-        throw new Error("Impossible de charger l'historique.");
-    }
-    const data = await response.json();
+    const data = await requestJson(`/history?skip=${skip}&limit=${PAGE_SIZE}`);
     renderHistory(data);
     updatePagination(data.length);
 }
@@ -108,13 +101,14 @@ function renderHistory(items) {
             <article class="history-item">
                 <div class="history-top">
                     <span class="badge ${item.sentiment}">${SENTIMENT_LABEL[item.sentiment] ?? item.sentiment}</span>
-                    ${item.low_confidence ? '<span class="badge low-confidence" title="Confiance faible — résultat indicatif">Confiance faible</span>' : ""}
+                    ${item.low_confidence ? lowConfidenceBadge() : ""}
                     <span class="history-meta">${formatDate(item.created_at)}</span>
                 </div>
                 <p class="history-text">${escapeHtml(item.text)}</p>
                 <div class="keyword-list">
                     ${item.keywords.map((k) => `<span class="keyword-chip">${escapeHtml(k)}</span>`).join("")}
                 </div>
+                ${feedbackMarkup(item)}
                 <div class="history-bottom">
                     <span class="history-meta">Confiance : ${(item.confidence * 100).toFixed(1)} %</span>
                     <button class="history-delete" data-id="${item.id}" aria-label="Supprimer l'analyse">Supprimer</button>
@@ -162,14 +156,9 @@ historyNext.addEventListener("click", async () => {
 // ---------------------------------------------------------------------------
 
 async function loadStats() {
-    const response = await fetch("/stats");
-    if (!response.ok) {
-        throw new Error("Impossible de charger les statistiques.");
-    }
-    const data = await response.json();
-    totalKnown = data.total;
+    const data = await requestJson("/stats");
     Object.entries(statsFields).forEach(([key, element]) => {
-        element.textContent = data[key].toLocaleString("fr-FR");
+        if (element) element.textContent = (data[key] ?? 0).toLocaleString("fr-FR");
     });
 }
 
@@ -178,36 +167,89 @@ async function loadStats() {
 // ---------------------------------------------------------------------------
 
 async function deleteAnalysis(id) {
-    const response = await fetch(`/history/${id}`, { method: "DELETE" });
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.detail || "Suppression impossible.");
-    }
+    const data = await requestJson(`/history/${id}`, { method: "DELETE" });
     setMessage(data.message, false);
+    if (lastResult && String(lastResult.id) === String(id)) {
+        lastResult = null;
+        resultCard.classList.add("empty");
+        resultCard.innerHTML = "<p>Soumettez un texte pour voir l'analyse.</p>";
+    }
     if (currentPage > 0) currentPage = 0;
     await Promise.all([loadHistory(), loadStats()]);
 }
+
+// ---------------------------------------------------------------------------
+// Retour utilisateur (confirmer ou corriger une prédiction)
+// ---------------------------------------------------------------------------
+
+function feedbackMarkup(item) {
+    if (item.user_label) {
+        const verdict = item.user_label === item.sentiment ? "confirmé" : "corrigé";
+        return `
+            <div class="feedback" data-id="${item.id}">
+                <span class="feedback-text">Votre avis (${verdict}) :</span>
+                <span class="badge small ${item.user_label}">${SENTIMENT_LABEL[item.user_label]}</span>
+                <button type="button" class="feedback-link" data-action="clear">Modifier</button>
+            </div>`;
+    }
+    const alternatives = SENTIMENTS.filter((s) => s !== item.sentiment)
+        .map(
+            (s) =>
+                `<button type="button" class="feedback-btn ${s}" data-action="set" data-label="${s}">${SENTIMENT_LABEL[s]}</button>`
+        )
+        .join("");
+    return `
+        <div class="feedback" data-id="${item.id}">
+            <span class="feedback-text">Ce résultat est-il juste ?</span>
+            <button type="button" class="feedback-btn" data-action="set" data-label="${item.sentiment}">Oui</button>
+            <span class="feedback-text">Sinon, c'est plutôt :</span>
+            ${alternatives}
+        </div>`;
+}
+
+async function handleFeedbackClick(event) {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+    const container = button.closest(".feedback");
+    const id = container.dataset.id;
+
+    container.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    try {
+        const updated =
+            button.dataset.action === "clear"
+                ? await requestJson(`/analysis/${id}/feedback`, { method: "DELETE" })
+                : await requestJson(`/analysis/${id}/feedback`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ label: button.dataset.label }),
+                  });
+        if (lastResult && lastResult.id === updated.id) renderResult(updated);
+        setMessage(updated.user_label ? "Merci, votre avis est enregistré." : "Avis retiré.", false);
+        await Promise.all([loadHistory(), loadStats()]);
+    } catch (error) {
+        setMessage(error.message, true);
+        container.querySelectorAll("button").forEach((b) => (b.disabled = false));
+    }
+}
+
+resultCard.addEventListener("click", handleFeedbackClick);
+historyList.addEventListener("click", handleFeedbackClick);
 
 // ---------------------------------------------------------------------------
 // Rendu du résultat
 // ---------------------------------------------------------------------------
 
 function renderResult(item) {
+    lastResult = item;
     const keywordsMarkup = item.keywords.length
-        ? item.keywords
-              .map((k) => `<span class="keyword-chip">${escapeHtml(k)}</span>`)
-              .join("")
+        ? item.keywords.map((k) => `<span class="keyword-chip">${escapeHtml(k)}</span>`).join("")
         : '<span class="history-meta">Aucun mot-clé pertinent détecté.</span>';
-
-    const lowConfidenceBadge = item.low_confidence
-        ? '<span class="badge low-confidence" title="Confiance faible — résultat indicatif">Confiance faible</span>'
-        : "";
 
     resultCard.classList.remove("empty");
     resultCard.innerHTML = `
         <div>
             <span class="badge ${item.sentiment}">${SENTIMENT_LABEL[item.sentiment] ?? item.sentiment}</span>
-            ${lowConfidenceBadge}
+            ${item.low_confidence ? lowConfidenceBadge() : ""}
         </div>
         <div>
             <h3>Confiance</h3>
@@ -221,12 +263,39 @@ function renderResult(item) {
             <h3>Texte analysé</h3>
             <p class="history-text">${escapeHtml(item.text)}</p>
         </div>
+        ${feedbackMarkup(item)}
+        ${item.model_name ? `<p class="history-meta model-name">Modèle : ${escapeHtml(shortModelName(item.model_name))}</p>` : ""}
     `;
 }
 
 // ---------------------------------------------------------------------------
 // Utilitaires
 // ---------------------------------------------------------------------------
+
+async function requestJson(url, options = {}) {
+    const response = await fetch(url, options);
+    let data = null;
+    try {
+        data = await response.json();
+    } catch {
+        // réponse sans corps JSON
+    }
+    if (!response.ok) {
+        const detail = data && data.detail;
+        throw new Error(typeof detail === "string" ? detail : "La requête a échoué. Réessayez.");
+    }
+    return data;
+}
+
+function lowConfidenceBadge() {
+    return '<span class="badge low-confidence" title="Confiance faible — résultat indicatif">Confiance faible</span>';
+}
+
+function shortModelName(name) {
+    // Un chemin local est réduit à son dernier dossier.
+    const parts = name.split(/[\\/]/).filter(Boolean);
+    return name.includes(":") || name.startsWith("/") ? parts[parts.length - 1] : name;
+}
 
 function setMessage(message, isError) {
     formMessage.textContent = message;
@@ -241,7 +310,7 @@ function formatDate(value) {
 }
 
 function escapeHtml(value) {
-    return value
+    return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")

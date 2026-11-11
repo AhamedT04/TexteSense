@@ -20,3 +20,10 @@ class Analysis(Base):
         nullable=False,
         default=lambda: datetime.now(timezone.utc),
     )
+    # Modèle ayant produit la prédiction : indispensable pour comparer les
+    # versions de modèles et exploiter les retours utilisateurs.
+    model_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    # Retour utilisateur : sentiment jugé correct (identique à la prédiction
+    # si l'utilisateur la confirme, différent s'il la corrige).
+    user_label: Mapped[str | None] = mapped_column(String(20), nullable=True, index=True)
+    user_label_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
