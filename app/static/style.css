@@ -302,6 +302,59 @@ button:disabled {
     color: var(--negative);
 }
 
+.badge.small {
+    font-size: 0.82rem;
+    padding: 5px 10px;
+}
+
+.feedback {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+}
+
+.feedback-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.feedback-btn,
+.feedback-link {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    background: rgba(17, 70, 166, 0.08);
+    color: var(--primary);
+}
+
+.feedback-btn.positive {
+    background: rgba(31, 143, 88, 0.12);
+    color: var(--positive);
+}
+
+.feedback-btn.negative {
+    background: rgba(191, 29, 63, 0.1);
+    color: var(--negative);
+}
+
+.feedback-btn.neutral {
+    background: rgba(107, 114, 128, 0.15);
+    color: var(--neutral);
+}
+
+.feedback-link {
+    background: transparent;
+    text-decoration: underline;
+}
+
+.model-name {
+    margin: 0;
+    color: var(--muted);
+    word-break: break-all;
+}
+
 #char-count.near-limit {
     color: var(--negative);
     font-weight: 700;

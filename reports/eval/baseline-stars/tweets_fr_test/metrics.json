@@ -1,0 +1,87 @@
+{
+  "run": "baseline-stars",
+  "dataset": "tweets_fr_test",
+  "model": "hf:cmarkea/distilcamembert-base-sentiment@5716940dead38a2685ae40c24a494e7a4e78b38b",
+  "metrics": {
+    "n": 870,
+    "accuracy": 0.4379310344827586,
+    "macro_f1": 0.36270998972664836,
+    "per_class": {
+      "negative": {
+        "precision": 0.6086956521739131,
+        "recall": 0.43448275862068964,
+        "f1": 0.5070422535211268,
+        "support": 290
+      },
+      "neutral": {
+        "precision": 0.4,
+        "recall": 0.027586206896551724,
+        "f1": 0.05161290322580645,
+        "support": 290
+      },
+      "positive": {
+        "precision": 0.38413685847589424,
+        "recall": 0.8517241379310345,
+        "f1": 0.5294748124330118,
+        "support": 290
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          126,
+          7,
+          157
+        ],
+        [
+          43,
+          8,
+          239
+        ],
+        [
+          38,
+          5,
+          247
+        ]
+      ]
+    },
+    "ece": 0.16651243238613522,
+    "mean_confidence": 0.6044434905052185,
+    "ci95": {
+      "accuracy": [
+        0.4045977011494253,
+        0.4712931034482758
+      ],
+      "macro_f1": [
+        0.33474967207077666,
+        0.3897712356603645
+      ]
+    },
+    "by_group": {},
+    "throughput": {
+      "seconds_total": 46.223,
+      "ms_per_text": 53.13,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:27:27+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

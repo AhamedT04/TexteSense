@@ -1,0 +1,87 @@
+{
+  "run": "distilcamembert-3c-starinit-s42",
+  "dataset": "tweets_fr_validation",
+  "model": "hf:models/distilcamembert-3c-starinit-s42",
+  "metrics": {
+    "n": 324,
+    "accuracy": 0.7592592592592593,
+    "macro_f1": 0.7566589815287198,
+    "per_class": {
+      "negative": {
+        "precision": 0.7833333333333333,
+        "recall": 0.8703703703703703,
+        "f1": 0.8245614035087719,
+        "support": 108
+      },
+      "neutral": {
+        "precision": 0.7368421052631579,
+        "recall": 0.6481481481481481,
+        "f1": 0.6896551724137931,
+        "support": 108
+      },
+      "positive": {
+        "precision": 0.7522935779816514,
+        "recall": 0.7592592592592593,
+        "f1": 0.7557603686635944,
+        "support": 108
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          94,
+          7,
+          7
+        ],
+        [
+          18,
+          70,
+          20
+        ],
+        [
+          8,
+          18,
+          82
+        ]
+      ]
+    },
+    "ece": 0.12977394204080844,
+    "mean_confidence": 0.8753213882446289,
+    "ci95": {
+      "accuracy": [
+        0.7129629629629629,
+        0.8055555555555556
+      ],
+      "macro_f1": [
+        0.7102770989793332,
+        0.8034271781248833
+      ]
+    },
+    "by_group": {},
+    "throughput": {
+      "seconds_total": 17.505,
+      "ms_per_text": 54.03,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:24:49+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

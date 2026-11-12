@@ -1,0 +1,19 @@
+name: distilcamembert-generic-3c-s42
+base_model: cmarkea/distilcamembert-base
+base_model_revision: 82fb7671777bb680416031dcced25c7bfa6e859b
+head_init: random
+train_dataset: tweets_fr_train
+validation_dataset: tweets_fr_validation
+max_length: 128
+learning_rate: 5.0e-05
+batch_size: 16
+epochs: 4
+weight_decay: 0.01
+warmup_ratio: 0.1
+early_stopping_patience: 2
+seed: 42
+models_dir: models
+reports_dir: reports/training
+notes: Ablation du modèle de départ (lr plus élevé, usage courant pour une tête et
+  un encodeur non spécialisés).
+extra: {}

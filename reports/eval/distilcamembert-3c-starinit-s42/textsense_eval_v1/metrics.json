@@ -1,0 +1,200 @@
+{
+  "run": "distilcamembert-3c-starinit-s42",
+  "dataset": "textsense_eval_v1",
+  "model": "hf:models/distilcamembert-3c-starinit-s42",
+  "metrics": {
+    "n": 360,
+    "accuracy": 0.8861111111111111,
+    "macro_f1": 0.8853418679182042,
+    "per_class": {
+      "negative": {
+        "precision": 0.8938053097345132,
+        "recall": 0.8416666666666667,
+        "f1": 0.8669527896995708,
+        "support": 120
+      },
+      "neutral": {
+        "precision": 0.926605504587156,
+        "recall": 0.8416666666666667,
+        "f1": 0.8820960698689956,
+        "support": 120
+      },
+      "positive": {
+        "precision": 0.8478260869565217,
+        "recall": 0.975,
+        "f1": 0.9069767441860465,
+        "support": 120
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          101,
+          7,
+          12
+        ],
+        [
+          10,
+          101,
+          9
+        ],
+        [
+          2,
+          1,
+          117
+        ]
+      ]
+    },
+    "ece": 0.04856938247879347,
+    "mean_confidence": 0.8804214596748352,
+    "ci95": {
+      "accuracy": [
+        0.8527777777777777,
+        0.9166666666666666
+      ],
+      "macro_f1": [
+        0.8506937215792164,
+        0.9165557053761251
+      ]
+    },
+    "by_group": {
+      "phenomenon": {
+        "comparative": {
+          "n": 10,
+          "accuracy": 1.0
+        },
+        "contrast": {
+          "n": 30,
+          "accuracy": 0.9666666666666667
+        },
+        "emotional_lexicon": {
+          "n": 15,
+          "accuracy": 0.3333333333333333
+        },
+        "explicit": {
+          "n": 80,
+          "accuracy": 1.0
+        },
+        "factual": {
+          "n": 45,
+          "accuracy": 0.9333333333333333
+        },
+        "implicit": {
+          "n": 30,
+          "accuracy": 0.8
+        },
+        "informal": {
+          "n": 20,
+          "accuracy": 0.9
+        },
+        "instruction": {
+          "n": 20,
+          "accuracy": 0.8
+        },
+        "irony": {
+          "n": 15,
+          "accuracy": 0.2
+        },
+        "long": {
+          "n": 25,
+          "accuracy": 0.92
+        },
+        "negation": {
+          "n": 40,
+          "accuracy": 0.975
+        },
+        "question": {
+          "n": 20,
+          "accuracy": 1.0
+        },
+        "short": {
+          "n": 10,
+          "accuracy": 1.0
+        }
+      },
+      "domain": {
+        "actualites": {
+          "n": 14,
+          "accuracy": 0.9285714285714286
+        },
+        "cinema": {
+          "n": 21,
+          "accuracy": 0.9523809523809523
+        },
+        "culture": {
+          "n": 9,
+          "accuracy": 0.6666666666666666
+        },
+        "education": {
+          "n": 28,
+          "accuracy": 1.0
+        },
+        "loisirs": {
+          "n": 22,
+          "accuracy": 0.8181818181818182
+        },
+        "produit": {
+          "n": 49,
+          "accuracy": 0.9183673469387755
+        },
+        "quotidien": {
+          "n": 32,
+          "accuracy": 0.875
+        },
+        "restauration": {
+          "n": 30,
+          "accuracy": 0.9333333333333333
+        },
+        "sante": {
+          "n": 18,
+          "accuracy": 0.8888888888888888
+        },
+        "service_client": {
+          "n": 27,
+          "accuracy": 0.8148148148148148
+        },
+        "sport": {
+          "n": 11,
+          "accuracy": 0.8181818181818182
+        },
+        "tech": {
+          "n": 34,
+          "accuracy": 0.9411764705882353
+        },
+        "travail": {
+          "n": 37,
+          "accuracy": 0.7837837837837838
+        },
+        "voyage": {
+          "n": 28,
+          "accuracy": 0.8928571428571429
+        }
+      }
+    },
+    "throughput": {
+      "seconds_total": 12.166,
+      "ms_per_text": 33.79,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:24:29+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

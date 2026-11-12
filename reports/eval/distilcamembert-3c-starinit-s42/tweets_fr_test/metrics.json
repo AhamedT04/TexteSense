@@ -1,0 +1,87 @@
+{
+  "run": "distilcamembert-3c-starinit-s42",
+  "dataset": "tweets_fr_test",
+  "model": "hf:models/distilcamembert-3c-starinit-s42",
+  "metrics": {
+    "n": 870,
+    "accuracy": 0.7241379310344828,
+    "macro_f1": 0.7231179871748149,
+    "per_class": {
+      "negative": {
+        "precision": 0.7652733118971061,
+        "recall": 0.8206896551724138,
+        "f1": 0.7920133111480865,
+        "support": 290
+      },
+      "neutral": {
+        "precision": 0.7470355731225297,
+        "recall": 0.6517241379310345,
+        "f1": 0.6961325966850829,
+        "support": 290
+      },
+      "positive": {
+        "precision": 0.6633986928104575,
+        "recall": 0.7,
+        "f1": 0.6812080536912751,
+        "support": 290
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "rows_true_cols_pred": [
+        [
+          238,
+          15,
+          37
+        ],
+        [
+          35,
+          189,
+          66
+        ],
+        [
+          38,
+          49,
+          203
+        ]
+      ]
+    },
+    "ece": 0.14641162133079832,
+    "mean_confidence": 0.8705495595932007,
+    "ci95": {
+      "accuracy": [
+        0.6931034482758621,
+        0.7552011494252873
+      ],
+      "macro_f1": [
+        0.6916507724835158,
+        0.7544038073315118
+      ]
+    },
+    "by_group": {},
+    "throughput": {
+      "seconds_total": 46.752,
+      "ms_per_text": 53.74,
+      "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T20:25:39+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

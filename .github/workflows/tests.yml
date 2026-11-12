@@ -18,11 +18,12 @@ jobs:
           cache-dependency-path: |
             requirements.txt
             requirements-dev.txt
+            requirements-ml.txt
 
       - name: Installer les dépendances (torch CPU)
         run: |
           pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
-          pip install -r requirements-dev.txt
+          pip install -r requirements-ml.txt
 
       - name: Entraîner le modèle fallback
         run: python -m app.ml.train_model

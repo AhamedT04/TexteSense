@@ -1,0 +1,60 @@
+{
+  "model_dir": "models/distilcamembert-3c-starinit-s42",
+  "onnx_dir": "models/distilcamembert-3c-starinit-s42-onnx",
+  "opset": 17,
+  "benchmark": {
+    "texts": 100,
+    "repeats": 3,
+    "note": "requêtes unitaires sur CPU, threads par défaut ; ordre de grandeur, dépend de la machine"
+  },
+  "results": {
+    "pytorch_fp32": {
+      "latency_ms_single_text": {
+        "p50": 17.18,
+        "p95": 32.65,
+        "mean": 19.17
+      },
+      "agreement_with_pytorch": 1.0,
+      "max_abs_proba_diff": 0.0,
+      "accuracy_textsense_eval_v1": 0.8861111111111111,
+      "size_mb": 272.4
+    },
+    "onnx_fp32": {
+      "latency_ms_single_text": {
+        "p50": 10.3,
+        "p95": 23.51,
+        "mean": 12.19
+      },
+      "agreement_with_pytorch": 1.0,
+      "max_abs_proba_diff": 3.2782554626464844e-06,
+      "accuracy_textsense_eval_v1": 0.8861111111111111,
+      "size_mb": 272.5
+    },
+    "onnx_int8": {
+      "latency_ms_single_text": {
+        "p50": 4.38,
+        "p95": 10.08,
+        "mean": 5.03
+      },
+      "agreement_with_pytorch": 0.9583333333333334,
+      "max_abs_proba_diff": 0.563808798789978,
+      "accuracy_textsense_eval_v1": 0.8833333333333333,
+      "size_mb": 68.7
+    }
+  },
+  "metadata": {
+    "timestamp_utc": "2026-11-11T21:07:18+00:00",
+    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "python": "3.12.16",
+    "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
+    "packages": {
+      "torch": "2.8.0+cpu",
+      "transformers": "4.53.3",
+      "scikit-learn": "1.7.1",
+      "numpy": "2.5.4",
+      "pandas": "2.3.2",
+      "onnxruntime": "1.31.1",
+      "accelerate": "1.15.0"
+    }
+  }
+}

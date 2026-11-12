@@ -15,3 +15,9 @@ saved_models/*.pkl
 huggingface/
 hf_models/
 .env
+
+# Modèles entraînés (trop lourds pour git : publiés sur le Hub Hugging Face)
+models/
+
+# Retours utilisateurs exportés (textes saisis par des utilisateurs)
+data/feedback/
