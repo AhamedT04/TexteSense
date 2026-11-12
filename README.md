@@ -3,6 +3,7 @@
 [![Tests](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml/badge.svg)](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml)
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
+[![Modèle sur Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20mod%C3%A8le-Hugging%20Face-yellow.svg)](https://huggingface.co/AhamedT04/textsense-distilcamembert-sentiment-3c)
 
 API REST et application web d'**analyse de sentiment en français** (positif /
 négatif / neutre), avec un modèle **DistilCamemBERT fine-tuné en 3 classes**,
@@ -66,7 +67,7 @@ Le modèle est désigné par `HF_MODEL_ID` (fichier `.env`, voir
 HF_MODEL_ID=models/distilcamembert-3c-starinit-s42
 
 # Ou un modèle publié sur le Hub Hugging Face
-HF_MODEL_ID=<compte>/textsense-distilcamembert-sentiment-3c
+HF_MODEL_ID=AhamedT04/textsense-distilcamembert-sentiment-3c
 
 # Ou la version ONNX quantifiée (make export-onnx)
 MODEL_BACKEND=onnx

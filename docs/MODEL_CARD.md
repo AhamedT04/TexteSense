@@ -48,9 +48,9 @@ Classifieur de sentiment pour le **français** en trois classes : `negative`,
 ```python
 from transformers import pipeline
 
-classifier = pipeline("text-classification", model="<compte>/textsense-distilcamembert-sentiment-3c")
+classifier = pipeline("text-classification", model="AhamedT04/textsense-distilcamembert-sentiment-3c")
 classifier("La réunion a lieu jeudi à 14 heures.")
-# [{'label': 'neutral', 'score': 0.91}]
+# [{'label': 'neutral', 'score': 0.886...}]
 ```
 
 ## Données d'entraînement

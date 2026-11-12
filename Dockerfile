@@ -16,7 +16,7 @@ COPY app ./app
 COPY data ./data
 
 # Modèle fallback (rapide) + modèle principal téléchargé depuis le Hub (~270 Mo).
-#   docker build --build-arg HF_MODEL_ID=<compte>/<modèle> .   # modèle fine-tuné publié
+#   docker build --build-arg HF_MODEL_ID=AhamedT04/textsense-distilcamembert-sentiment-3c .   # modèle fine-tuné publié
 #   docker build --build-arg DOWNLOAD_HF_MODEL=0 .               # fallback uniquement
 ARG DOWNLOAD_HF_MODEL=1
 ARG HF_MODEL_ID=cmarkea/distilcamembert-base-sentiment
