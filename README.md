@@ -3,7 +3,7 @@
 [![Tests](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml/badge.svg)](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml)
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
-[![Démo en ligne](https://img.shields.io/badge/%F0%9F%A4%97%20d%C3%A9mo-en%20ligne-blue.svg)](https://huggingface.co/spaces/AhamedT04/textsense)
+[![Démo en ligne](https://img.shields.io/badge/d%C3%A9mo-en%20ligne-blue.svg)](https://textesense.onrender.com)
 [![Modèle sur Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20mod%C3%A8le-Hugging%20Face-yellow.svg)](https://huggingface.co/AhamedT04/textsense-distilcamembert-sentiment-3c)
 
 API REST et application web d'**analyse de sentiment en français** (positif /
@@ -11,7 +11,7 @@ négatif / neutre), avec un modèle **DistilCamemBERT fine-tuné en 3 classes**,
 une boucle de **retour utilisateur** pour collecter des données réelles, et un
 pipeline ML reproductible (évaluation, fine-tuning, calibration, export ONNX).
 
-**Essayer la démo : [huggingface.co/spaces/AhamedT04/textsense](https://huggingface.co/spaces/AhamedT04/textsense)**
+**Essayer la démo : [textesense.onrender.com](https://textesense.onrender.com)** (la première visite peut prendre une minute : le serveur gratuit se réveille)
 
 ## Résultats
 
@@ -142,7 +142,8 @@ TexteSense/
 │   ├── finetune.py · calibrate.py
 │   ├── export_onnx.py · publish_model.py · export_feedback.py
 ├── configs/                    # Configurations d'entraînement (YAML)
-├── deploy/                     # Démo Hugging Face Spaces (Dockerfile, fiche, script)
+├── deploy/                     # Image de la démo, déploiement Hugging Face Spaces
+├── render.yaml                 # Démo sur Render (Blueprint)
 ├── data/eval/                  # Jeu de test + fiche + guide d'annotation
 ├── reports/                    # Résultats versionnés (JSON, PNG, RESULTS.md)
 ├── notebooks/                  # Analyses (générées par _build_notebooks.py)
@@ -233,12 +234,13 @@ docker build -t textsense .            # inclut le modèle HF (~250 Mo)
 docker run -p 8000:8000 -v textsense-db:/app/db textsense
 ```
 
-## Démo publique (Hugging Face Spaces)
+## Démo publique
 
-La démo [huggingface.co/spaces/AhamedT04/textsense](https://huggingface.co/spaces/AhamedT04/textsense) utilise une image
-dédiée, [`deploy/space/Dockerfile`](deploy/space/Dockerfile) : modèle ONNX int8
-téléchargé depuis le Hub (sans PyTorch, ~13 ms par texte sur CPU) et
-`DEMO_MODE=true`. En mode démo :
+La démo [textesense.onrender.com](https://textesense.onrender.com) est hébergée gratuitement sur
+[Render](https://render.com) avec une image dédiée,
+[`deploy/space/Dockerfile`](deploy/space/Dockerfile) : modèle ONNX int8
+téléchargé depuis le Hub à une révision figée (sans PyTorch, ~230 Mo de
+mémoire) et `DEMO_MODE=true`. En mode démo :
 
 - chaque visiteur ne voit, ne corrige et ne supprime que **ses** analyses
   (identifiant aléatoire généré par le navigateur, envoyé dans l'en-tête
@@ -247,18 +249,19 @@ téléchargé depuis le Hub (sans PyTorch, ~13 ms par texte sur CPU) et
 - un avertissement explique quelles données sont conservées ;
 - les retours (« Oui » / « Sinon, c'est plutôt… ») sont sauvegardés toutes les
   10 minutes dans un dataset **privé** du Hub, sans identifiant ni adresse IP :
-  le disque d'un Space gratuit est effacé à chaque redémarrage.
+  le disque d'un hébergement gratuit est effacé à chaque redémarrage.
 
-Déploiement (après `hf auth login`) :
+L'offre gratuite de Render met le service en veille après 15 minutes sans
+visite : la première visite suivante prend environ une minute.
 
-```bash
-python deploy/deploy_space.py --dry-run   # liste les fichiers envoyés
-make deploy-space                         # crée ou met à jour le Space
-```
+**Déploiement** : [`render.yaml`](render.yaml) décrit le service (Blueprint
+Render). Une fois le Blueprint créé depuis ce dépôt, chaque fusion sur `main`
+redéploie la démo. La seule valeur à saisir dans le tableau de bord est le
+secret `HF_TOKEN` (jeton *fine-grained* limité à l'écriture sur le dataset des
+retours).
 
-Le script crée le Space et le dataset privé des retours. Il reste à ajouter
-dans les paramètres du Space un secret `HF_TOKEN` (jeton *fine-grained* limité
-à l'écriture sur ce dataset).
+La même image fonctionne sur Hugging Face Spaces (abonnement PRO requis pour
+les Spaces Docker) : `python deploy/deploy_space.py`.
 
 ## Limites connues
 

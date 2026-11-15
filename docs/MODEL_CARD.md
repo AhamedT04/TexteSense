@@ -130,7 +130,7 @@ petits effectifs → tendances) :
 **Version ONNX int8** (69 Mo, ~4× plus rapide sur CPU) : macro-F1 0,882 sur
 `textsense_eval_v1` et 0,705 sur `tweets_fr_test`. Elle est publiée dans
 `onnx/model.int8.onnx` (même tokenizer et même `config.json` que la racine) et
-fait tourner la [démo en ligne](https://huggingface.co/spaces/AhamedT04/textsense) :
+fait tourner la [démo en ligne](https://textesense.onrender.com) :
 
 ```python
 import numpy as np

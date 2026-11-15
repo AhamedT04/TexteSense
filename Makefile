@@ -62,7 +62,7 @@ eval-onnx: ## Évalue la version ONNX int8
 report: ## Régénère reports/RESULTS.md
 	$(PYTHON) -m textsense_ml.report
 
-deploy-space: ## Déploie la démo sur Hugging Face Spaces (après hf auth login)
+deploy-space: ## Déploie la démo sur Hugging Face Spaces (abonnement PRO requis)
 	$(PYTHON) deploy/deploy_space.py
 
 notebooks: ## Ré-exécute les notebooks (sorties incluses)

@@ -11,10 +11,10 @@ projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ### Ajouté
 
-- **Démo publique sur Hugging Face Spaces**
-  ([`AhamedT04/textsense`](https://huggingface.co/spaces/AhamedT04/textsense)) :
-  image dédiée sans PyTorch (ONNX int8) et script de déploiement
-  (`deploy/deploy_space.py`, `make deploy-space`).
+- **Démo publique** sur Render ([textesense.onrender.com](https://textesense.onrender.com)) :
+  image dédiée sans PyTorch (ONNX int8, révision du modèle figée),
+  `render.yaml` pour le déploiement continu depuis `main`, et script
+  équivalent pour Hugging Face Spaces (`deploy/deploy_space.py`).
 - **Mode démo** (`DEMO_MODE`) : chaque visiteur ne voit que ses analyses,
   limite de débit par adresse IP et globale (réponse 429 avec `Retry-After`),
   avertissement de confidentialité et liens vers le code et le modèle.
