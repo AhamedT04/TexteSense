@@ -7,6 +7,12 @@ Ordre de priorité :
 Les modèles sont chargés une seule fois. Un échec de chargement du modèle
 principal est mémorisé (jusqu'au redémarrage ou à :func:`reset_model_cache`)
 pour ne pas retenter un chargement voué à l'échec à chaque requête.
+
+Au chargement, le modèle principal passe un **test de fumée** : il doit
+classer correctement quelques phrases sans ambiguïté (:data:`SMOKE_TEST`).
+Un modèle qui se charge mais prédit n'importe quoi (fichier corrompu, mauvais
+tokenizer, quantification incompatible avec le processeur…) est rejeté comme
+s'il était absent.
 """
 
 import logging
@@ -35,6 +41,30 @@ class Prediction(TypedDict):
 
 class ModelUnavailableError(RuntimeError):
     """Le modèle principal n'a pas pu être chargé (non téléchargé, dépendance absente…)."""
+
+
+# Phrases au sentiment évident, en positif et en négatif seulement : le
+# modèle d'origine (5 étoiles) ne sait pas reconnaître le neutre et doit
+# quand même passer ce test.
+SMOKE_TEST: tuple[tuple[str, str], ...] = (
+    ("Ce film est une pure merveille, je le recommande à tout le monde !", "positive"),
+    ("Livraison rapide et produit parfait, je suis ravi.", "positive"),
+    ("Service lent et personnel désagréable, je suis très déçu.", "negative"),
+    ("Produit cassé à la livraison, une vraie arnaque.", "negative"),
+)
+
+
+def check_predictions(classifier: SentimentClassifier) -> None:
+    """Lève ``ValueError`` si le modèle se trompe sur une phrase de :data:`SMOKE_TEST`."""
+    texts = [text for text, _ in SMOKE_TEST]
+    predicted = [SENTIMENTS[int(i)] for i in classifier.predict_proba(texts).argmax(axis=1)]
+    errors = [
+        f"« {text} » → {got} (attendu : {expected})"
+        for (text, expected), got in zip(SMOKE_TEST, predicted)
+        if got != expected
+    ]
+    if errors:
+        raise ValueError("test de fumée échoué : " + " ; ".join(errors))
 
 
 _primary: SentimentClassifier | None = None
@@ -78,7 +108,9 @@ def load_primary_classifier() -> SentimentClassifier:
         target = settings.onnx_model_dir if settings.model_backend == "onnx" else settings.hf_model_id
         logger.info("Chargement du modèle principal (%s) : %s", settings.model_backend, target)
         try:
-            _primary = _build_primary_classifier()
+            classifier = _build_primary_classifier()
+            check_predictions(classifier)
+            _primary = classifier
         except Exception as exc:
             _primary_error = ModelUnavailableError(
                 f"Modèle principal indisponible ({type(exc).__name__}: {exc}). "

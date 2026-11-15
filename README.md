@@ -25,7 +25,7 @@ ce défaut :
 | Modèle d'origine (5 étoiles regroupées) | 0,510 | 0,363 | 0,031 |
 | Fallback TF-IDF + régression logistique | 0,513 | 0,264 | 0,651 |
 | **DistilCamemBERT fine-tuné 3 classes** | **0,885** | **0,723** | **0,882** |
-| ↳ même modèle, ONNX int8 (69 Mo, ~4× plus rapide) | 0,882 | 0,705 | 0,870 |
+| ↳ même modèle, ONNX int8 (69 Mo, ~3× plus rapide) | 0,887 | 0,692 | 0,892 |
 
 Macro-F1. Résultat stable sur trois graines (0,883 ± 0,003 sur
 `textsense_eval_v1`). Intervalles de confiance, ablations et
@@ -211,6 +211,7 @@ Voir [`.env.example`](.env.example). Principales variables :
 | `CONFIDENCE_THRESHOLD` | seuil du modèle, sinon 0,55 | Seuil `low_confidence` |
 | `MODEL_DIR` | `saved_models` | Modèle de secours |
 | `DEBUG` | `false` | Logs détaillés |
+| `REQUIRE_PRIMARY_MODEL` | `false` | `/health` renvoie 503 si le modèle principal n'est pas chargé et validé |
 | `DEMO_MODE` | `false` | Démo publique : historique par visiteur, limite de débit, avertissement |
 | `RATE_LIMIT_PER_MINUTE` / `RATE_LIMIT_GLOBAL_PER_MINUTE` | `30` / `600` | Analyses et retours par minute (par IP / au total), en mode démo |
 | `FEEDBACK_REPO_ID` | – | Dataset du Hub où sauvegarder les retours (jeton dans `HF_TOKEN`) |
@@ -250,6 +251,14 @@ mémoire) et `DEMO_MODE=true`. En mode démo :
 - les retours (« Oui » / « Sinon, c'est plutôt… ») sont sauvegardés toutes les
   10 minutes dans un dataset **privé** du Hub, sans identifiant ni adresse IP :
   le disque d'un hébergement gratuit est effacé à chaque redémarrage.
+
+Au démarrage, le modèle principal passe un **test de fumée** (quelques
+phrases au sentiment évident) : un modèle qui se charge mais prédit n'importe
+quoi est rejeté, et avec `REQUIRE_PRIMARY_MODEL=true` (activé dans l'image de
+démo) `/health` renvoie 503, si bien que Render garde la version précédente au
+lieu de mettre en ligne une version cassée. Ce garde-fou a été ajouté après un
+incident réel (modèle int8 incompatible avec le processeur du serveur, voir
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md#incident-n-2--un-modèle-correct-ici-faux-sur-le-serveur)).
 
 L'offre gratuite de Render met le service en veille après 15 minutes sans
 visite : la première visite suivante prend environ une minute.

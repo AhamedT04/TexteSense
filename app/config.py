@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     # propres analyses, les requêtes d'écriture sont limitées par adresse IP et
     # un avertissement de confidentialité est affiché.
     demo_mode: bool = False
+    # Si vrai, /health renvoie 503 tant que le modèle principal n'est pas
+    # chargé (et validé) : l'hébergeur refuse alors de mettre en ligne une
+    # version dégradée et garde la précédente.
+    require_primary_model: bool = False
     rate_limit_per_minute: int = Field(default=30, ge=1)  # par adresse IP
     rate_limit_global_per_minute: int = Field(default=600, ge=1)  # tous visiteurs confondus
     # Sauvegarde périodique des retours utilisateurs vers un dataset privé du

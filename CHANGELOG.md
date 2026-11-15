@@ -7,6 +7,24 @@ projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [1.3.1] — 2026-11-15
+
+### Corrigé
+
+- **Démo : le modèle int8 prédisait « neutre » pour tous les textes** sur le
+  serveur. Sur les processeurs x86 sans VNNI, ONNX Runtime sature avec des
+  poids int8 sur 8 bits ; la quantification utilise maintenant
+  `reduce_range=True` (macro-F1 0,887 sur `textsense_eval_v1`, 0,692 sur
+  `tweets_fr_test`). Détails : `docs/EXPERIMENTS.md`, incident n° 2.
+
+### Ajouté
+
+- **Test de fumée** au chargement du modèle principal : un modèle qui prédit
+  mal des phrases évidentes est rejeté (bascule sur le modèle de secours).
+- `REQUIRE_PRIMARY_MODEL` : `/health` renvoie 503 si le modèle principal
+  n'est pas validé (activé dans l'image de démo, pour que l'hébergeur ne
+  mette pas en ligne une version cassée).
+
 ## [1.3.0] — 2026-11-14
 
 ### Ajouté
@@ -93,7 +111,8 @@ projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
   DistilCamemBERT et fallback TF-IDF, extraction de mots-clés, historique
   et statistiques.
 
-[Non publié]: https://github.com/AhamedT04/TexteSense/compare/v1.3.0...HEAD
+[Non publié]: https://github.com/AhamedT04/TexteSense/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/AhamedT04/TexteSense/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/AhamedT04/TexteSense/compare/f033e3e...v1.3.0
 [1.2.0]: https://github.com/AhamedT04/TexteSense/compare/7e63d72...f033e3e
 [1.1.0]: https://github.com/AhamedT04/TexteSense/compare/abb7f22...7e63d72

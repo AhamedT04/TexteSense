@@ -4,25 +4,25 @@
   "model": "onnx:models/distilcamembert-3c-starinit-s42-onnx/model.int8.onnx",
   "metrics": {
     "n": 870,
-    "accuracy": 0.7045977011494253,
-    "macro_f1": 0.7048959036394787,
+    "accuracy": 0.6931034482758621,
+    "macro_f1": 0.6917120832226761,
     "per_class": {
       "negative": {
-        "precision": 0.8007380073800738,
-        "recall": 0.7482758620689656,
-        "f1": 0.7736185383244206,
+        "precision": 0.823076923076923,
+        "recall": 0.7379310344827587,
+        "f1": 0.7781818181818182,
         "support": 290
       },
       "neutral": {
-        "precision": 0.6554878048780488,
-        "recall": 0.7413793103448276,
-        "f1": 0.6957928802588996,
+        "precision": 0.6041666666666666,
+        "recall": 0.8,
+        "f1": 0.6884272997032641,
         "support": 290
       },
       "positive": {
-        "precision": 0.6678966789667896,
-        "recall": 0.6241379310344828,
-        "f1": 0.6452762923351159,
+        "precision": 0.6946902654867256,
+        "recall": 0.5413793103448276,
+        "f1": 0.6085271317829457,
         "support": 290
       }
     },
@@ -34,44 +34,44 @@
       ],
       "rows_true_cols_pred": [
         [
-          217,
-          33,
-          40
+          214,
+          45,
+          31
         ],
         [
-          25,
-          215,
-          50
+          20,
+          232,
+          38
         ],
         [
-          29,
-          80,
-          181
+          26,
+          107,
+          157
         ]
       ]
     },
-    "ece": 0.14836396276950833,
-    "mean_confidence": 0.8529616594314575,
+    "ece": 0.15141169521315345,
+    "mean_confidence": 0.8445150852203369,
     "ci95": {
       "accuracy": [
-        0.6723850574712644,
-        0.7368103448275861
+        0.6620689655172414,
+        0.7230172413793103
       ],
       "macro_f1": [
-        0.6716624824575881,
-        0.737076658948116
+        0.6603495162347338,
+        0.7212702462736111
       ]
     },
     "by_group": {},
     "throughput": {
-      "seconds_total": 8.185,
-      "ms_per_text": 9.41,
+      "seconds_total": 6.557,
+      "ms_per_text": 7.54,
       "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
     }
   },
   "metadata": {
-    "timestamp_utc": "2026-11-11T21:07:41+00:00",
-    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "timestamp_utc": "2026-11-15T04:09:15+00:00",
+    "git_commit": "9880ed54ab64457570db00d130cbb20c9eae12b6-dirty",
     "python": "3.12.16",
     "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
     "packages": {

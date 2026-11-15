@@ -33,7 +33,7 @@ USER user
 # à une révision figée (commit du dépôt du modèle) : l'image est reproductible
 # et une nouvelle publication du modèle ne change pas la démo sans le vouloir.
 ARG MODEL_REPO=AhamedT04/textsense-distilcamembert-sentiment-3c
-ARG MODEL_REVISION=b5e4fa23be773476af9f3234a5e4c5c8803f10c2
+ARG MODEL_REVISION=fa84ae7b48284f0f504fad6f010c925103b0251d
 ARG DOWNLOAD_MODEL=1
 RUN python -m app.ml.train_model \
  && if [ "$DOWNLOAD_MODEL" = "1" ]; then \
@@ -44,6 +44,7 @@ ENV MODEL_BACKEND=onnx \
     ONNX_MODEL_DIR=models/textsense-3c \
     ONNX_MODEL_FILE=onnx/model.int8.onnx \
     DEMO_MODE=true \
+    REQUIRE_PRIMARY_MODEL=true \
     RATE_LIMIT_PER_MINUTE=30
 
 EXPOSE 7860

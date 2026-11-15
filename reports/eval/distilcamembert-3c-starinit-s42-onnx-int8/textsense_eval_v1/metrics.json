@@ -4,25 +4,25 @@
   "model": "onnx:models/distilcamembert-3c-starinit-s42-onnx/model.int8.onnx",
   "metrics": {
     "n": 360,
-    "accuracy": 0.8833333333333333,
-    "macro_f1": 0.8815971481346861,
+    "accuracy": 0.8888888888888888,
+    "macro_f1": 0.8872577738884609,
     "per_class": {
       "negative": {
-        "precision": 0.9223300970873787,
-        "recall": 0.7916666666666666,
-        "f1": 0.852017937219731,
+        "precision": 0.9489795918367347,
+        "recall": 0.775,
+        "f1": 0.8532110091743119,
         "support": 120
       },
       "neutral": {
-        "precision": 0.8739495798319328,
-        "recall": 0.8666666666666667,
-        "f1": 0.8702928870292888,
+        "precision": 0.8604651162790697,
+        "recall": 0.925,
+        "f1": 0.891566265060241,
         "support": 120
       },
       "positive": {
-        "precision": 0.8623188405797102,
-        "recall": 0.9916666666666667,
-        "f1": 0.9224806201550387,
+        "precision": 0.8721804511278195,
+        "recall": 0.9666666666666667,
+        "f1": 0.9169960474308301,
         "support": 120
       }
     },
@@ -34,32 +34,32 @@
       ],
       "rows_true_cols_pred": [
         [
-          95,
-          14,
-          11
+          93,
+          15,
+          12
         ],
         [
-          8,
-          104,
-          8
+          4,
+          111,
+          5
         ],
         [
-          0,
           1,
-          119
+          3,
+          116
         ]
       ]
     },
-    "ece": 0.048589746571249454,
-    "mean_confidence": 0.8791452050209045,
+    "ece": 0.05618902345498403,
+    "mean_confidence": 0.8735208511352539,
     "ci95": {
       "accuracy": [
-        0.8499305555555555,
-        0.9166666666666666
+        0.8583333333333333,
+        0.9194444444444444
       ],
       "macro_f1": [
-        0.8476863724543092,
-        0.9144236248948768
+        0.854765855723243,
+        0.9187721870033684
       ]
     },
     "by_group": {
@@ -70,11 +70,11 @@
         },
         "contrast": {
           "n": 30,
-          "accuracy": 0.9
+          "accuracy": 0.8333333333333334
         },
         "emotional_lexicon": {
           "n": 15,
-          "accuracy": 0.4
+          "accuracy": 0.6666666666666666
         },
         "explicit": {
           "n": 80,
@@ -82,11 +82,11 @@
         },
         "factual": {
           "n": 45,
-          "accuracy": 0.9555555555555556
+          "accuracy": 1.0
         },
         "implicit": {
           "n": 30,
-          "accuracy": 0.7
+          "accuracy": 0.6333333333333333
         },
         "informal": {
           "n": 20,
@@ -94,11 +94,11 @@
         },
         "instruction": {
           "n": 20,
-          "accuracy": 0.85
+          "accuracy": 0.9
         },
         "irony": {
           "n": 15,
-          "accuracy": 0.26666666666666666
+          "accuracy": 0.2
         },
         "long": {
           "n": 25,
@@ -124,11 +124,11 @@
         },
         "cinema": {
           "n": 21,
-          "accuracy": 1.0
+          "accuracy": 0.9523809523809523
         },
         "culture": {
           "n": 9,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.8888888888888888
         },
         "education": {
           "n": 28,
@@ -136,15 +136,15 @@
         },
         "loisirs": {
           "n": 22,
-          "accuracy": 0.8636363636363636
+          "accuracy": 0.9545454545454546
         },
         "produit": {
           "n": 49,
-          "accuracy": 0.8979591836734694
+          "accuracy": 0.8775510204081632
         },
         "quotidien": {
           "n": 32,
-          "accuracy": 0.90625
+          "accuracy": 0.84375
         },
         "restauration": {
           "n": 30,
@@ -156,35 +156,35 @@
         },
         "service_client": {
           "n": 27,
-          "accuracy": 0.7777777777777778
+          "accuracy": 0.8518518518518519
         },
         "sport": {
           "n": 11,
-          "accuracy": 0.9090909090909091
+          "accuracy": 0.8181818181818182
         },
         "tech": {
           "n": 34,
-          "accuracy": 0.9117647058823529
+          "accuracy": 0.8823529411764706
         },
         "travail": {
           "n": 37,
-          "accuracy": 0.8108108108108109
+          "accuracy": 0.8378378378378378
         },
         "voyage": {
           "n": 28,
-          "accuracy": 0.8571428571428571
+          "accuracy": 0.8928571428571429
         }
       }
     },
     "throughput": {
-      "seconds_total": 4.218,
-      "ms_per_text": 11.72,
+      "seconds_total": 3.525,
+      "ms_per_text": 9.79,
       "note": "inférence par lots, CPU ; indicatif, dépend de la machine"
     }
   },
   "metadata": {
-    "timestamp_utc": "2026-11-11T21:07:27+00:00",
-    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "timestamp_utc": "2026-11-15T04:09:03+00:00",
+    "git_commit": "9880ed54ab64457570db00d130cbb20c9eae12b6-dirty",
     "python": "3.12.16",
     "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
     "packages": {
