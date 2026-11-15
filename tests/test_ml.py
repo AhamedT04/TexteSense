@@ -202,3 +202,102 @@ class TestConfidenceThreshold:
         monkeypatch.delenv("CONFIDENCE_THRESHOLD", raising=False)
         monkeypatch.setenv("HF_CONFIDENCE_THRESHOLD", "0.6")
         assert Settings(_env_file=None).confidence_threshold == 0.6
+
+
+class _ConstantClassifier:
+    """Faux modèle qui renvoie toujours la même classe (comme un int8 saturé)."""
+
+    name = "constant"
+    recommended_threshold = None
+
+    def __init__(self, sentiment: str = "neutral") -> None:
+        self.index = SENTIMENTS.index(sentiment)
+
+    def predict_proba(self, texts):
+        probas = np.full((len(texts), len(SENTIMENTS)), 0.04)
+        probas[:, self.index] = 0.92
+        return probas
+
+
+class _ExpectedClassifier(_ConstantClassifier):
+    """Faux modèle qui répond juste au test de fumée."""
+
+    def predict_proba(self, texts):
+        from app.ml.predictor import SMOKE_TEST
+
+        expected = dict(SMOKE_TEST)
+        probas = np.full((len(texts), len(SENTIMENTS)), 0.05)
+        for row, text in enumerate(texts):
+            probas[row, SENTIMENTS.index(expected[text])] = 0.9
+        return probas
+
+
+class TestSmokeTest:
+    @pytest.fixture(autouse=True)
+    def _fresh_cache(self):
+        from app.ml import predictor
+
+        predictor.reset_model_cache()
+        yield
+        predictor.reset_model_cache()
+
+    def test_constant_model_is_rejected(self):
+        from app.ml.predictor import check_predictions
+
+        with pytest.raises(ValueError, match="test de fumée"):
+            check_predictions(_ConstantClassifier("neutral"))
+
+    def test_correct_model_passes(self):
+        from app.ml.predictor import check_predictions
+
+        check_predictions(_ExpectedClassifier())
+
+    def test_broken_primary_is_replaced_by_fallback(self, monkeypatch):
+        from app.ml import predictor
+
+        monkeypatch.setattr(predictor, "_build_primary_classifier", lambda: _ConstantClassifier("neutral"))
+        with pytest.raises(predictor.ModelUnavailableError, match="test de fumée"):
+            predictor.load_primary_classifier()
+        assert predictor.is_primary_model_ready() is False
+
+    def test_valid_primary_is_kept(self, monkeypatch):
+        from app.ml import predictor
+
+        monkeypatch.setattr(predictor, "_build_primary_classifier", lambda: _ExpectedClassifier())
+        assert predictor.load_primary_classifier().name == "constant"
+
+
+class TestStrictHealth:
+    @pytest.fixture(autouse=True)
+    def _fresh_cache(self):
+        from app.ml import predictor
+
+        predictor.reset_model_cache()
+        yield
+        predictor.reset_model_cache()
+
+    def test_503_when_primary_required_but_broken(self, monkeypatch):
+        from fastapi.testclient import TestClient
+
+        from app.config import get_settings
+        from app.main import app
+        from app.ml import predictor
+
+        monkeypatch.setattr(get_settings(), "require_primary_model", True)
+        monkeypatch.setattr(predictor, "_build_primary_classifier", lambda: _ConstantClassifier("neutral"))
+        response = TestClient(app).get("/health")
+        assert response.status_code == 503
+        assert response.json()["status"] == "degraded"
+
+    def test_200_when_primary_required_and_valid(self, monkeypatch):
+        from fastapi.testclient import TestClient
+
+        from app.config import get_settings
+        from app.main import app
+        from app.ml import predictor
+
+        monkeypatch.setattr(get_settings(), "require_primary_model", True)
+        monkeypatch.setattr(predictor, "_build_primary_classifier", lambda: _ExpectedClassifier())
+        response = TestClient(app).get("/health")
+        assert response.status_code == 200
+        assert response.json()["primary_model_loaded"] is True

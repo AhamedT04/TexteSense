@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -96,7 +96,7 @@ app = FastAPI(
         "Modèle principal : DistilCamemBERT (Transformers ou ONNX). "
         "Fallback : TF-IDF + Régression logistique."
     ),
-    version="1.3.0",
+    version="1.3.1",
     lifespan=lifespan,
 )
 
@@ -126,13 +126,17 @@ def _public_model_name() -> str:
 @app.get("/health", include_in_schema=False)
 def health():
     ready = is_model_ready()
-    return {
-        "status": "ok" if ready else "degraded",
+    primary_loaded = is_primary_model_ready()
+    body = {
+        "status": "ok" if ready and (primary_loaded or not settings.require_primary_model) else "degraded",
         "model_ready": ready,
         "model_backend": settings.model_backend,
         "primary_model": _public_model_name(),
-        "primary_model_loaded": is_primary_model_ready(),
+        "primary_model_loaded": primary_loaded,
         "fallback_model": "tfidf-logistic-regression",
         "demo_mode": settings.demo_mode,
         "version": app.version,
     }
+    if settings.require_primary_model and not primary_loaded:
+        return JSONResponse(body, status_code=503)
+    return body
