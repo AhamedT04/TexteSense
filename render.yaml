@@ -1,0 +1,21 @@
+# Démo publique sur Render (offre gratuite) — « Blueprint » lu par Render.
+# Création : dashboard.render.com → New → Blueprint → ce dépôt.
+# Chaque fusion sur main redéploie automatiquement la démo.
+services:
+  - type: web
+    name: textesense
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./deploy/space/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Dataset privé du Hub qui reçoit les retours utilisateurs.
+      - key: FEEDBACK_REPO_ID
+        value: AhamedT04/textsense-feedback
+      # Jeton Hugging Face fine-grained (écriture sur ce seul dataset).
+      # sync: false → la valeur est saisie dans le tableau de bord, jamais ici.
+      - key: HF_TOKEN
+        sync: false

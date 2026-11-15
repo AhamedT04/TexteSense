@@ -4,10 +4,12 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func
+from sqlalchemy.orm import Query as SqlQuery
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.database import get_db
+from app.demo import get_session_id, rate_limit
 from app.ml.keyword_extractor import extract_keywords
 from app.ml.predictor import predict_sentiment
 from app.models import Analysis
@@ -24,9 +26,16 @@ def _as_utc(value: datetime | None) -> datetime | None:
     return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value
 
 
-def _get_or_404(db: Session, analysis_id: int) -> Analysis:
+def _scoped(query: SqlQuery, session_id: str | None) -> SqlQuery:
+    """Mode démo : restreint une requête aux analyses du visiteur."""
+    return query if session_id is None else query.filter(Analysis.session_id == session_id)
+
+
+def _get_or_404(db: Session, analysis_id: int, session_id: str | None = None) -> Analysis:
     record = db.get(Analysis, analysis_id)
-    if record is None:
+    # En mode démo, l'analyse d'un autre visiteur est traitée comme inexistante
+    # (404 et non 403 : on ne révèle pas qu'elle existe).
+    if record is None or (session_id is not None and record.session_id != session_id):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Analyse introuvable.",
@@ -56,7 +65,12 @@ def serialize_analysis(record: Analysis) -> AnalysisResponse:
     summary="Analyser un texte",
     description="Prédit le sentiment (positif / négatif / neutre) et extrait les mots-clés.",
 )
-def analyze_text(payload: TextInput, db: Session = Depends(get_db)) -> AnalysisResponse:
+def analyze_text(
+    payload: TextInput,
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+    _: None = Depends(rate_limit),
+) -> AnalysisResponse:
     try:
         prediction = predict_sentiment(payload.text)
     except FileNotFoundError as exc:
@@ -79,6 +93,7 @@ def analyze_text(payload: TextInput, db: Session = Depends(get_db)) -> AnalysisR
         low_confidence=prediction["low_confidence"],
         keywords=json.dumps(keywords, ensure_ascii=False),
         model_name=prediction["model"],
+        session_id=session_id,
     )
     db.add(analysis)
     db.commit()
@@ -103,6 +118,7 @@ def get_history(
     skip: int = Query(default=0, ge=0, description="Nombre d'entrées à ignorer"),
     limit: int | None = Query(default=None, ge=1, description="Nombre maximum d'entrées à retourner"),
     db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
 ) -> list[AnalysisResponse]:
     settings = get_settings()
     effective_limit = min(
@@ -110,7 +126,7 @@ def get_history(
         settings.history_max_limit,
     )
     records = (
-        db.query(Analysis)
+        _scoped(db.query(Analysis), session_id)
         .order_by(Analysis.created_at.desc())
         .offset(skip)
         .limit(effective_limit)
@@ -124,8 +140,12 @@ def get_history(
     response_model=AnalysisResponse,
     summary="Détail d'une analyse",
 )
-def get_analysis(analysis_id: int, db: Session = Depends(get_db)) -> AnalysisResponse:
-    return serialize_analysis(_get_or_404(db, analysis_id))
+def get_analysis(
+    analysis_id: int,
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+) -> AnalysisResponse:
+    return serialize_analysis(_get_or_404(db, analysis_id, session_id))
 
 
 @router.put(
@@ -139,9 +159,13 @@ def get_analysis(analysis_id: int, db: Session = Depends(get_db)) -> AnalysisRes
     ),
 )
 def set_feedback(
-    analysis_id: int, payload: FeedbackInput, db: Session = Depends(get_db)
+    analysis_id: int,
+    payload: FeedbackInput,
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+    _: None = Depends(rate_limit),
 ) -> AnalysisResponse:
-    record = _get_or_404(db, analysis_id)
+    record = _get_or_404(db, analysis_id, session_id)
     record.user_label = payload.label
     record.user_label_at = datetime.now(timezone.utc)
     db.commit()
@@ -157,8 +181,12 @@ def set_feedback(
     response_model=AnalysisResponse,
     summary="Retirer le retour utilisateur d'une analyse",
 )
-def clear_feedback(analysis_id: int, db: Session = Depends(get_db)) -> AnalysisResponse:
-    record = _get_or_404(db, analysis_id)
+def clear_feedback(
+    analysis_id: int,
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+) -> AnalysisResponse:
+    record = _get_or_404(db, analysis_id, session_id)
     record.user_label = None
     record.user_label_at = None
     db.commit()
@@ -171,8 +199,12 @@ def clear_feedback(analysis_id: int, db: Session = Depends(get_db)) -> AnalysisR
     response_model=DeleteResponse,
     summary="Supprimer une analyse",
 )
-def delete_analysis(analysis_id: int, db: Session = Depends(get_db)) -> DeleteResponse:
-    record = _get_or_404(db, analysis_id)
+def delete_analysis(
+    analysis_id: int,
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+) -> DeleteResponse:
+    record = _get_or_404(db, analysis_id, session_id)
     db.delete(record)
     db.commit()
     logger.info("Analyse id=%d supprimée.", analysis_id)
@@ -182,19 +214,27 @@ def delete_analysis(analysis_id: int, db: Session = Depends(get_db)) -> DeleteRe
 @router.get(
     "/stats",
     response_model=StatsResponse,
-    summary="Statistiques globales",
+    summary="Statistiques des analyses",
+    description="Toutes les analyses ; en mode démo, seulement celles du visiteur.",
 )
-def get_stats(db: Session = Depends(get_db)) -> StatsResponse:
+def get_stats(
+    db: Session = Depends(get_db),
+    session_id: str | None = Depends(get_session_id),
+) -> StatsResponse:
     sentiment_rows = (
-        db.query(Analysis.sentiment, func.count(Analysis.id))
+        _scoped(db.query(Analysis.sentiment, func.count(Analysis.id)), session_id)
         .group_by(Analysis.sentiment)
         .all()
     )
     counts = {sentiment: total for sentiment, total in sentiment_rows}
     total = sum(counts.values())
-    with_feedback = db.query(func.count(Analysis.id)).filter(Analysis.user_label.is_not(None)).scalar()
+    with_feedback = (
+        _scoped(db.query(func.count(Analysis.id)), session_id)
+        .filter(Analysis.user_label.is_not(None))
+        .scalar()
+    )
     corrected = (
-        db.query(func.count(Analysis.id))
+        _scoped(db.query(func.count(Analysis.id)), session_id)
         .filter(Analysis.user_label.is_not(None), Analysis.user_label != Analysis.sentiment)
         .scalar()
     )

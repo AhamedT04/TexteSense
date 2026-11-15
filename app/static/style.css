@@ -181,6 +181,20 @@ button:disabled {
     margin: 14px 0 0;
 }
 
+.hero-link + .hero-link {
+    margin-left: 8px;
+}
+
+.demo-notice {
+    margin: 12px 0 0;
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    background: rgba(17, 70, 166, 0.06);
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
 .result-card,
 .history-item,
 .stats-grid article {

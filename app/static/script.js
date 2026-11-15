@@ -272,8 +272,34 @@ function renderResult(item) {
 // Utilitaires
 // ---------------------------------------------------------------------------
 
+// Identifiant aléatoire du visiteur, envoyé à chaque requête. En mode démo,
+// le serveur ne montre à chacun que ses propres analyses (voir app/demo.py).
+const SESSION_KEY = "textsense-session";
+const sessionId = loadSessionId();
+
+function loadSessionId() {
+    const fresh = () =>
+        typeof crypto.randomUUID === "function"
+            ? crypto.randomUUID()
+            : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
+                  (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+              );
+    try {
+        let id = localStorage.getItem(SESSION_KEY);
+        if (!id) {
+            id = fresh();
+            localStorage.setItem(SESSION_KEY, id);
+        }
+        return id;
+    } catch {
+        // Stockage bloqué (navigation privée, iframe) : session limitée à l'onglet.
+        return fresh();
+    }
+}
+
 async function requestJson(url, options = {}) {
-    const response = await fetch(url, options);
+    const headers = { ...(options.headers || {}), "X-TextSense-Session": sessionId };
+    const response = await fetch(url, { ...options, headers });
     let data = null;
     try {
         data = await response.json();

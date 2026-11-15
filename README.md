@@ -3,12 +3,15 @@
 [![Tests](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml/badge.svg)](https://github.com/AhamedT04/TexteSense/actions/workflows/tests.yml)
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
+[![Démo en ligne](https://img.shields.io/badge/d%C3%A9mo-en%20ligne-blue.svg)](https://textesense.onrender.com)
 [![Modèle sur Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20mod%C3%A8le-Hugging%20Face-yellow.svg)](https://huggingface.co/AhamedT04/textsense-distilcamembert-sentiment-3c)
 
 API REST et application web d'**analyse de sentiment en français** (positif /
 négatif / neutre), avec un modèle **DistilCamemBERT fine-tuné en 3 classes**,
 une boucle de **retour utilisateur** pour collecter des données réelles, et un
 pipeline ML reproductible (évaluation, fine-tuning, calibration, export ONNX).
+
+**Essayer la démo : [textesense.onrender.com](https://textesense.onrender.com)** (la première visite peut prendre une minute : le serveur gratuit se réveille)
 
 ## Résultats
 
@@ -42,6 +45,8 @@ analyse d'erreurs : [`reports/RESULTS.md`](reports/RESULTS.md) ·
 - Modèle de secours TF-IDF si le modèle principal est indisponible
 - Extraction de mots-clés, historique paginé, statistiques
 - Documentation OpenAPI interactive sur `/docs`
+- **Mode démo public** : historique cloisonné par visiteur, limite de débit,
+  sauvegarde anonyme des retours vers un dataset privé du Hub
 
 ## Démarrage rapide
 
@@ -121,6 +126,8 @@ TexteSense/
 ├── app/                        # Service en production (FastAPI)
 │   ├── main.py                 # Application, logging, démarrage
 │   ├── routes.py               # Endpoints
+│   ├── demo.py                 # Mode démo : cloisonnement, limite de débit
+│   ├── feedback_backup.py      # Sauvegarde des retours vers le Hub
 │   ├── schemas.py · models.py · database.py · config.py
 │   ├── ml/
 │   │   ├── predictor.py        # Choix du modèle, secours, seuil
@@ -135,6 +142,8 @@ TexteSense/
 │   ├── finetune.py · calibrate.py
 │   ├── export_onnx.py · publish_model.py · export_feedback.py
 ├── configs/                    # Configurations d'entraînement (YAML)
+├── deploy/                     # Image de la démo, déploiement Hugging Face Spaces
+├── render.yaml                 # Démo sur Render (Blueprint)
 ├── data/eval/                  # Jeu de test + fiche + guide d'annotation
 ├── reports/                    # Résultats versionnés (JSON, PNG, RESULTS.md)
 ├── notebooks/                  # Analyses (générées par _build_notebooks.py)
@@ -202,6 +211,9 @@ Voir [`.env.example`](.env.example). Principales variables :
 | `CONFIDENCE_THRESHOLD` | seuil du modèle, sinon 0,55 | Seuil `low_confidence` |
 | `MODEL_DIR` | `saved_models` | Modèle de secours |
 | `DEBUG` | `false` | Logs détaillés |
+| `DEMO_MODE` | `false` | Démo publique : historique par visiteur, limite de débit, avertissement |
+| `RATE_LIMIT_PER_MINUTE` / `RATE_LIMIT_GLOBAL_PER_MINUTE` | `30` / `600` | Analyses et retours par minute (par IP / au total), en mode démo |
+| `FEEDBACK_REPO_ID` | – | Dataset du Hub où sauvegarder les retours (jeton dans `HF_TOKEN`) |
 
 ## Tests
 
@@ -222,6 +234,35 @@ docker build -t textsense .            # inclut le modèle HF (~250 Mo)
 docker run -p 8000:8000 -v textsense-db:/app/db textsense
 ```
 
+## Démo publique
+
+La démo [textesense.onrender.com](https://textesense.onrender.com) est hébergée gratuitement sur
+[Render](https://render.com) avec une image dédiée,
+[`deploy/space/Dockerfile`](deploy/space/Dockerfile) : modèle ONNX int8
+téléchargé depuis le Hub à une révision figée (sans PyTorch, ~230 Mo de
+mémoire) et `DEMO_MODE=true`. En mode démo :
+
+- chaque visiteur ne voit, ne corrige et ne supprime que **ses** analyses
+  (identifiant aléatoire généré par le navigateur, envoyé dans l'en-tête
+  `X-TextSense-Session`) ;
+- les analyses et retours sont limités par adresse IP et au total ;
+- un avertissement explique quelles données sont conservées ;
+- les retours (« Oui » / « Sinon, c'est plutôt… ») sont sauvegardés toutes les
+  10 minutes dans un dataset **privé** du Hub, sans identifiant ni adresse IP :
+  le disque d'un hébergement gratuit est effacé à chaque redémarrage.
+
+L'offre gratuite de Render met le service en veille après 15 minutes sans
+visite : la première visite suivante prend environ une minute.
+
+**Déploiement** : [`render.yaml`](render.yaml) décrit le service (Blueprint
+Render). Une fois le Blueprint créé depuis ce dépôt, chaque fusion sur `main`
+redéploie la démo. La seule valeur à saisir dans le tableau de bord est le
+secret `HF_TOKEN` (jeton *fine-grained* limité à l'écriture sur le dataset des
+retours).
+
+La même image fonctionne sur Hugging Face Spaces (abonnement PRO requis pour
+les Spaces Docker) : `python deploy/deploy_space.py`.
+
 ## Limites connues
 
 - **Ironie** : point faible principal, y compris après fine-tuning (voir
@@ -236,8 +277,10 @@ docker run -p 8000:8000 -v textsense-db:/app/db textsense
 - **Calibration** : le seuil choisi sur la validation donne 85 % d'exactitude
   sur les prédictions gardées en validation, 80 % sur le test tweets (le modèle
   y est un peu trop confiant).
-- **Pas d'authentification** : n'importe quel visiteur peut consulter,
-  corriger et supprimer l'historique. À protéger avant une mise en ligne.
+- **Pas d'authentification** : hors mode démo, n'importe quel visiteur peut
+  consulter, corriger et supprimer tout l'historique. Le mode démo cloisonne
+  les visiteurs, mais l'identifiant de session reste stocké dans le navigateur :
+  ce n'est pas un système de comptes.
 - **Données personnelles** : les textes saisis sont stockés en clair dans la
   base ; ne pas y saisir d'informations sensibles.
 

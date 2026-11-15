@@ -49,6 +49,18 @@ class Settings(BaseSettings):
     history_default_limit: int = 50
     history_max_limit: int = 200
 
+    # Démo publique (ex. Hugging Face Spaces) : chaque visiteur ne voit que ses
+    # propres analyses, les requêtes d'écriture sont limitées par adresse IP et
+    # un avertissement de confidentialité est affiché.
+    demo_mode: bool = False
+    rate_limit_per_minute: int = Field(default=30, ge=1)  # par adresse IP
+    rate_limit_global_per_minute: int = Field(default=600, ge=1)  # tous visiteurs confondus
+    # Sauvegarde périodique des retours utilisateurs vers un dataset privé du
+    # Hub (la base d'un Space gratuit est effacée à chaque redémarrage).
+    # Nécessite un jeton en écriture dans la variable HF_TOKEN.
+    feedback_repo_id: str | None = None
+    feedback_push_minutes: float = Field(default=10, gt=0)
+
     @field_validator("model_dir", "dataset_path", "onnx_model_dir")
     @classmethod
     def _resolve_relative_to_project(cls, value: Path | None) -> Path | None:
