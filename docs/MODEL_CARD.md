@@ -128,7 +128,26 @@ petits effectifs → tendances) :
 0,883 ± 0,003 sur `textsense_eval_v1` et 0,724 ± 0,004 sur `tweets_fr_test`.
 
 **Version ONNX int8** (69 Mo, ~4× plus rapide sur CPU) : macro-F1 0,882 sur
-`textsense_eval_v1` et 0,705 sur `tweets_fr_test`.
+`textsense_eval_v1` et 0,705 sur `tweets_fr_test`. Elle est publiée dans
+`onnx/model.int8.onnx` (même tokenizer et même `config.json` que la racine) et
+fait tourner la [démo en ligne](https://huggingface.co/spaces/AhamedT04/textsense) :
+
+```python
+import numpy as np
+import onnxruntime as ort
+from huggingface_hub import snapshot_download
+from transformers import AutoTokenizer
+
+path = snapshot_download(
+    "AhamedT04/textsense-distilcamembert-sentiment-3c",
+    allow_patterns=["*.json", "*.model", "onnx/model.int8.onnx"],
+)
+tokenizer = AutoTokenizer.from_pretrained(path)
+session = ort.InferenceSession(f"{path}/onnx/model.int8.onnx")
+inputs = tokenizer(["Livraison rapide, je recommande."], return_tensors="np")
+(logits,) = session.run(None, {k: v.astype(np.int64) for k, v in inputs.items()})
+print(["negative", "neutral", "positive"][logits.argmax()])
+```
 
 Ablations et analyse détaillée :
 [`docs/EXPERIMENTS.md`](EXPERIMENTS.md) et

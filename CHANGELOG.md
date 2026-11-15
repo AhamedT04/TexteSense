@@ -7,6 +7,27 @@ projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+## [1.3.0] — 2026-11-14
+
+### Ajouté
+
+- **Démo publique sur Hugging Face Spaces**
+  ([`AhamedT04/textsense`](https://huggingface.co/spaces/AhamedT04/textsense)) :
+  image dédiée sans PyTorch (ONNX int8) et script de déploiement
+  (`deploy/deploy_space.py`, `make deploy-space`).
+- **Mode démo** (`DEMO_MODE`) : chaque visiteur ne voit que ses analyses,
+  limite de débit par adresse IP et globale (réponse 429 avec `Retry-After`),
+  avertissement de confidentialité et liens vers le code et le modèle.
+- **Sauvegarde des retours utilisateurs** vers un dataset privé du Hub
+  (`FEEDBACK_REPO_ID`), sans identifiant de session ni adresse IP.
+- Version ONNX int8 publiable dans le dossier `onnx/` du dépôt du modèle
+  (`publish_model --onnx`).
+
+### Modifié
+
+- L'export CSV des retours et la sauvegarde de la démo partagent la même
+  extraction (`app/feedback_backup.py`).
+
 ## [1.2.0] — 2026-11-12
 
 ### Ajouté
@@ -72,7 +93,8 @@ projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
   DistilCamemBERT et fallback TF-IDF, extraction de mots-clés, historique
   et statistiques.
 
-[Non publié]: https://github.com/AhamedT04/TexteSense/compare/f033e3e...HEAD
+[Non publié]: https://github.com/AhamedT04/TexteSense/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/AhamedT04/TexteSense/compare/f033e3e...v1.3.0
 [1.2.0]: https://github.com/AhamedT04/TexteSense/compare/7e63d72...f033e3e
 [1.1.0]: https://github.com/AhamedT04/TexteSense/compare/abb7f22...7e63d72
 [1.0.0]: https://github.com/AhamedT04/TexteSense/commit/abb7f22
