@@ -72,7 +72,14 @@ def export(model_dir: Path, out_dir: Path) -> tuple[Path, Path]:
     # poids extrêmes écrasent la précision de toute la matrice : mesuré sur
     # textsense_eval_v1, l'exactitude tombait à 34 % (hasard) contre 88 %
     # en per-channel. Voir docs/EXPERIMENTS.md, section ONNX.
-    quantize_dynamic(str(fp32_path), str(int8_path), weight_type=QuantType.QInt8, per_channel=True)
+    # reduce_range=True : poids sur 7 bits. Sur les processeurs x86 sans
+    # instructions VNNI, ONNX Runtime utilise une instruction (VPMADDUBSW) qui
+    # sature avec des poids sur 8 bits : le modèle renvoyait alors la même
+    # classe pour tous les textes sur le serveur de la démo, alors qu'il était
+    # correct sur une machine avec VNNI. Voir docs/EXPERIMENTS.md.
+    quantize_dynamic(
+        str(fp32_path), str(int8_path), weight_type=QuantType.QInt8, per_channel=True, reduce_range=True
+    )
 
     tokenizer.save_pretrained(out_dir)
     shutil.copy(model_dir / "config.json", out_dir / "config.json")

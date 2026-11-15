@@ -244,11 +244,14 @@ i7-1255U ; rapport : `reports/onnx/distilcamembert-3c-starinit-s42.json`.
 
 | Variante | Taille | Latence p50 | Latence p95 | Accord avec PyTorch (eval_v1) | macro-F1 eval_v1 | macro-F1 tweets test |
 |---|---|---|---|---|---|---|
-| PyTorch float32 | 272 Mo | 17,2 ms | 32,7 ms | – | 0,885 | 0,723 |
-| ONNX float32 | 272 Mo | 10,3 ms | 23,5 ms | 100 % | 0,885 | 0,723 |
-| **ONNX int8 (per-channel)** | **69 Mo** | **4,4 ms** | **10,1 ms** | 95,8 % | 0,882 | 0,705 |
+| PyTorch float32 | 272 Mo | 13,2 ms | 25,0 ms | – | 0,885 | 0,723 |
+| ONNX float32 | 272 Mo | 9,6 ms | 20,4 ms | 100 % | 0,885 | 0,723 |
+| **ONNX int8 (per-channel, `reduce_range`)** | **69 Mo** | **4,5 ms** | **9,4 ms** | 93,3 % | 0,887 | 0,692 |
 
-### Incident : quantification per-tensor
+Mesures du 15 novembre 2026, après l'incident n° 2 ci-dessous (la version
+int8 sans `reduce_range` donnait 95,8 % d'accord, 0,882 et 0,705).
+
+### Incident n° 1 : quantification per-tensor
 
 La première quantification (réglages par défaut : **une seule échelle par
 matrice de poids**) donnait un modèle inutilisable : 31 % d'accord avec
@@ -267,13 +270,34 @@ la matrice, et les autres poids perdent leur précision. Variantes testées :
 | **QInt8 per-channel** | **95,8 %** | **88,3 %** |
 | QInt8 per-channel, MatMul seulement (144 Mo) | 97,2 % | 88,9 % |
 
-**Décision** : per-channel sur tous les opérateurs (4× plus petit). Coût :
--0,3 point sur eval_v1, -1,8 point sur les tweets (au-delà de la variance entre
-graines, intervalles qui se chevauchent).
+**Décision** : per-channel sur tous les opérateurs (4× plus petit).
+
+### Incident n° 2 : un modèle correct ici, faux sur le serveur
+
+Une fois la démo en ligne (Render), le modèle int8 renvoyait **« neutre » à
+~0,92 pour tous les textes**, alors que les mêmes fichiers, téléchargés depuis
+le Hub, prédisaient correctement sur la machine de développement.
+
+Cause : sur les processeurs x86 **sans instructions VNNI**, ONNX Runtime
+calcule les produits int8 (activations uint8 × poids int8) avec l'instruction
+`VPMADDUBSW`, dont les sommes intermédiaires sur 16 bits **saturent** avec des
+poids sur 8 bits. La machine de développement (i7-1255U) a AVX-VNNI et
+n'utilise pas ce chemin : le défaut était invisible en local.
+
+Correctif : `reduce_range=True` (poids sur 7 bits, sans saturation possible),
+recommandé par la documentation d'ONNX Runtime pour ces processeurs. Coût
+mesuré : +0,2 point sur eval_v1 (bruit), -1,3 point sur les tweets par rapport
+à la version précédente (-3,1 points par rapport au float32 ; intervalles qui
+se chevauchent).
+
+**Leçon** : un modèle quantifié doit être validé **sur le matériel cible**.
+La démo vérifie désormais ses prédictions après chaque déploiement (voir le
+README), et un test de fumée sur quelques phrases de référence suffit à
+détecter ce type de problème.
 
 **Recommandation** : ONNX float32 quand la qualité prime (résultats
-identiques, 1,7× plus rapide) ; ONNX int8 quand la mémoire ou la latence
-priment (4× plus léger et ~4× plus rapide). Le backend PyTorch reste le
+identiques, ~1,4× plus rapide) ; ONNX int8 quand la mémoire ou la latence
+priment (4× plus léger et ~3× plus rapide). Le backend PyTorch reste le
 défaut pour sa simplicité.
 
 ## 7. Pistes suivantes

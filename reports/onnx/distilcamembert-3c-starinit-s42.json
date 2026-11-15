@@ -10,9 +10,9 @@
   "results": {
     "pytorch_fp32": {
       "latency_ms_single_text": {
-        "p50": 17.18,
-        "p95": 32.65,
-        "mean": 19.17
+        "p50": 13.23,
+        "p95": 24.96,
+        "mean": 14.38
       },
       "agreement_with_pytorch": 1.0,
       "max_abs_proba_diff": 0.0,
@@ -21,9 +21,9 @@
     },
     "onnx_fp32": {
       "latency_ms_single_text": {
-        "p50": 10.3,
-        "p95": 23.51,
-        "mean": 12.19
+        "p50": 9.62,
+        "p95": 20.35,
+        "mean": 10.68
       },
       "agreement_with_pytorch": 1.0,
       "max_abs_proba_diff": 3.2782554626464844e-06,
@@ -32,19 +32,19 @@
     },
     "onnx_int8": {
       "latency_ms_single_text": {
-        "p50": 4.38,
-        "p95": 10.08,
-        "mean": 5.03
+        "p50": 4.45,
+        "p95": 9.37,
+        "mean": 4.88
       },
-      "agreement_with_pytorch": 0.9583333333333334,
-      "max_abs_proba_diff": 0.563808798789978,
-      "accuracy_textsense_eval_v1": 0.8833333333333333,
+      "agreement_with_pytorch": 0.9333333333333333,
+      "max_abs_proba_diff": 0.6959226131439209,
+      "accuracy_textsense_eval_v1": 0.8888888888888888,
       "size_mb": 68.7
     }
   },
   "metadata": {
-    "timestamp_utc": "2026-11-11T21:07:18+00:00",
-    "git_commit": "afca2d65fc4e83ddf7b043aacd8e2ff150c25e6c-dirty",
+    "timestamp_utc": "2026-11-15T04:08:55+00:00",
+    "git_commit": "9880ed54ab64457570db00d130cbb20c9eae12b6-dirty",
     "python": "3.12.16",
     "platform": "Linux-7.0.0-43-generic-x86_64-inconnu-with-glibc2.43",
     "packages": {

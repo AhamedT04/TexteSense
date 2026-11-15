@@ -127,8 +127,9 @@ petits effectifs → tendances) :
 **Stabilité** : même configuration avec trois graines (42, 13, 7) → macro-F1
 0,883 ± 0,003 sur `textsense_eval_v1` et 0,724 ± 0,004 sur `tweets_fr_test`.
 
-**Version ONNX int8** (69 Mo, ~4× plus rapide sur CPU) : macro-F1 0,882 sur
-`textsense_eval_v1` et 0,705 sur `tweets_fr_test`. Elle est publiée dans
+**Version ONNX int8** (69 Mo, ~3× plus rapide sur CPU ; quantification
+dynamique per-channel avec `reduce_range`, fiable sur tous les processeurs
+x86) : macro-F1 0,887 sur `textsense_eval_v1` et 0,692 sur `tweets_fr_test`. Elle est publiée dans
 `onnx/model.int8.onnx` (même tokenizer et même `config.json` que la racine) et
 fait tourner la [démo en ligne](https://textesense.onrender.com) :
 
