@@ -19,6 +19,10 @@
                 et historique persistant dans une interface épurée.
             </p>
             <a class="hero-link" href="/docs" target="_blank" rel="noreferrer">Ouvrir la documentation API</a>
+            {% if demo_mode %}
+            <a class="hero-link" href="https://github.com/AhamedT04/TexteSense" target="_blank" rel="noreferrer">Code source</a>
+            <a class="hero-link" href="https://huggingface.co/AhamedT04/textsense-distilcamembert-sentiment-3c" target="_blank" rel="noreferrer">Fiche du modèle</a>
+            {% endif %}
         </header>
 
         <main class="dashboard">
@@ -42,6 +46,14 @@
                     </div>
                 </form>
                 <p id="form-message" class="form-message"></p>
+                {% if demo_mode %}
+                <p class="demo-notice">
+                    <strong>Démo publique.</strong> Vos analyses ne sont visibles que par vous
+                    et sont effacées au redémarrage du serveur. Si vous donnez votre avis sur
+                    un résultat, le texte et votre avis sont conservés de façon anonyme pour
+                    améliorer le modèle. N'écrivez pas d'informations personnelles.
+                </p>
+                {% endif %}
             </section>
 
             <section class="panel result-panel">
@@ -57,7 +69,7 @@
             <section class="panel stats-panel">
                 <div class="panel-head">
                     <h2>Statistiques</h2>
-                    <p>Vue rapide sur les analyses stockées.</p>
+                    <p>{% if demo_mode %}Vue rapide sur vos analyses.{% else %}Vue rapide sur les analyses stockées.{% endif %}</p>
                 </div>
                 <div id="stats-grid" class="stats-grid">
                     <article><span>Total</span><strong id="stat-total">0</strong></article>
@@ -72,7 +84,7 @@
             <section class="panel history-panel">
                 <div class="panel-head">
                     <h2>Historique</h2>
-                    <p>Analyses récentes enregistrées en base SQLite.</p>
+                    <p>{% if demo_mode %}Vos analyses récentes, visibles par vous seul.{% else %}Analyses récentes enregistrées en base SQLite.{% endif %}</p>
                 </div>
                 <div id="history-list" class="history-list">
                     <p class="empty-history">Aucune analyse pour le moment.</p>

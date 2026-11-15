@@ -27,3 +27,6 @@ class Analysis(Base):
     # si l'utilisateur la confirme, différent s'il la corrige).
     user_label: Mapped[str | None] = mapped_column(String(20), nullable=True, index=True)
     user_label_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Mode démo : identifiant aléatoire du visiteur (généré par le navigateur),
+    # pour que chacun ne voie que ses propres analyses. Jamais exporté.
+    session_id: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)

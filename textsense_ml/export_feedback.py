@@ -25,39 +25,14 @@ from sqlalchemy.orm import Session
 
 from app.config import BASE_DIR
 from app.database import SessionLocal
-from app.models import Analysis
+from app.feedback_backup import FEEDBACK_FIELDS, feedback_records
 
 FEEDBACK_DIR = BASE_DIR / "data" / "feedback"
-COLUMNS = [
-    "id",
-    "text",
-    "label",
-    "model_label",
-    "confidence",
-    "model_name",
-    "created_at",
-    "user_label_at",
-]
 
 
 def collect_feedback(db: Session, only_corrections: bool = False) -> pd.DataFrame:
-    query = db.query(Analysis).filter(Analysis.user_label.is_not(None))
-    if only_corrections:
-        query = query.filter(Analysis.user_label != Analysis.sentiment)
-    rows = [
-        {
-            "id": f"fb-{record.id}",
-            "text": record.text,
-            "label": record.user_label,
-            "model_label": record.sentiment,
-            "confidence": record.confidence,
-            "model_name": record.model_name,
-            "created_at": record.created_at,
-            "user_label_at": record.user_label_at,
-        }
-        for record in query.order_by(Analysis.id).all()
-    ]
-    return pd.DataFrame(rows, columns=COLUMNS)
+    """Même extraction que la sauvegarde de la démo (:mod:`app.feedback_backup`)."""
+    return pd.DataFrame(feedback_records(db, only_corrections), columns=list(FEEDBACK_FIELDS))
 
 
 def main(argv: list[str] | None = None) -> None:

@@ -9,7 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.config import BASE_DIR, get_settings
-from app.database import init_db
+from app.database import SessionLocal, init_db
+from app.feedback_backup import FeedbackBackup
 from app.ml.predictor import is_model_ready, is_primary_model_ready
 from app.routes import router
 
@@ -63,8 +64,22 @@ async def lifespan(app: FastAPI):
             "Téléchargez le modèle principal ou entraînez le fallback sklearn."
         )
 
-    logger.info("TextSense démarré — http://localhost:8000")
+    backup = None
+    settings = get_settings()
+    if settings.feedback_repo_id:
+        backup = FeedbackBackup(
+            settings.feedback_repo_id,
+            SessionLocal,
+            interval_seconds=settings.feedback_push_minutes * 60,
+        )
+        backup.start()
+    if settings.demo_mode:
+        logger.info("Mode démo actif : historique par visiteur, %d requêtes/min.", settings.rate_limit_per_minute)
+
+    logger.info("TextSense démarré.")
     yield
+    if backup is not None:
+        backup.stop()
     logger.info("TextSense arrêté.")
 
 
@@ -81,7 +96,7 @@ app = FastAPI(
         "Modèle principal : DistilCamemBERT (Transformers ou ONNX). "
         "Fallback : TF-IDF + Régression logistique."
     ),
-    version="1.2.0",
+    version="1.3.0",
     lifespan=lifespan,
 )
 
@@ -96,7 +111,7 @@ def home(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={"app_name": settings.app_name},
+        context={"app_name": settings.app_name, "demo_mode": settings.demo_mode},
     )
 
 
@@ -118,5 +133,6 @@ def health():
         "primary_model": _public_model_name(),
         "primary_model_loaded": is_primary_model_ready(),
         "fallback_model": "tfidf-logistic-regression",
+        "demo_mode": settings.demo_mode,
         "version": app.version,
     }
